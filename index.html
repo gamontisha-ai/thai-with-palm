@@ -1182,13 +1182,9 @@ const PG_SETS = {
     {th:"พระอาทิตย์ตก", rom:"phrá aa-thít dtòk", en:"sunset", pic:"🌅"},
     {th:"พระอาทิตย์ขึ้น", rom:"phrá aa-thít khûen", en:"sunrise", pic:"🌄"},
     {th:"ลม", rom:"lom", en:"wind", pic:"💨"},
-  ],
-  boats: [
     {th:"เรือ", rom:"ruea", en:"boat", pic:"⛵"},
     {th:"ท่าเรือ", rom:"thâa ruea", en:"pier", pic:"⚓"},
     {th:"เสื้อชูชีพ", rom:"sûea chuu chîip", en:"life jacket", pic:"🦺"},
-  ],
-  diving: [
     {th:"ดำน้ำ", rom:"dam náam", en:"dive", pic:"🤿"},
     {th:"ดำน้ำตื้น", rom:"dam náam dtûen", en:"snorkeling", pic:"🥽"},
     {th:"ถังออกซิเจน", rom:"thǎng òk-sí-jen", en:"oxygen tank", pic:"🛢️"},
@@ -1356,12 +1352,12 @@ const PG_SETS = {
   ],
 };
 const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
-                         PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
+                         PG_SETS.classroom, PG_SETS.sea,
                          PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat,
                          PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 // vocabulary pool used only by "Word Games" Mixed Challenge (sentences/everyday/introduce live in their own section)
 const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
-                         PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
+                         PG_SETS.classroom, PG_SETS.sea,
                          PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat);
 // sentence pool used only by "Sentences Practice" Mixed option
 const PG_SENT_ALL = [].concat(PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
@@ -1498,9 +1494,7 @@ const PG_META_VOCAB = [
   {key:"action",      emo:"🍽️", title:"Actions & Things",        sub:"ไป · ดื่ม · กิน · เป็น · กลับบ้าน",     cls:"kham"},
   {key:"feel",        emo:"😋", title:"Feelings & Food",         sub:"ดี · ร้อน · เย็น · อร่อย · ก๋วยเตี๋ยว",  cls:"paa"},
   {key:"classroom",   emo:"🎓", title:"Classroom Expressions",   sub:"ใช่ · ไม่ · ฟัง · พูด · อ่าน",          cls:"mai"},
-  {key:"sea",         emo:"🏖️", title:"Sea & Beach",             sub:"ทะเล · ชายหาด · เกาะ · ลม",            cls:"kha"},
-  {key:"boats",       emo:"⛵", title:"Boats & Safety",           sub:"เรือ · ท่าเรือ · เสื้อชูชีพ",             cls:"kham"},
-  {key:"diving",      emo:"🤿", title:"Diving & Marine Life",    sub:"ดำน้ำ · ปะการัง · ปลา · ฉลาม",          cls:"paa"},
+  {key:"sea",         emo:"🏖️", title:"Sea, Boats & Diving",      sub:"ทะเล · เรือ · ดำน้ำ · ปะการัง · ฉลาม",  cls:"kha"},
   {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mai"},
   {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"kha"},
   {key:"questwords",  emo:"❓", title:"Question Words",            sub:"อะไร · ที่ไหน · ใคร · เมื่อไหร่ · ทำไม",   cls:"kham"},
