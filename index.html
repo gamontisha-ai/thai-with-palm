@@ -64,6 +64,29 @@
   .setbtn.mix{ background:linear-gradient(135deg,var(--gold-d),var(--gold)); }
   .foot{ text-align:center; color:var(--soft); font-size:12.5px; margin-top:16px; line-height:1.5;}
 
+  /* ---------- Teacher Section ---------- */
+  .teacher-link-wrap{ text-align:center; margin-top:14px; }
+  .teacher-link{ border:none; cursor:pointer; background:transparent; color:var(--soft); opacity:.55;
+    font-weight:700; font-size:12px; padding:8px; font-family:var(--sans); }
+  .teacher-link:active{ opacity:.9; }
+  .teacher-login-card{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:32px 22px;
+    text-align:center; margin-top:18px; }
+  .teacher-lock-icon{ font-size:44px; margin-bottom:6px; }
+  .teacher-login-card p{ color:var(--soft); font-size:14.5px; margin:6px 0 16px; }
+  .teacher-pw-input{ width:100%; border:2px solid #efe6de; border-radius:14px; padding:13px 16px; font-size:18px;
+    text-align:center; letter-spacing:3px; font-family:var(--sans); outline:none; margin-bottom:12px;
+    transition:border-color .2s; }
+  .teacher-pw-input:focus{ border-color:var(--teal); }
+  .teacher-pw-btn{ width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d));
+    color:#fff; font-weight:800; font-size:16px; padding:14px; border-radius:14px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); }
+  .teacher-pw-btn:active{ transform:scale(.98); }
+  .teacher-pw-error{ color:var(--coral-d); font-weight:700; font-size:13px; margin-top:10px; min-height:18px; }
+  .teacher-shell-card{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:40px 22px;
+    text-align:center; margin-top:18px; }
+  .teacher-shell-card h2{ font-size:20px; color:var(--ink); margin:8px 0 6px; }
+  .teacher-shell-card p{ color:var(--soft); font-size:14.5px; line-height:1.6; }
+
   /* mode toggle */
   .modes{ display:flex; gap:8px; background:#efe4da; padding:5px; border-radius:16px; margin:6px 0 10px;}
   .modebtn{ flex:1; border:none; cursor:pointer; border-radius:12px; padding:11px; font-weight:800; font-size:16px;
@@ -446,6 +469,35 @@
       </button>
     </div>
     <div class="foot">Practise a little every day 🌟<br>Thai with Palm 💬</div>
+    <div class="teacher-link-wrap"><button class="teacher-link" data-go="teacherlogin">🔒 Teacher</button></div>
+  </section>
+
+  <!-- ================= TEACHER · LOGIN ================= -->
+  <section id="teacherlogin" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="hub">←</button>
+      <div class="hubtitle">🔒 Teacher Section</div>
+    </div>
+    <div class="teacher-login-card">
+      <div class="teacher-lock-icon">🔒</div>
+      <p>Enter the teacher password to continue.</p>
+      <input type="password" class="teacher-pw-input" id="teacherPwInput" placeholder="Password" inputmode="numeric">
+      <button class="teacher-pw-btn" id="teacherPwBtn">Unlock</button>
+      <div class="teacher-pw-error" id="teacherPwError"></div>
+    </div>
+  </section>
+
+  <!-- ================= TEACHER · SECTION ================= -->
+  <section id="teachersection" class="hidden">
+    <div class="topbar">
+      <button class="back" id="teacherBackBtn">←</button>
+      <div class="hubtitle">🔒 Teacher Section</div>
+    </div>
+    <div class="teacher-shell-card">
+      <div style="font-size:44px;">🚧</div>
+      <h2>Content coming soon</h2>
+      <p>This section is ready for whatever you'd like to add — just tell Claude what should go here.</p>
+    </div>
   </section>
 
   <!-- ================= 7-ELEVEN · INTRO ================= -->
@@ -983,7 +1035,8 @@ function show(id){
   if(id!=="sevengame" && typeof svClearTimers==="function") svClearTimers();
   ["hub","home","quiz","practice","result","pghome","pgpractice","pgame","pgresult",
    "sevenintro","sevengame","sevenroundresult","sevencomplete",
-   "sentbuilder","sentbuilderresult"].forEach(s=>document.getElementById(s).classList.toggle("hidden", s!==id));
+   "sentbuilder","sentbuilderresult",
+   "teacherlogin","teachersection"].forEach(s=>document.getElementById(s).classList.toggle("hidden", s!==id));
   window.scrollTo(0,0);
 }
 
@@ -2162,6 +2215,32 @@ function sbNext(){
   }
 }
 document.getElementById("sbNextBtn").onclick = sbNext;
+
+/* ==========================================================
+   TEACHER SECTION — simple shared-password gate.
+   NOTE: this is a basic front-end gate for casual access
+   control (keeping curious students out), not real security —
+   the password lives in this file's source code, so it should
+   never be used to protect genuinely sensitive information.
+   ========================================================== */
+const TEACHER_PASSWORD = "472540";
+
+function checkTeacherPassword(){
+  const input = document.getElementById("teacherPwInput").value.trim();
+  const errEl = document.getElementById("teacherPwError");
+  if(input === TEACHER_PASSWORD){
+    errEl.textContent = "";
+    document.getElementById("teacherPwInput").value = "";
+    show("teachersection");
+  } else {
+    errEl.textContent = "❌ Wrong password — try again.";
+  }
+}
+document.getElementById("teacherPwBtn").onclick = checkTeacherPassword;
+document.getElementById("teacherPwInput").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") checkTeacherPassword();
+});
+document.getElementById("teacherBackBtn").onclick = ()=> show("hub");
 </script>
 </body>
 </html>
