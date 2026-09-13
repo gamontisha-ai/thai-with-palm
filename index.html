@@ -86,6 +86,12 @@
     text-align:center; margin-top:18px; }
   .teacher-shell-card h2{ font-size:20px; color:var(--ink); margin:8px 0 6px; }
   .teacher-shell-card p{ color:var(--soft); font-size:14.5px; line-height:1.6; }
+  .teacher-note{ background:var(--creamy); color:var(--gold-d); font-weight:700; font-size:12.5px;
+    text-align:center; border-radius:12px; padding:10px 14px; margin:4px 0 12px; line-height:1.5; }
+  .teacher-iframe{
+    display:block; border:none; width:100vw; height:calc(100vh - 150px);
+    position:relative; left:50%; margin-left:-50vw; background:#fff;
+  }
 
   /* mode toggle */
   .modes{ display:flex; gap:8px; background:#efe4da; padding:5px; border-radius:16px; margin:6px 0 10px;}
@@ -493,11 +499,8 @@
       <button class="back" id="teacherBackBtn">←</button>
       <div class="hubtitle">🔒 Teacher Section</div>
     </div>
-    <div class="teacher-shell-card">
-      <div style="font-size:44px;">🚧</div>
-      <h2>Content coming soon</h2>
-      <p>This section is ready for whatever you'd like to add — just tell Claude what should go here.</p>
-    </div>
+    <div class="teacher-note">🔓 Note: edits made in "Manage word bank" below are view-only in this embedded window — they won't be saved after you refresh.</div>
+    <iframe class="teacher-iframe" src="say-it-thai.html" title="Say It Thai"></iframe>
   </section>
 
   <!-- ================= 7-ELEVEN · INTRO ================= -->
@@ -1217,6 +1220,27 @@ const PG_SETS = {
     {th:"ใกล้หรือไกล", rom:"Glâi rǔe glai?", en:"Near or far?", pic:"🤔"},
     {th:"ใกล้ไหม", rom:"Glâi mái?", en:"Is it near?", pic:"❓"},
   ],
+  questwords: [
+    {th:"อะไร", rom:"à-rai", en:"What?", pic:"❔"},
+    {th:"ที่ไหน", rom:"thîi-nǎi", en:"Where?", pic:"📍"},
+    {th:"ใคร", rom:"khrai", en:"Who?", pic:"🙋"},
+    {th:"เมื่อไหร่", rom:"mûea-rài", en:"When?", pic:"⏰"},
+    {th:"ทำไม", rom:"tham-mai", en:"Why?", pic:"🤔"},
+    {th:"ยังไง", rom:"yang-ngai", en:"How?", pic:"💭"},
+    {th:"อันไหน", rom:"an-nǎi", en:"Which?", pic:"👆"},
+  ],
+  thisthat: [
+    {th:"นี่", rom:"Nîi", en:"This / This one", pic:"👇"},
+    {th:"นั่น", rom:"Nân", en:"That / That one", pic:"👉"},
+    {th:"พวกนี้", rom:"Phûak níi", en:"These / These ones", pic:"🖐️"},
+    {th:"พวกนั้น", rom:"Phûak nán", en:"Those / Those ones", pic:"🤲"},
+    {th:"อันนี้", rom:"An níi", en:"This one", pic:"☝️"},
+    {th:"อันนั้น", rom:"An nán", en:"That one", pic:"👆"},
+    {th:"ที่นี่", rom:"Thîi nîi", en:"Here", pic:"📍"},
+    {th:"ที่นั่น", rom:"Thîi nân", en:"There", pic:"📌"},
+    {th:"นี่คืออะไร", rom:"Nîi khuu à-rai?", en:"What is this?", pic:"❔"},
+    {th:"นั่นคืออะไร", rom:"Nân khuu à-rai?", en:"What is that?", pic:"🧐"},
+  ],
   sentences: [
     {th:"สบายดีไหม", rom:"Sabai dee mái?", en:"How are you?", pic:"😊"},
     {th:"แล้วคุณล่ะ", rom:"Láew khun lâ?", en:"How about you?", pic:"🔁"},
@@ -1333,11 +1357,12 @@ const PG_SETS = {
 };
 const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
-                         PG_SETS.destination, PG_SETS.directions, PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
+                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat,
+                         PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 // vocabulary pool used only by "Word Games" Mixed Challenge (sentences/everyday/introduce live in their own section)
 const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
-                         PG_SETS.destination, PG_SETS.directions);
+                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat);
 // sentence pool used only by "Sentences Practice" Mixed option
 const PG_SENT_ALL = [].concat(PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 
@@ -1478,6 +1503,8 @@ const PG_META_VOCAB = [
   {key:"diving",      emo:"🤿", title:"Diving & Marine Life",    sub:"ดำน้ำ · ปะการัง · ปลา · ฉลาม",          cls:"paa"},
   {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mai"},
   {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"kha"},
+  {key:"questwords",  emo:"❓", title:"Question Words",            sub:"อะไร · ที่ไหน · ใคร · เมื่อไหร่ · ทำไม",   cls:"kham"},
+  {key:"thisthat",    emo:"👉", title:"This, That, These & Those", sub:"นี่ · นั่น · พวกนี้ · พวกนั้น",           cls:"paa"},
   {key:"all",         emo:"🎯", title:"Mixed Challenge",          sub:"All "+PG_VOCAB_ALL.length+" words",    cls:"mix"},
 ];
 const PG_META_SENT = [
