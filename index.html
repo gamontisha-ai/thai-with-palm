@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Thai with Palm · Practice & Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#FF6B5C; --coral-d:#E7503F; --teal:#12A79E; --teal-d:#0E877F;
+    --gold:#FFB23E; --gold-d:#E0912A; --kara:#0000C5;
+    --ink:#3A3340; --soft:#716A78; --bg:#FFF8F2; --white:#FFFFFF;
+    --peach:#FFEDE6; --mint:#E9F6F4; --creamy:#FFF4E2;
+    --mid:#9AA0A6; --low:#12A79E; --falling:#F0972A; --high:#FF6B5C; --rising:#7C5CBF;
+    --shadow:0 10px 26px rgba(150,120,100,.18);
+    --shadow-sm:0 4px 12px rgba(150,120,100,.16);
+    --thai:"Mitr","Noto Sans Thai","Tahoma","Leelawadee UI",sans-serif;
+    --sans:"Nunito","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--sans); background:var(--bg); color:var(--ink);
+    min-height:100vh; display:flex; justify-content:center; padding:16px;
+  }
+  .app{ width:100%; max-width:520px; }
+  .hidden{ display:none !important; }
+
+  /* ---------- shared ---------- */
+  h1,h2{margin:0;}
+  .kara{ color:var(--kara); font-weight:800; }
+  .card{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); }
+  .pill{ display:inline-block; padding:5px 14px; border-radius:999px; font-weight:800; font-size:14px; color:#fff; }
+
+  /* ---------- HOME ---------- */
+  .flag{ font-size:46px; line-height:1; }
+  .home-head{ text-align:center; margin:6px 0 14px; }
+  .home-head h1{ font-size:30px; font-weight:900; color:var(--coral-d); letter-spacing:-.5px; margin-top:6px;}
+  .home-head p{ margin:8px 4px 0; color:var(--teal-d); font-size:16px; font-style:italic;}
+
+  .legend{ display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin:14px 0 18px; }
+  .leg{ background:var(--white); border-radius:16px; box-shadow:var(--shadow-sm); padding:9px 4px 7px; text-align:center;}
+  .leg svg{ width:100%; height:34px; display:block;}
+  .leg span{ font-size:12px; font-weight:800; display:block; margin-top:3px;}
+
+  .choose{ text-align:center; font-weight:800; color:var(--soft); font-size:15px; margin:2px 0 10px; letter-spacing:.3px;}
+  .setbtns{ display:flex; flex-direction:column; gap:12px; }
+  .setbtn{
+    border:none; cursor:pointer; border-radius:20px; padding:16px 18px; text-align:left;
+    display:flex; align-items:center; gap:14px; box-shadow:var(--shadow-sm); color:#fff;
+    transition:transform .12s ease, box-shadow .12s ease; font-family:var(--sans);
+  }
+  .setbtn:active{ transform:scale(.97); }
+  .setbtn .emo{ font-size:30px; width:46px; height:46px; flex:0 0 46px; background:rgba(255,255,255,.22);
+    border-radius:14px; display:flex; align-items:center; justify-content:center;}
+  .setbtn b{ font-size:20px; display:block; }
+  .setbtn small{ font-size:13px; opacity:.92; font-family:var(--thai); font-weight:500; }
+  .setbtn.mai{ background:linear-gradient(135deg,var(--coral),#ff8a5c); }
+  .setbtn.kha{ background:linear-gradient(135deg,var(--teal),#3fc4b0); }
+  .setbtn.kham{ background:linear-gradient(135deg,#7C5CBF,#9d86dd); }
+  .setbtn.paa{ background:linear-gradient(135deg,#E5567F,#ff88a8); }
+  .setbtn.mix{ background:linear-gradient(135deg,var(--gold-d),var(--gold)); }
+  .foot{ text-align:center; color:var(--soft); font-size:12.5px; margin-top:16px; line-height:1.5;}
+
+  /* mode toggle */
+  .modes{ display:flex; gap:8px; background:#efe4da; padding:5px; border-radius:16px; margin:6px 0 10px;}
+  .modebtn{ flex:1; border:none; cursor:pointer; border-radius:12px; padding:11px; font-weight:800; font-size:16px;
+    background:transparent; color:var(--soft); font-family:var(--sans); transition:all .15s;}
+  .modebtn.active{ background:var(--white); color:var(--ink); box-shadow:var(--shadow-sm);}
+
+  /* practice */
+  .pmean{ font-size:17px; color:var(--ink); margin-top:2px; }
+  .pmean b{ font-family:var(--thai); font-weight:600; }
+  .example{ margin-top:11px; display:inline-flex; align-items:center; gap:9px; flex-wrap:wrap; justify-content:center;
+    background:var(--creamy); border-radius:14px; padding:8px 13px; font-size:16px; }
+  .example .ex-label{ color:var(--soft); font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.6px;}
+  .example .ex-thai{ font-family:var(--thai); font-weight:600; color:var(--ink); font-size:20px;}
+  .example .ex-rom{ color:var(--kara); font-weight:800; }
+  .example .ex-mean{ color:var(--ink); }
+  .example .ex-say{ border:none; background:var(--peach); color:var(--coral-d); border-radius:11px;
+    padding:5px 10px; font-size:14px; font-weight:800; cursor:pointer; font-family:var(--sans);}
+  .example .ex-say:active{ transform:scale(.96); }
+  #pContour svg{ width:210px; height:74px; }
+  #pToneWrap .pill{ font-size:15px; }
+  .pnav{ display:flex; gap:10px; margin-top:12px; }
+  .pnav button{ flex:1; border:none; cursor:pointer; border-radius:16px; padding:14px; font-weight:800; font-size:16px;
+    box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .1s;}
+  .pnav button:active{ transform:scale(.98); }
+  .pprev{ background:var(--white); color:var(--ink); }
+  .pprev:disabled{ opacity:.4; cursor:default; }
+  .pnext{ background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff; }
+  .pnext.finish{ background:linear-gradient(135deg,var(--coral),var(--coral-d)); }
+
+  /* ---------- QUIZ ---------- */
+  .topbar{ display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .back{ border:none;background:var(--white); box-shadow:var(--shadow-sm); border-radius:12px; width:40px;height:40px;
+    font-size:18px; cursor:pointer; color:var(--ink);}
+  .progwrap{ flex:1; height:12px; background:#efe4da; border-radius:999px; overflow:hidden;}
+  .progbar{ height:100%; width:0%; background:linear-gradient(90deg,var(--coral),var(--gold)); border-radius:999px; transition:width .45s cubic-bezier(.5,.1,.2,1);}
+  .qcount{ font-weight:800; color:var(--soft); font-size:14px; min-width:52px; text-align:right;}
+
+  .wordcard{ padding:22px 20px 20px; text-align:center; position:relative; overflow:hidden; }
+  .qtag{ font-size:13px; font-weight:800; color:var(--soft); text-transform:uppercase; letter-spacing:1px;}
+  .thai{ font-family:var(--thai); font-weight:600; color:var(--ink); font-size:70px; line-height:1.15; margin:2px 0 2px;}
+  .rom{ font-size:38px; font-weight:800; color:var(--kara); }
+  .ask{ margin-top:12px; font-size:17px; font-weight:800; color:var(--ink); }
+
+  .opts{ display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-top:14px;}
+  .opt{
+    border:2.5px solid #efe6de; background:var(--white); border-radius:16px; padding:11px 8px 8px;
+    cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:2px;
+    box-shadow:var(--shadow-sm); transition:transform .1s ease, border-color .15s ease, background .15s;
+    font-family:var(--sans);
+  }
+  .opt:active{ transform:scale(.97); }
+  .opt svg{ width:88px; height:36px; }
+  .opt b{ font-size:16px; font-weight:800; }
+  .opt.correct{ border-color:#37b26b; background:#eafaf0; }
+  .opt.wrong{ border-color:#e8556b; background:#fdecef; animation:shake .4s; }
+  .opt.dim{ opacity:.5; }
+  @keyframes shake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+
+  /* reveal */
+  .reveal{ margin-top:13px; border-radius:20px; padding:16px; background:var(--white); box-shadow:var(--shadow);
+    text-align:center; animation:pop .35s cubic-bezier(.2,1.3,.4,1);}
+  @keyframes pop{ 0%{transform:scale(.9);opacity:0} 100%{transform:scale(1);opacity:1} }
+  .reveal .verdict{ font-size:20px; font-weight:900; }
+  .reveal .tonebig{ display:flex; align-items:center; justify-content:center; gap:12px; margin:8px 0 4px;}
+  .reveal .tonebig svg{ width:150px; height:60px;}
+  .reveal .mean{ font-size:16px; color:var(--ink); }
+  .reveal .mean b{ font-family:var(--thai); font-weight:600; }
+  .soundrow{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+  .soundbtn{ border:none; cursor:pointer; background:var(--mint); color:var(--teal-d);
+    font-weight:800; font-size:15px; padding:10px 16px; border-radius:14px; box-shadow:var(--shadow-sm); font-family:var(--sans);}
+  .soundbtn.voice{ background:var(--peach); color:var(--coral-d); }
+  .soundbtn:active{ transform:scale(.96); }
+  .nextbtn{ margin-top:12px; width:100%; border:none; cursor:pointer; color:#fff; font-weight:900; font-size:18px;
+    padding:15px; border-radius:18px; background:linear-gradient(135deg,var(--coral),var(--coral-d)); box-shadow:var(--shadow); font-family:var(--sans);}
+  .nextbtn:active{ transform:scale(.98); }
+
+  /* ---------- RESULT ---------- */
+  .result{ text-align:center; padding:26px 20px; }
+  .result .em{ font-size:58px; }
+  .result h2{ font-size:26px; font-weight:900; margin:6px 0; color:var(--coral-d);}
+  .scorebig{ font-size:56px; font-weight:900; color:var(--ink); }
+  .scorebig small{ font-size:24px; color:var(--soft); font-weight:800;}
+  .stars{ font-size:30px; letter-spacing:4px; margin:4px 0 8px;}
+  .rmsg{ color:var(--soft); font-size:16px; margin-bottom:6px;}
+  .rmsg .th{ font-family:var(--thai); color:var(--teal-d); font-weight:600; }
+  .rmsg .rm{ color:var(--kara); font-weight:800; }
+  .ractions{ display:flex; gap:10px; margin-top:16px;}
+  .ractions button{ flex:1; border:none; cursor:pointer; border-radius:16px; padding:14px; font-weight:800; font-size:16px; box-shadow:var(--shadow-sm); font-family:var(--sans);}
+  .again{ background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff;}
+  .change{ background:var(--white); color:var(--ink); }
+
+  /* ---------- FEEDBACK ---------- */
+  .fb-card{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-sm); padding:18px 16px;
+    margin-top:14px; text-align:center; border:2px dashed #efe6de; }
+  .fb-card .fb-title{ font-weight:800; font-size:15px; color:var(--ink); margin-bottom:10px; }
+  .fb-emoji-row{ display:flex; justify-content:center; gap:6px; margin-bottom:10px; }
+  .fb-emoji-row button{ border:none; background:var(--peach); width:44px; height:44px; border-radius:12px;
+    font-size:22px; cursor:pointer; transition:transform .12s, background .15s, box-shadow .15s; }
+  .fb-emoji-row button:active{ transform:scale(.92); }
+  .fb-emoji-row button.fb-sel{ background:var(--coral); box-shadow:0 3px 10px rgba(255,107,92,.35);
+    transform:scale(1.12); }
+  .fb-text{ width:100%; border:2px solid #efe6de; border-radius:14px; padding:10px 12px; font-family:var(--sans);
+    font-size:14px; resize:none; min-height:56px; color:var(--ink); background:var(--bg); outline:none;
+    transition:border-color .2s; }
+  .fb-text:focus{ border-color:var(--teal); }
+  .fb-text::placeholder{ color:#bbb; }
+  .fb-send{ border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff;
+    font-weight:800; font-size:15px; padding:11px 22px; border-radius:14px; margin-top:10px;
+    box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .1s, filter .15s; width:100%; }
+  .fb-send:active{ transform:scale(.98); }
+  .fb-send:disabled{ opacity:.5; cursor:default; }
+  .fb-done{ color:var(--teal-d); font-weight:800; font-size:15px; margin-top:8px; }
+  .fb-err{ color:var(--coral-d); font-size:13px; margin-top:6px; }
+
+  /* floating feedback widget */
+  .fb-float-wrap{ position:fixed; bottom:16px; right:16px; z-index:40; display:flex;
+    align-items:flex-end; gap:0; }
+
+  .fb-bubble{ background:var(--white); color:var(--ink); border-radius:18px 18px 4px 18px;
+    box-shadow:0 4px 20px rgba(58,51,64,.16); padding:10px 14px; max-width:200px;
+    font-size:13.5px; font-weight:700; line-height:1.35; cursor:pointer;
+    animation:bubblePop .5s cubic-bezier(.2,1.2,.4,1) .8s both;
+    position:relative; margin-right:-4px; margin-bottom:6px; }
+  .fb-bubble .fb-bub-emoji{ font-size:16px; display:block; margin-bottom:2px; }
+  .fb-bubble .fb-bub-close{ position:absolute; top:-6px; right:-6px; width:20px; height:20px;
+    border-radius:50%; background:#f0ece8; border:none; font-size:10px; font-weight:900;
+    color:var(--soft); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 1px 4px rgba(0,0,0,.1); }
+  .fb-bubble .fb-bub-close:active{ transform:scale(.9); }
+  .fb-bubble.fb-dismissed{ display:none; }
+
+  @keyframes bubblePop{
+    0%{ opacity:0; transform:scale(.5) translateY(12px); }
+    100%{ opacity:1; transform:scale(1) translateY(0); }
+  }
+
+  .fb-float{ border:none; cursor:pointer;
+    background:linear-gradient(135deg,var(--coral),#ff8a5c); color:#fff; width:52px; height:52px;
+    border-radius:50%; font-size:24px; box-shadow:0 4px 18px rgba(255,107,92,.35);
+    transition:transform .15s, box-shadow .15s; display:flex; align-items:center; justify-content:center;
+    animation:floatBounce 2.5s ease-in-out infinite 1.4s; flex-shrink:0; }
+  .fb-float:hover{ transform:scale(1.1); box-shadow:0 6px 24px rgba(255,107,92,.45); }
+  .fb-float:active{ transform:scale(.93); animation:none; }
+
+  @keyframes floatBounce{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+
+  /* feedback modal */
+  .fb-overlay{ position:fixed; inset:0; background:rgba(58,51,64,.55); z-index:45; display:flex;
+    align-items:flex-end; justify-content:center; padding:16px; animation:fadeIn .2s; }
+  @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+  .fb-modal{ background:var(--white); border-radius:22px 22px 8px 8px; box-shadow:0 -4px 30px rgba(0,0,0,.18);
+    padding:22px 18px 18px; width:100%; max-width:420px; animation:slideUp .3s cubic-bezier(.2,1,.4,1); }
+  @keyframes slideUp{ from{transform:translateY(80px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .fb-modal .fb-close{ border:none; background:#f0ece8; color:var(--soft); width:34px; height:34px;
+    border-radius:10px; font-size:16px; cursor:pointer; float:right; font-weight:800; }
+  .fb-modal .fb-close:active{ transform:scale(.94); }
+  .fb-modal .fb-head{ font-weight:900; font-size:18px; color:var(--ink); margin-bottom:4px; }
+  .fb-modal .fb-sub{ color:var(--soft); font-size:13.5px; margin-bottom:12px; }
+
+  /* confetti */
+  #confetti{ position:fixed; inset:0; pointer-events:none; z-index:50;}
+  .conf{ position:absolute; width:10px; height:14px; border-radius:2px; will-change:transform,opacity;}
+
+  #pghome .modes{ flex-wrap:wrap; }
+  .pgmodebtn{ flex:1; border:none; cursor:pointer; border-radius:12px; padding:11px; font-weight:800; font-size:16px;
+    background:transparent; color:var(--soft); font-family:var(--sans); transition:all .15s; }
+  .pgmodebtn.active{ background:var(--white); color:var(--ink); box-shadow:var(--shadow-sm); }
+  .bigspeak{ border:none; cursor:pointer; background:var(--mint); color:var(--teal-d); width:118px; height:118px;
+    border-radius:50%; font-size:52px; box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .12s; }
+  .bigspeak:active{ transform:scale(.94); }
+  .hintbtn{ margin-top:10px; border:none; cursor:pointer; background:var(--creamy); color:var(--gold-d);
+    font-weight:800; font-size:14.5px; padding:9px 14px; border-radius:13px; box-shadow:var(--shadow-sm); font-family:var(--sans); }
+  .hintpic{ font-size:62px; line-height:1.15; margin-top:8px; }
+  .choice .cen{ font-size:21px; font-weight:800; color:var(--ink); line-height:1.3; }
+  .hb3{ background:linear-gradient(135deg,#7C5CBF,#9d86dd); }
+  /* ================= HUB ================= */
+  .hubbtns{ display:flex; flex-direction:column; gap:12px; }
+  .hubbtn{ border:none; cursor:pointer; border-radius:20px; padding:18px; text-align:left; display:flex;
+    align-items:center; gap:14px; box-shadow:var(--shadow-sm); color:#fff; font-family:var(--sans); transition:transform .12s; }
+  .hubbtn:active{ transform:scale(.97); }
+  .hubbtn .emo{ font-size:32px; width:52px; height:52px; flex:0 0 52px; background:rgba(255,255,255,.22);
+    border-radius:15px; display:flex; align-items:center; justify-content:center; }
+  .hubbtn b{ font-size:21px; display:block; }
+  .hubbtn small{ font-size:13.5px; opacity:.93; font-weight:700; }
+  .hb1{ background:linear-gradient(135deg,var(--coral),#ff8a5c); }
+  .hb2{ background:linear-gradient(135deg,var(--teal),#3fc4b0); }
+  .hb3{ background:linear-gradient(135deg,#7C5CBF,#9d86dd); }
+  .hb4{ background:linear-gradient(135deg,#E5567F,#ff88a8); }
+  .hubtitle{ flex:1; font-weight:800; font-size:19px; color:var(--ink); }
+
+  /* ================= PICTURE GAME ================= */
+  .piccard{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:20px 16px 22px; text-align:center; margin-bottom:12px; }
+  .pic-big{ font-size:64px; line-height:1.15; margin-bottom:6px; }
+  .meaning-big{ font-family:var(--serif,inherit); font-size:21px; font-weight:700; color:var(--ink);
+    line-height:1.4; padding:2px 6px 0; max-width:340px; margin:0 auto; }
+  .pic{ font-size:66px; line-height:1.15; margin:2px 0 2px; }
+  .hintlbl{ color:var(--soft); font-weight:800; font-size:12.5px; letter-spacing:1.2px; text-transform:uppercase; margin-top:2px; }
+  .kicker2{ color:var(--teal-d); font-weight:800; font-size:14.5px; margin:2px 2px 9px; text-align:center; }
+  .soundbtn.slow{ background:var(--creamy); color:var(--gold-d); }
+  .ppthai{ font-family:var(--thai); font-weight:600; color:var(--ink); font-size:36px; line-height:1.28; margin-top:2px; }
+  .pprom{ font-size:29px; font-weight:800; color:var(--kara); line-height:1.25; margin-top:2px; }
+  .ppen{ font-size:19px; color:var(--soft); margin-top:4px; }
+
+  .choices{ display:flex; flex-direction:column; gap:10px; }
+  .choice{ display:flex; align-items:center; gap:12px; border:2.5px solid #efe6de; background:var(--white);
+    border-radius:18px; padding:13px; cursor:pointer; box-shadow:var(--shadow-sm); text-align:left;
+    font-family:var(--sans); transition:transform .1s, border-color .15s, background .15s; }
+  .choice:active{ transform:scale(.99); }
+  .choice .ltr{ width:36px; height:36px; border-radius:50%; background:#f0ece8; color:var(--soft);
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; flex:0 0 36px; }
+  .choice .cth{ font-family:var(--thai); font-weight:600; font-size:21px; color:var(--ink); line-height:1.25; }
+  .choice .crom{ font-size:19px; font-weight:800; color:var(--kara); line-height:1.3; }
+  .choice.correct{ border-color:var(--teal); background:#EAF7EF; }
+  .choice.correct .ltr{ background:var(--teal); color:#fff; }
+  .choice.wrong{ border-color:#e8556b; background:#fdecef; animation:shake .4s; }
+  .choice.wrong .ltr{ background:#e8556b; color:#fff; }
+  .choice.dim{ opacity:.5; }
+  .rev-th{ font-family:var(--thai); font-weight:600; font-size:24px; color:var(--ink); margin-top:4px; }
+  .rev-rom{ font-size:22px; font-weight:800; color:var(--kara); }
+  .rev-en{ font-size:17px; color:var(--soft); }
+
+  /* ================= 7-ELEVEN CHALLENGE ================= */
+  .sv-intro-card{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:22px 20px; margin-bottom:16px; }
+  .sv-intro-card h2{ margin:0 0 10px; font-size:22px; color:var(--ink); }
+  .sv-intro-card p{ margin:0 0 10px; color:var(--soft); font-size:14.5px; line-height:1.6; }
+  .sv-intro-card .sv-eg{ background:var(--bg); border-radius:14px; padding:12px 14px; margin:10px 0; }
+  .sv-intro-card .sv-eg b{ color:var(--ink); }
+  .sv-eg-row{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; }
+  .sv-eg-row div{ font-size:12.5px; line-height:1.4; }
+  .sv-eg-row b{ font-size:13.5px; display:block; margin-bottom:2px; }
+  .sv-eg-row span{ color:var(--soft); }
+  .sv-startbtn{ width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#E5567F,#ff88a8);
+    color:#fff; font-weight:800; font-size:17px; padding:16px; border-radius:16px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); margin-top:8px; }
+  .sv-startbtn:active{ transform:scale(.98); }
+
+  .sv-progress{ text-align:center; color:var(--soft); font-weight:800; font-size:13px; letter-spacing:.5px;
+    text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .sv-typebadge{ background:var(--peach); color:var(--coral-d); border-radius:8px; padding:2px 8px; font-size:13px; }
+  .sv-cyclelabel{ text-align:center; color:var(--coral-d); font-weight:800; font-size:12px; margin-bottom:10px; }
+
+  /* -------- shared text-size hierarchy (Type A / B / C / reveals) --------
+     Romanized = BIGGEST + blue (var(--kara))
+     English   = medium
+     Thai      = smallest
+     Students read romanization first, English for meaning; Thai script is
+     just visual pattern recognition, so it stays smallest throughout. */
+  .sv-rom{ font-size:27px; font-weight:900; color:var(--kara); line-height:1.28; }
+  .sv-en{ font-size:16px; font-weight:700; color:var(--ink); margin-top:6px; line-height:1.4; }
+  .sv-thai{ font-family:var(--thai); font-size:13.5px; color:var(--soft); margin-top:4px; }
+
+  .sv-card{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:26px 18px;
+    text-align:center; margin-bottom:16px; }
+  .sv-icon{ font-size:52px; line-height:1.15; margin-bottom:8px; }
+
+  .sv-choices{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .sv-choice{ appearance:none; border:none; cursor:pointer; border-radius:18px; padding:18px 10px;
+    background:var(--white); box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .1s, box-shadow .15s; }
+  .sv-choice:active{ transform:scale(.96); }
+  .sv-choice .sv-crom{ display:block; font-size:19px; font-weight:900; color:var(--kara); }
+  .sv-choice .sv-cth{ display:block; font-family:var(--thai); font-size:12.5px; color:var(--soft); margin-top:4px; }
+  .sv-choice.sv-picked{ background:linear-gradient(135deg,#5ec9a0,#4ab88f); box-shadow:0 6px 18px rgba(94,201,160,.4); }
+  .sv-choice.sv-picked .sv-crom, .sv-choice.sv-picked .sv-cth{ color:#fff; }
+  .sv-choice.sv-wrong-pick{ background:linear-gradient(135deg,#e0556b,#ef7e8f); box-shadow:0 6px 18px rgba(224,85,107,.35); }
+  .sv-choice.sv-wrong-pick .sv-crom, .sv-choice.sv-wrong-pick .sv-cth{ color:#fff; }
+  .sv-choice.sv-dim{ opacity:.4; }
+  .sv-choice.sv-correct-reveal{ background:linear-gradient(135deg,#5ec9a0,#4ab88f); box-shadow:0 6px 18px rgba(94,201,160,.4); }
+  .sv-choice.sv-correct-reveal .sv-crom, .sv-choice.sv-correct-reveal .sv-cth{ color:#fff; }
+  .sv-choice.sv-missed{ background:linear-gradient(135deg,#ffb23e,#ffcf7d); box-shadow:0 6px 18px rgba(255,178,62,.35); }
+  .sv-choice.sv-missed .sv-crom, .sv-choice.sv-missed .sv-cth{ color:#5a3d00; }
+
+  .sv-feedback{ text-align:center; font-weight:800; font-size:15px; margin-top:14px; min-height:22px; color:var(--soft); }
+  .sv-feedback.sv-fb-good{ color:#2f9e59; }
+  .sv-feedback.sv-fb-miss{ color:#e0556b; }
+
+  .sv-nextbtn{ width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d));
+    color:#fff; font-weight:800; font-size:16px; padding:14px; border-radius:14px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); margin-top:10px; }
+  .sv-nextbtn:active{ transform:scale(.98); }
+
+  /* -------- Type B: situation card -------- */
+  .sv-situation{ font-size:17px; font-weight:800; color:var(--ink); line-height:1.4; margin-top:6px; }
+  .sv-speaklabel{ text-align:center; color:var(--soft); font-weight:800; font-size:12.5px;
+    letter-spacing:.3px; margin:2px 0 8px; }
+
+  /* -------- Type C: build-the-sentence -------- */
+  .sv-en-prompt{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-sm); padding:20px 16px;
+    text-align:center; font-size:18px; font-weight:800; color:var(--ink); margin:10px 0 16px; }
+  .sv-answerrow{ min-height:56px; background:var(--bg); border:2px dashed #d8cfc2; border-radius:16px;
+    padding:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin-bottom:14px; }
+  .sv-answerrow:empty::before{ content:"Tap words below, in order →"; color:var(--soft); font-size:13px; font-weight:700; }
+  .sv-chip-placed{ appearance:none; cursor:pointer; border:none; background:linear-gradient(135deg,var(--teal),var(--teal-d));
+    color:#fff; border-radius:12px; padding:9px 14px; font-family:var(--sans); display:flex; flex-direction:column;
+    align-items:center; line-height:1.25; }
+  .sv-chip-placed b{ font-size:16px; }
+  .sv-chip-placed small{ font-family:var(--thai); font-weight:600; font-size:11px; opacity:.9; margin-top:1px; }
+  .sv-bank{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; }
+  .sv-chip{ appearance:none; cursor:pointer; border:none; background:var(--white); box-shadow:var(--shadow-sm);
+    border-radius:14px; padding:12px 16px; font-family:var(--sans); display:flex; flex-direction:column;
+    align-items:center; line-height:1.25; transition:transform .1s, opacity .15s; }
+  .sv-chip b{ font-size:16px; color:var(--kara); }
+  .sv-chip small{ font-family:var(--thai); font-size:11.5px; color:var(--soft); font-weight:600; margin-top:2px; }
+  .sv-chip:active{ transform:scale(.94); }
+  .sv-chip.sv-used{ opacity:0; pointer-events:none; }
+  .sv-checkbtn{ width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,#E5567F,#ff88a8);
+    color:#fff; font-weight:800; font-size:16px; padding:14px; border-radius:14px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); margin-bottom:8px; }
+  .sv-checkbtn:active{ transform:scale(.98); }
+  .sv-hintbtn{ width:100%; border:none; cursor:pointer; background:transparent; color:var(--gold-d); font-weight:800;
+    font-size:13.5px; padding:8px; font-family:var(--sans); display:none; }
+  .sv-hinttext{ text-align:center; color:var(--gold-d); font-weight:700; font-size:13.5px; margin:-4px 0 10px; display:none; }
+  .sv-c-correct-line{ text-align:center; margin:10px 0 4px; }
+  .sv-c-correct-line .sv-rom{ font-size:22px; }
+
+  /* ================= SENTENCE BUILDER ================= */
+  .sb-topiclabel{ text-align:center; color:var(--coral-d); font-weight:800; font-size:12.5px;
+    text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px; }
+  .sb-prompt{ background:var(--white); border-radius:18px; box-shadow:var(--shadow-sm); padding:20px 16px;
+    text-align:center; font-size:19px; font-weight:800; color:var(--ink); margin:10px 0 16px; }
+  .sb-answerrow{ min-height:56px; background:var(--bg); border:2px dashed #d8cfc2; border-radius:16px;
+    padding:10px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin-bottom:16px; }
+  .sb-answerrow:empty::before{ content:"Tap the words below in order →"; color:var(--soft); font-size:13.5px; font-weight:700; }
+  .sb-chip-placed{ background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff; border-radius:12px;
+    padding:11px 16px; font-weight:800; font-size:17px; display:flex; align-items:center; justify-content:center; line-height:1.25; }
+  .sb-bank{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:14px; }
+  .sb-chip{ appearance:none; cursor:pointer; border:none; background:var(--white); box-shadow:var(--shadow-sm);
+    border-radius:14px; padding:13px 18px; font-family:var(--sans); display:flex; align-items:center;
+    justify-content:center; line-height:1.25; transition:transform .1s, opacity .15s; }
+  .sb-chip b{ font-size:18px; color:var(--kara); }
+  .sb-chip:active{ transform:scale(.94); }
+  .sb-chip.sb-used{ opacity:0; pointer-events:none; }
+  .sb-actions{ text-align:center; margin-bottom:10px; }
+  .sb-resetbtn{ border:none; cursor:pointer; background:transparent; color:var(--soft); font-weight:800;
+    font-size:13.5px; padding:8px 14px; font-family:var(--sans); }
+  .sb-feedback{ text-align:center; font-weight:800; font-size:15.5px; min-height:24px; margin-bottom:10px; }
+  .sb-feedback.sb-fb-good{ color:#2f9e59; }
+  .sb-feedback.sb-fb-bad{ color:#e0556b; }
+  .sb-correctline{ text-align:center; font-size:14px; color:var(--soft); margin:-4px 0 12px; }
+  .sb-correctline b{ color:var(--ink); }
+
+  .sv-resultcard{ background:var(--white); border-radius:22px; box-shadow:var(--shadow); padding:30px 20px; text-align:center; }
+  .sv-resultcard .em{ font-size:52px; }
+  .sv-resultcard h2{ margin:8px 0 4px; font-size:22px; color:var(--ink); }
+  .sv-statrow{ display:flex; justify-content:center; gap:22px; margin:18px 0; }
+  .sv-stat{ text-align:center; }
+  .sv-stat .n{ font-size:30px; font-weight:900; color:var(--ink); display:block; }
+  .sv-stat .l{ font-size:11.5px; color:var(--soft); font-weight:800; text-transform:uppercase; letter-spacing:.4px; }
+  .sv-resultcard p{ color:var(--soft); font-size:14.5px; margin:0 0 16px; }
+  .sv-continuebtn{ width:100%; border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d));
+    color:#fff; font-weight:800; font-size:16px; padding:15px; border-radius:15px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); }
+  .sv-continuebtn:active{ transform:scale(.98); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= HUB ================= -->
+  <section id="hub">
+    <div class="home-head">
+      <div class="flag">🇹🇭</div>
+      <h1>Thai with Palm</h1>
+      <p>Practice anytime · read, guess, remember</p>
+    </div>
+    <div class="hubbtns">
+      <button class="hubbtn hb1" id="hbWordGames" data-go="pghome">
+        <span class="emo">🎮</span>
+        <span><b>Word Games</b><small>Practice, then play — pictures &amp; meaning matched</small></span>
+      </button>
+      <button class="hubbtn hb2" data-go="home">
+        <span class="emo">🔔</span>
+        <span><b>Tone Test</b><small>Same sound, different tone</small></span>
+      </button>
+      <button class="hubbtn hb3" id="hbSentences" data-go="pghome">
+        <span class="emo">📝</span>
+        <span><b>Sentences Practice</b><small>Real sentences, expressions &amp; the 7-Eleven Challenge</small></span>
+      </button>
+    </div>
+    <div class="foot">Practise a little every day 🌟<br>Thai with Palm 💬</div>
+  </section>
+
+  <!-- ================= 7-ELEVEN · INTRO ================= -->
+  <section id="sevenintro" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="pghome">←</button>
+      <div class="hubtitle">🏪 7-Eleven Challenge</div>
+    </div>
+    <div class="sv-intro-card">
+      <h2>🥪 Recognize → Choose → Produce</h2>
+      <p>Three mixed question types, randomly shuffled — you won't know which one comes next. No timer — take all the time you need.</p>
+      <div class="sv-eg sv-eg-row">
+        <div><b>⚡ Type A</b><br><span>Staff asks — you react.</span></div>
+        <div><b>🎯 Type B</b><br><span>A situation — pick what to say.</span></div>
+        <div><b>🧩 Type C</b><br><span>Build the sentence yourself.</span></div>
+      </div>
+      <p>Wrong answers come back for review until you get every one right.</p>
+    </div>
+    <button class="sv-startbtn" id="svStartBtn">Start the Challenge →</button>
+  </section>
+
+  <!-- ================= 7-ELEVEN · GAME ================= -->
+  <section id="sevengame" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="pghome">←</button>
+      <div class="hubtitle">🏪 7-Eleven Challenge</div>
+    </div>
+    <div class="sv-progress" id="svProgress">Round 1 of 16 <span id="svTypeBadge" class="sv-typebadge">⚡</span></div>
+    <div class="sv-cyclelabel" id="svCycleLabel" style="display:none;"></div>
+    <div id="svMount"></div>
+  </section>
+
+  <!-- ================= 7-ELEVEN · ROUND RESULT ================= -->
+  <section id="sevenroundresult" class="hidden">
+    <div class="sv-resultcard">
+      <div class="em">⚡</div>
+      <h2 id="svrTitle">Round complete!</h2>
+      <div class="sv-statrow">
+        <div class="sv-stat"><span class="n" id="svrGood">4</span><span class="l">Correct</span></div>
+        <div class="sv-stat"><span class="n" id="svrMissed">2</span><span class="l">Need Review</span></div>
+      </div>
+      <p id="svrMsg">Let's try those missed ones again — you've got this!</p>
+      <button class="sv-continuebtn" id="svrContinueBtn">Continue →</button>
+    </div>
+  </section>
+
+  <!-- ================= 7-ELEVEN · COMPLETE ================= -->
+  <section id="sevencomplete" class="hidden">
+    <div class="sv-resultcard">
+      <div class="em">🎉</div>
+      <h2>7-Eleven Challenge Complete!</h2>
+      <p>You got every question right. Nice work — that's exactly the real-life Thai you'll use in the store!</p>
+      <button class="sv-continuebtn" id="svAgainBtn">Play again</button>
+    </div>
+  </section>
+
+
+  <!-- ================= PICTURE GAME · HOME ================= -->
+  <section id="pghome" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="hub">←</button>
+      <div class="hubtitle" id="pgHomeTitle">🎮 Word Games</div>
+    </div>
+    <div class="modes">
+      <button class="pgmodebtn active" data-pgmode="practice">📚 Practice</button>
+      <button class="pgmodebtn" data-pgmode="mix">🎮 Play the game</button>
+      <button class="pgmodebtn" data-pgmode="build" id="pgBuildModeBtn" style="display:none;">🧩 Build it</button>
+    </div>
+    <div class="choose" id="pgHint">Learn first — picture, pronunciation and meaning. No pressure.</div>
+    <div class="setbtns" id="pgsets"></div>
+    <div class="foot" id="pgHomeFoot">Read the meaning shown, then pick the matching Thai phrase.</div>
+  </section>
+
+  <!-- ================= SENTENCE BUILDER ================= -->
+  <section id="sentbuilder" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="pghome">←</button>
+      <div class="hubtitle">🧩 Build the Sentence</div>
+    </div>
+    <div class="sb-topiclabel" id="sbTopicLabel">🧩 Sentences</div>
+    <div class="sv-progress" id="sbProgress">Sentence 1 of 13</div>
+    <div class="sb-prompt" id="sbPrompt">What's your name?</div>
+
+    <div class="sb-answerrow" id="sbAnswerRow"></div>
+
+    <div class="sb-bank" id="sbBank"></div>
+
+    <div class="sb-actions">
+      <button class="sb-resetbtn" id="sbResetBtn">↺ Reset</button>
+    </div>
+
+    <div class="sb-feedback" id="sbFeedback"></div>
+    <button class="sv-nextbtn" id="sbNextBtn" style="display:none;">Next →</button>
+  </section>
+
+  <!-- ================= SENTENCE BUILDER · RESULT ================= -->
+  <section id="sentbuilderresult" class="hidden">
+    <div class="sv-resultcard">
+      <div class="em">🧩</div>
+      <h2>Sentence Builder Complete!</h2>
+      <div class="sv-statrow">
+        <div class="sv-stat"><span class="n" id="sbrGood">10</span><span class="l">Got it first try</span></div>
+        <div class="sv-stat"><span class="n" id="sbrRetry">3</span><span class="l">Needed a retry</span></div>
+      </div>
+      <p>Nicely done putting those sentences together!</p>
+      <button class="sv-continuebtn" data-go="pghome">Back to Sentences Practice</button>
+    </div>
+  </section>
+
+  <!-- ================= PICTURE GAME · PRACTICE ================= -->
+  <section id="pgpractice" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="pghome">←</button>
+      <div class="progwrap"><div class="progbar" id="ppProg"></div></div>
+      <div class="qcount" id="ppCount">1 / 6</div>
+    </div>
+    <div class="wordcard card" style="padding-bottom:18px">
+      <div class="qtag" id="ppTag">PRACTICE</div>
+      <div class="pic" id="ppPic">👋</div>
+      <div class="ppthai" id="ppThai">สวัสดี</div>
+      <div class="pprom" id="ppRom">sà-wàt-dee</div>
+      <div class="ppen" id="ppEn">hello</div>
+    </div>
+    <div class="pnav">
+      <button class="pprev" id="ppPrev">← Prev</button>
+      <button class="pnext" id="ppNext">Next →</button>
+    </div>
+  </section>
+
+  <!-- ================= WORD GAME · PLAY (picture / listening / mix) ================= -->
+  <section id="pgame" class="hidden">
+    <div class="topbar">
+      <button class="back" data-go="pghome">←</button>
+      <div class="progwrap"><div class="progbar" id="pgProg"></div></div>
+      <div class="qcount" id="pgCount">1 / 8</div>
+    </div>
+    <div class="kicker2" id="pgKicker">Look at the picture — which word is it?</div>
+    <div class="piccard">
+      <div class="pic-big" id="pgPic">👋</div>
+      <div class="meaning-big" id="pgMeaning" style="display:none;"></div>
+    </div>
+    <div class="choices" id="pgChoices"></div>
+    <div id="pgReveal"></div>
+  </section>
+
+  <!-- ================= PICTURE GAME · RESULT ================= -->
+  <section id="pgresult" class="hidden">
+    <div class="result card">
+      <div class="em" id="pgrEmoji">🌟</div>
+      <h2 id="pgrTitle">Great job!</h2>
+      <div class="scorebig"><span id="pgrScore">0</span><small>/<span id="pgrTotal">8</span></small></div>
+      <div class="stars" id="pgrStars">★★★☆☆</div>
+      <div class="rmsg" id="pgrMsg"></div>
+      <div class="ractions">
+        <button class="again" id="pgrAgain">Play again</button>
+        <button class="change" data-go="pghome">Change set</button>
+      </div>
+    </div>
+    <div class="fb-card" id="fbWordGame">
+      <div class="fb-title">How was this game? 💬</div>
+      <div class="fb-emoji-row" data-fb="pgrating">
+        <button data-v="😕" title="Confusing">😕</button>
+        <button data-v="😐" title="Okay">😐</button>
+        <button data-v="🙂" title="Good">🙂</button>
+        <button data-v="😊" title="Great">😊</button>
+        <button data-v="🤩" title="Amazing">🤩</button>
+      </div>
+      <textarea class="fb-text" id="pgFbText" placeholder="Any suggestion? Too easy? Too hard? Tell Teacher Palm…" rows="2"></textarea>
+      <button class="fb-send" id="pgFbSend">Send feedback ✉️</button>
+      <div id="pgFbStatus"></div>
+    </div>
+  </section>
+
+  <!-- ================= HOME ================= -->
+  <section id="home" class="hidden">
+    <div class="topbar"><button class="back" data-go="hub">←</button><div class="hubtitle">🔔 Tone Test</div></div>
+    <div class="home-head">
+      <div class="flag">🇹🇭</div>
+      <h1>Thai Tone Test</h1>
+      <p>Same sound, different tone</p>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="modes">
+      <button class="modebtn active" data-mode="practice">📚 Practice</button>
+      <button class="modebtn" data-mode="test">📝 Test</button>
+    </div>
+    <div class="choose" id="modeHint">Flip through the words — no pressure. Look, listen, repeat.</div>
+    <div class="setbtns" id="setbtns"></div>
+    <div class="foot">Watch how each tone's pitch rises or falls.<br>Same sound, different tone · Thai with Palm 💬</div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quiz" class="hidden">
+    <div class="topbar">
+      <button class="back" id="backBtn" title="Back">←</button>
+      <div class="progwrap"><div class="progbar" id="progbar"></div></div>
+      <div class="qcount" id="qcount">1 / 5</div>
+    </div>
+    <div class="wordcard card">
+      <div class="qtag" id="setTag">SET 1 · MAI</div>
+      <div class="thai" id="wThai">ไม</div>
+      <div class="rom" id="wRom">mai</div>
+      <div class="ask">Which tone is this? <span id="scoreInline" style="color:var(--soft);font-weight:800;"></span></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div id="revealSlot"></div>
+  </section>
+
+  <!-- ================= PRACTICE ================= -->
+  <section id="practice" class="hidden">
+    <div class="topbar">
+      <button class="back" id="pBack" title="Back">←</button>
+      <div class="progwrap"><div class="progbar" id="pProg"></div></div>
+      <div class="qcount" id="pCount">1 / 5</div>
+    </div>
+    <div class="wordcard card" style="padding-bottom:18px">
+      <div class="qtag" id="pTag">PRACTICE · MAI</div>
+      <div class="thai" id="pThai">ไม</div>
+      <div class="rom" id="pRom">mai</div>
+      <div id="pToneWrap" style="margin:9px 0 3px;"></div>
+      <div class="pmean" id="pMean"></div>
+      <div id="pExample"></div>
+      <div id="pContour" style="display:flex;justify-content:center;margin-top:8px;"></div>
+    </div>
+    <div class="pnav">
+      <button class="pprev" id="pPrev">← Prev</button>
+      <button class="pnext" id="pNext">Next →</button>
+    </div>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="result" class="hidden">
+    <div class="result card">
+      <div class="em" id="rEmoji">🌟</div>
+      <h2 id="rTitle">Great job!</h2>
+      <div class="scorebig"><span id="rScore">0</span><small>/<span id="rTotal">5</span></small></div>
+      <div class="stars" id="rStars">★★★☆☆</div>
+      <div class="rmsg" id="rMsg"></div>
+      <div class="ractions">
+        <button class="again" id="againBtn">Try again</button>
+        <button class="change" id="changeBtn">Change set</button>
+      </div>
+    </div>
+    <div class="fb-card" id="fbToneTest">
+      <div class="fb-title">How was this test? 🔔</div>
+      <div class="fb-emoji-row" data-fb="tonerating">
+        <button data-v="😕" title="Confusing">😕</button>
+        <button data-v="😐" title="Okay">😐</button>
+        <button data-v="🙂" title="Good">🙂</button>
+        <button data-v="😊" title="Great">😊</button>
+        <button data-v="🤩" title="Amazing">🤩</button>
+      </div>
+      <textarea class="fb-text" id="toneFbText" placeholder="Which tones are hardest? Any ideas for Teacher Palm…" rows="2"></textarea>
+      <button class="fb-send" id="toneFbSend">Send feedback ✉️</button>
+      <div id="toneFbStatus"></div>
+    </div>
+  </section>
+
+</div>
+<!-- floating feedback widget -->
+<div class="fb-float-wrap" id="fbFloatWrap">
+  <div class="fb-bubble" id="fbBubble">
+    <button class="fb-bub-close" id="fbBubClose">✕</button>
+    <span class="fb-bub-emoji">💡</span>
+    Found a bug? Have an idea?<br>Tell Teacher Palm!
+  </div>
+  <button class="fb-float" id="fbFloatBtn" title="Send feedback">💬</button>
+</div>
+
+<!-- feedback modal overlay -->
+<div class="fb-overlay hidden" id="fbOverlay">
+  <div class="fb-modal">
+    <button class="fb-close" id="fbClose">✕</button>
+    <div class="fb-head">Send a message to Teacher Palm 💬</div>
+    <div class="fb-sub">Ideas, bugs, words you'd like to learn — anything helps!</div>
+    <div class="fb-emoji-row" data-fb="generalrating">
+      <button data-v="😕">😕</button>
+      <button data-v="😐">😐</button>
+      <button data-v="🙂">🙂</button>
+      <button data-v="😊">😊</button>
+      <button data-v="🤩">🤩</button>
+    </div>
+    <textarea class="fb-text" id="genFbText" placeholder="What's on your mind?" rows="3"></textarea>
+    <button class="fb-send" id="genFbSend">Send ✉️</button>
+    <div id="genFbStatus"></div>
+  </div>
+</div>
+
+<div id="confetti"></div>
+
+<script>
+/* ---------------- tone model ---------------- */
+const TONES = {
+  mid:    {name:"Mid",     color:"#9AA0A6", path:"M6,30 C 30,31 70,31 94,32",   freqs:[220,220,216,214]},
+  low:    {name:"Low",     color:"#12A79E", path:"M6,35 C 30,40 70,45 94,50",   freqs:[200,196,189,182]},
+  falling:{name:"Falling", color:"#F0972A", path:"M6,20 C 26,12 44,15 94,50",   freqs:[268,258,220,165]},
+  high:   {name:"High",    color:"#FF6B5C", path:"M6,44 C 42,44 66,22 94,11",   freqs:[210,214,255,300]},
+  rising: {name:"Rising",  color:"#7C5CBF", path:"M6,33 C 30,50 56,50 94,15",   freqs:[212,190,205,282]},
+};
+const ORDER = ["mid","low","falling","high","rising"];
+
+/* ---------------- questions ---------------- */
+const SETS = {
+  mai: [
+    {thai:"ไม",   rom:"mai", tone:"mid",     mean:"why (as in ทำไม)", example:{thai:"ทำไม", rom:"tham-mai", mean:"why"}},
+    {thai:"ใหม่", rom:"mài", tone:"low",     mean:"new"},
+    {thai:"ไม่",  rom:"mâi", tone:"falling", mean:"no / not"},
+    {thai:"ไม้",  rom:"mái", tone:"high",    mean:"wood"},
+    {thai:"ไหม",  rom:"mǎi", tone:"rising",  mean:"question particle / silk"},
+  ],
+  kha: [
+    {thai:"คา",  rom:"khaa", tone:"mid",     mean:"to remain stuck"},
+    {thai:"ขา",  rom:"khǎa", tone:"rising",  mean:"leg"},
+    {thai:"ค่า", rom:"khâa", tone:"falling", mean:"value / fee"},
+    {thai:"คะ",  rom:"khá",  tone:"high",    mean:"women's polite particle (questions)"},
+    {thai:"ค่ะ", rom:"khâ",  tone:"falling", mean:"women's polite particle (statements)"},
+  ],
+  kham: [
+    {thai:"คำ",   rom:"kham", tone:"mid",     mean:"word"},
+    {thai:"ค่ำ",  rom:"khàm", tone:"low",     mean:"evening"},
+    {thai:"ข้าม", rom:"khâm", tone:"falling", mean:"to cross"},
+    {thai:"ค้ำ",  rom:"khám", tone:"high",    mean:"to support"},
+    {thai:"ขำ",   rom:"khǎm", tone:"rising",  mean:"funny / amused"},
+  ],
+  paa: [
+    {thai:"ปา",  rom:"paa", tone:"mid",     mean:"to throw"},
+    {thai:"ป่า", rom:"pàa", tone:"low",     mean:"forest"},
+    {thai:"ป้า", rom:"pâa", tone:"falling", mean:"aunt (older than your parent)"},
+    {thai:"ป๊า", rom:"páa", tone:"high",    mean:"dad (Chinese families, informal)"},
+    {thai:"ป๋า", rom:"pǎa", tone:"rising",  mean:"dad / boss / wealthy older man"},
+  ],
+};
+const ALLWORDS = [].concat(SETS.mai, SETS.kha, SETS.kham, SETS.paa);
+const SETLABEL = { mai:"SET 1 · MAI", kha:"SET 2 · KHA", kham:"SET 3 · KHAM", paa:"SET 4 · PAA", mix:"MIXED CHALLENGE" };
+const SETMETA = [
+  {key:"mai",  emo:"🌊", title:"Set 1 · “Mai”",  words:"ไม · ใหม่ · ไม่ · ไม้ · ไหม", cls:"mai"},
+  {key:"kha",  emo:"🦵", title:"Set 2 · “Kha”",  words:"คา · ขา · ค่า · คะ · ค่ะ",   cls:"kha"},
+  {key:"kham", emo:"🌆", title:"Set 3 · “Kham”", words:"คำ · ค่ำ · ข้าม · ค้ำ · ขำ", cls:"kham"},
+  {key:"paa",  emo:"👨‍👧", title:"Set 4 · “Paa”",  words:"ปา · ป่า · ป้า · ป๊า · ป๋า", cls:"paa"},
+  {key:"mix",  emo:"🎯", title:"Mixed Challenge", words:"All sets · 10 random words", cls:"mix"},
+];
+
+/* ---------------- svg helpers ---------------- */
+function contourSVG(tone, withDot){
+  const t = TONES[tone];
+  const dot = withDot ? `<circle class="tracer" r="4.5" fill="${t.color}" cx="6" cy="30"></circle>` : "";
+  return `<svg viewBox="0 0 100 60" preserveAspectRatio="xMidYMid meet">
+    <line x1="6" y1="52" x2="94" y2="52" stroke="#e7ddd4" stroke-width="1.5"/>
+    <path d="${t.path}" fill="none" stroke="${t.color}" stroke-width="5" stroke-linecap="round"/>
+    ${dot}</svg>`;
+}
+function animateTracer(svg, dur=1400, loop=false){
+  const path = svg.querySelector("path");
+  const dot  = svg.querySelector(".tracer");
+  if(!path || !dot) return;
+  const len = path.getTotalLength();
+  let start=null;
+  function step(ts){
+    if(start===null) start=ts;
+    let p=(ts-start)/dur;
+    if(p>1){ if(loop){ start=ts; p=0; } else { p=1; } }
+    const pt=path.getPointAtLength(len*p);
+    dot.setAttribute("cx",pt.x); dot.setAttribute("cy",pt.y);
+    if(p<1||loop) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---------------- audio (pitch glide) ---------------- */
+let AC=null;
+function playTone(tone){
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==="suspended") AC.resume();
+    const t=TONES[tone], now=AC.currentTime, dur=0.75;
+    const osc=AC.createOscillator(), g=AC.createGain();
+    osc.type="sine";
+    osc.frequency.setValueCurveAtTime(new Float32Array(t.freqs), now, dur);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.22, now+0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+dur+0.05);
+    osc.connect(g).connect(AC.destination);
+    osc.start(now); osc.stop(now+dur+0.08);
+  }catch(e){/* audio not available */}
+}
+
+function exampleHTML(ex){
+  return `<div class="example"><span class="ex-label">also</span>`+
+    `<b class="ex-thai">${ex.thai}</b>`+
+    `<span class="ex-rom">${ex.rom}</span>`+
+    `<span class="ex-mean">= ${ex.mean}</span></div>`;
+}
+
+/* ---------------- confetti ---------------- */
+const COLORS=["#FF6B5C","#12A79E","#FFB23E","#7C5CBF","#37b26b","#0000C5"];
+function confetti(n=26, big=false){
+  const host=document.getElementById("confetti");
+  for(let i=0;i<n;i++){
+    const c=document.createElement("div"); c.className="conf";
+    c.style.background=COLORS[i%COLORS.length];
+    const x=50+(Math.random()*40-20), y=big?30:42;
+    c.style.left=x+"%"; c.style.top=y+"%";
+    host.appendChild(c);
+    const dx=(Math.random()*2-1)*(big?260:170);
+    const dy=-(120+Math.random()*(big?320:200));
+    const rot=(Math.random()*720-360);
+    const dur=800+Math.random()*700;
+    c.animate([
+      {transform:`translate(0,0) rotate(0deg)`, opacity:1},
+      {transform:`translate(${dx}px,${dy}px) rotate(${rot}deg)`, opacity:1, offset:.7},
+      {transform:`translate(${dx*1.1}px,${dy+320}px) rotate(${rot*1.4}deg)`, opacity:0}
+    ],{duration:dur, easing:"cubic-bezier(.2,.6,.3,1)"}).onfinish=()=>c.remove();
+  }
+}
+
+/* ---------------- quiz state ---------------- */
+let queue=[], idx=0, score=0, curSet="mai", answered=false;
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function buildLegend(){
+  const host=document.getElementById("legend");
+  host.innerHTML="";
+  ORDER.forEach(tn=>{
+    const d=document.createElement("div"); d.className="leg";
+    d.innerHTML=contourSVG(tn,true)+`<span style="color:${TONES[tn].color}">${TONES[tn].name}</span>`;
+    d.onclick=()=>{ const s=d.querySelector("svg"); s.querySelector(".tracer")&&animateTracer(s,900,false); };
+    host.appendChild(d);
+    animateTracer(d.querySelector("svg"), 1500, true);
+  });
+}
+
+function startSet(set){
+  curSet=set;
+  const base = set==="mix" ? shuffle(ALLWORDS).slice(0,10) : SETS[set];
+  queue=shuffle(base); idx=0; score=0;
+  show("quiz");
+  renderQ();
+}
+
+function renderQ(){
+  answered=false;
+  const q=queue[idx];
+  document.getElementById("setTag").textContent=SETLABEL[curSet];
+  document.getElementById("wThai").textContent=q.thai;
+  document.getElementById("wRom").textContent=q.rom;
+  document.getElementById("qcount").textContent=(idx+1)+" / "+queue.length;
+  document.getElementById("scoreInline").textContent="";
+  document.getElementById("progbar").style.width=((idx)/queue.length*100)+"%";
+  document.getElementById("revealSlot").innerHTML="";
+  const opts=document.getElementById("opts"); opts.innerHTML="";
+  ORDER.forEach(tn=>{
+    const b=document.createElement("button"); b.className="opt"; b.dataset.tone=tn;
+    b.innerHTML=contourSVG(tn,false)+`<b style="color:${TONES[tn].color}">${TONES[tn].name}</b>`;
+    b.onclick=()=>choose(tn,b);
+    opts.appendChild(b);
+  });
+}
+
+function choose(tone, btn){
+  if(answered) return;
+  answered=true;
+  const q=queue[idx];
+  const correct = tone===q.tone;
+  const optEls=[...document.querySelectorAll(".opt")];
+  optEls.forEach(el=>{
+    const t=el.dataset.tone;
+    if(t===q.tone) el.classList.add("correct");
+    else if(t===tone) el.classList.add("wrong");
+    else el.classList.add("dim");
+    el.style.pointerEvents="none";
+  });
+  if(correct){ score++; confetti(20); }
+  document.getElementById("scoreInline").textContent="· "+score+" correct";
+  document.getElementById("progbar").style.width=((idx+1)/queue.length*100)+"%";
+  showReveal(correct, q);
+}
+
+function showReveal(correct, q){
+  const t=TONES[q.tone];
+  const slot=document.getElementById("revealSlot");
+  slot.innerHTML=`
+    <div class="reveal">
+      <div class="verdict" style="color:${correct?'#2f9e59':'#e0556b'}">
+        ${correct?'✓ Correct!':'✗ Not quite'}
+      </div>
+      <div class="tonebig">
+        ${contourSVG(q.tone,true)}
+        <div style="text-align:left">
+          <div class="pill" style="background:${t.color}">${t.name} tone</div>
+        </div>
+      </div>
+      <div class="mean"><span class="kara" style="font-size:20px">${q.rom}</span> &nbsp;·&nbsp; <b>${q.thai}</b> = ${q.mean}</div>
+      ${q.example?exampleHTML(q.example):""}
+      <button class="nextbtn" id="nextBtn">${idx+1<queue.length?'Next →':'See results'}</button>
+    </div>`;
+  const svg=slot.querySelector(".reveal svg");
+  setTimeout(()=>{ animateTracer(svg,1300,false);
+    slot.querySelector(".reveal").scrollIntoView({behavior:"smooth", block:"center"}); }, 180);
+  document.getElementById("nextBtn").onclick=next;
+}
+
+function next(){
+  idx++;
+  if(idx<queue.length){ renderQ(); }
+  else finish();
+}
+
+function finish(){
+  show("result");
+  const total=queue.length, pct=score/total;
+  document.getElementById("rScore").textContent=score;
+  document.getElementById("rTotal").textContent=total;
+  const stars = pct>=1?5 : pct>=.8?4 : pct>=.6?3 : pct>=.4?2 : 1;
+  document.getElementById("rStars").innerHTML =
+    '<span style="color:var(--gold)">'+'★'.repeat(stars)+'</span>'+
+    '<span style="color:#e7ddd4">'+'☆'.repeat(5-stars)+'</span>';
+  let em="🌱", title="Keep practising!", th="สู้ๆ นะ", rom="sûu sûu ná", en="You'll get there — try again!";
+  if(pct>=1){ em="🏆"; title="Perfect!"; th="เก่งมาก"; rom="gèng mâak"; en="Flawless tones!"; }
+  else if(pct>=.8){ em="🌟"; title="Great job!"; th="เยี่ยมมาก"; rom="yîam mâak"; en="Almost perfect!"; }
+  else if(pct>=.6){ em="😊"; title="Nice work!"; th="ดีมาก"; rom="dii mâak"; en="Good progress!"; }
+  else if(pct>=.4){ em="💪"; title="Getting there!"; th="พยายามอีกนิด"; rom="phá-yaa-yaam ìik nít"; en="A little more practice!"; }
+  document.getElementById("rEmoji").textContent=em;
+  document.getElementById("rTitle").textContent=title;
+  document.getElementById("rMsg").innerHTML='<span class="th">'+th+'</span> · <span class="rm">'+rom+'</span><br>'+en;
+  if(pct>=.8){ confetti(40,true); setTimeout(()=>confetti(30,true),300); }
+}
+
+/* ---------------- practice + mode ---------------- */
+let mode="practice";
+let pList=[], pIdx=0, pSetKey="mai";
+
+function show(id){
+  try{ if("speechSynthesis" in window) window.speechSynthesis.cancel(); }catch(e){}
+  if(id!=="sevengame" && typeof svClearTimers==="function") svClearTimers();
+  ["hub","home","quiz","practice","result","pghome","pgpractice","pgame","pgresult",
+   "sevenintro","sevengame","sevenroundresult","sevencomplete",
+   "sentbuilder","sentbuilderresult"].forEach(s=>document.getElementById(s).classList.toggle("hidden", s!==id));
+  window.scrollTo(0,0);
+}
+
+function renderSetButtons(){
+  const host=document.getElementById("setbtns"); host.innerHTML="";
+  SETMETA.forEach(m=>{
+    const b=document.createElement("button");
+    b.className="setbtn "+m.cls; b.dataset.set=m.key;
+    b.innerHTML=`<span class="emo">${m.emo}</span><span><b>${m.title}</b><small>${m.words}</small></span>`;
+    b.onclick=()=>{ if(mode==="practice") startPractice(m.key); else startSet(m.key); };
+    host.appendChild(b);
+  });
+}
+document.querySelectorAll(".modebtn").forEach(mb=>{
+  mb.onclick=()=>{
+    mode=mb.dataset.mode;
+    document.querySelectorAll(".modebtn").forEach(x=>x.classList.toggle("active", x===mb));
+    document.getElementById("modeHint").textContent = mode==="practice"
+      ? "Flip through the words — no pressure. Look, listen, repeat."
+      : "Identify the correct tone for each word.";
+  };
+});
+
+function startPractice(set){
+  pSetKey=set;
+  pList = set==="mix" ? ALLWORDS.slice() : SETS[set].slice();
+  pIdx=0; show("practice"); renderPractice();
+}
+function renderPractice(){
+  const q=pList[pIdx], t=TONES[q.tone];
+  document.getElementById("pTag").textContent="PRACTICE · "+SETLABEL[pSetKey];
+  document.getElementById("pThai").textContent=q.thai;
+  document.getElementById("pRom").textContent=q.rom;
+  document.getElementById("pCount").textContent=(pIdx+1)+" / "+pList.length;
+  document.getElementById("pProg").style.width=((pIdx+1)/pList.length*100)+"%";
+  document.getElementById("pToneWrap").innerHTML=`<span class="pill" style="background:${t.color}">${t.name} tone</span>`;
+  document.getElementById("pMean").innerHTML="= "+q.mean;
+  const pex=document.getElementById("pExample");
+  pex.innerHTML = q.example ? exampleHTML(q.example) : "";
+  document.getElementById("pContour").innerHTML=contourSVG(q.tone,true);
+  const svg=document.getElementById("pContour").querySelector("svg");
+  const prev=document.getElementById("pPrev"), next=document.getElementById("pNext");
+  prev.disabled = pIdx===0;
+  if(pIdx===pList.length-1){ next.textContent="Take the test →"; next.classList.add("finish"); }
+  else { next.textContent="Next →"; next.classList.remove("finish"); }
+  setTimeout(()=>animateTracer(svg,1300,false),150);
+}
+document.getElementById("pPrev").onclick=()=>{ if(pIdx>0){ pIdx--; renderPractice(); } };
+document.getElementById("pNext").onclick=()=>{
+  if(pIdx<pList.length-1){ pIdx++; renderPractice(); }
+  else { startSet(pSetKey); }
+};
+document.getElementById("pBack").onclick=()=>show("home");
+
+/* ---------------- nav ---------------- */
+document.getElementById("backBtn").onclick=()=>show("home");
+document.getElementById("againBtn").onclick=()=>startSet(curSet);
+document.getElementById("changeBtn").onclick=()=>show("home");
+
+renderSetButtons();
+buildLegend();
+
+/* ==========================================================
+   PICTURE WORD GAME — every word & sentence from Word_games.pptx
+   (deduplicated: each word appears once only)
+   ========================================================== */
+const PG_SETS = {
+  greet: [
+    {th:"สวัสดี", rom:"sà-wàt-dee", en:"hello", pic:"👋"},
+    {th:"สบายดี", rom:"sabai dee", en:"fine, well", pic:"😊"},
+    {th:"ขอบคุณ", rom:"khòp khun", en:"thank you", pic:"🙏"},
+    {th:"คุณ", rom:"khun", en:"you", pic:"👤"},
+    {th:"ครับ", rom:"khráp", en:"polite particle (male)", pic:"👨"},
+    {th:"ค่ะ", rom:"khâ", en:"polite particle (female)", pic:"👩"},
+    {th:"นะครับ", rom:"ná khráp", en:"softening particle", pic:"💬"},
+  ],
+  quest: [
+    {th:"ไหม", rom:"mái", en:"yes/no question", pic:"❓"},
+    {th:"ล่ะ", rom:"lâ", en:"how about…?", pic:"🤔"},
+    {th:"อะไร", rom:"à-rai", en:"what", pic:"❔"},
+    {th:"วันนี้", rom:"wan níi", en:"today", pic:"📅"},
+    {th:"เมื่อวาน", rom:"mûea wan", en:"yesterday", pic:"⏪"},
+    {th:"พรุ่งนี้", rom:"phrûng-níi", en:"tomorrow", pic:"⏩"},
+    {th:"มี", rom:"mii", en:"to have", pic:"🤲"},
+    {th:"แผน", rom:"phǎen", en:"plan", pic:"📝"},
+    {th:"ทุกวัน", rom:"thúk wan", en:"every day", pic:"🔁"},
+    {th:"ยัง", rom:"yang", en:"yet / still", pic:"⏳"},
+    {th:"แล้ว", rom:"láew", en:"already", pic:"✅"},
+    {th:"ช่วงเช้า", rom:"Chûang cháao", en:"Around morning time", pic:"🌅"},
+    {th:"ช่วงเที่ยง", rom:"Chûang thîang", en:"Around noon time", pic:"☀️"},
+    {th:"ช่วงบ่าย", rom:"Chûang bàai", en:"Around afternoon time", pic:"🌤️"},
+    {th:"ช่วงเย็น", rom:"Chûang yen", en:"Around evening time", pic:"🌆"},
+    {th:"ช่วงค่ำ", rom:"Chûang khâm", en:"Around night time", pic:"🌙"},
+  ],
+  action: [
+    {th:"ไป", rom:"bpai", en:"to go", pic:"🚶"},
+    {th:"ดื่ม", rom:"dèum", en:"to drink", pic:"🥤"},
+    {th:"กาแฟ", rom:"gaa-fae", en:"coffee", pic:"☕"},
+    {th:"เพื่อน", rom:"phûean", en:"friend", pic:"👬"},
+    {th:"กิน", rom:"gin", en:"to eat", pic:"🍽️"},
+    {th:"ข้าว", rom:"khâao", en:"rice, food", pic:"🍚"},
+    {th:"เป็น", rom:"bpen", en:"is / am / are", pic:"🟰"},
+    {th:"กลับบ้าน", rom:"kràp bâan", en:"to go back home", pic:"🏠"},
+    {th:"ขอ", rom:"khǎw", en:"wish / to ask for", pic:"✨"},
+    {th:"ให้", rom:"hâi", en:"give", pic:"🎁"},
+  ],
+  feel: [
+    {th:"ดี", rom:"dii", en:"good", pic:"👍"},
+    {th:"สนุก", rom:"sà-nùk", en:"fun", pic:"🎉"},
+    {th:"อากาศ", rom:"aa-gàat", en:"weather", pic:"🌤️"},
+    {th:"ร้อน", rom:"róon", en:"hot", pic:"🔥"},
+    {th:"เย็น", rom:"yen", en:"cold", pic:"❄️"},
+    {th:"มาก", rom:"mâak", en:"very, a lot", pic:"💯"},
+    {th:"อร่อย", say:"อะ-ร่อย", rom:"à-ròi", en:"delicious", pic:"😋"},
+    {th:"ก๋วยเตี๋ยว", rom:"gǔay dtǐao", en:"noodles", pic:"🍜"},
+  ],
+  classroom: [
+    {th:"ใช่", rom:"châi", en:"yes", pic:"✅"},
+    {th:"ไม่", rom:"mâi", en:"no", pic:"❌"},
+    {th:"ถูกต้อง", rom:"thùuk tôong", en:"correct", pic:"🎯"},
+    {th:"เก่งมาก", rom:"gèng mâak", en:"great job!", pic:"🌟"},
+    {th:"เยี่ยมมาก", rom:"yiam mâak", en:"excellent!", pic:"🏆"},
+    {th:"เริ่ม", rom:"rôerm", en:"start / begin", pic:"▶️"},
+    {th:"เริ่มค่ะ", rom:"rôerm khâ", en:"let's begin", pic:"🚀"},
+    {th:"พร้อมไหมคะ", rom:"phrôm mâi khá", en:"are you ready?", pic:"🙋"},
+    {th:"ฟัง", rom:"fang", en:"listen", pic:"👂"},
+    {th:"พูด", rom:"phûut", en:"speak", pic:"🗣️"},
+    {th:"อ่าน", rom:"àan", en:"read", pic:"📖"},
+    {th:"ลองอีกครั้ง", rom:"loong ìik khráng", en:"try again", pic:"🔄"},
+    {th:"ไม่เป็นไร", rom:"mâi pen rai", en:"no problem", pic:"😌"},
+  ],
+  sea: [
+    {th:"ทะเล", rom:"tá-lay", en:"sea", pic:"🌊"},
+    {th:"ชายหาด", rom:"chaai hàat", en:"beach", pic:"🏖️"},
+    {th:"เกาะ", rom:"gòr", en:"island", pic:"🏝️"},
+    {th:"คลื่น", rom:"khlûen", en:"wave", pic:"🌊"},
+    {th:"ทราย", rom:"saai", en:"sand", pic:"⛱️"},
+    {th:"น้ำทะเล", rom:"náam tá-lay", en:"sea water", pic:"💧"},
+    {th:"พระอาทิตย์", rom:"phrá aa-thít", en:"sun", pic:"☀️"},
+    {th:"พระอาทิตย์ตก", rom:"phrá aa-thít dtòk", en:"sunset", pic:"🌅"},
+    {th:"พระอาทิตย์ขึ้น", rom:"phrá aa-thít khûen", en:"sunrise", pic:"🌄"},
+    {th:"ลม", rom:"lom", en:"wind", pic:"💨"},
+  ],
+  boats: [
+    {th:"เรือ", rom:"ruea", en:"boat", pic:"⛵"},
+    {th:"ท่าเรือ", rom:"thâa ruea", en:"pier", pic:"⚓"},
+    {th:"เสื้อชูชีพ", rom:"sûea chuu chîip", en:"life jacket", pic:"🦺"},
+  ],
+  diving: [
+    {th:"ดำน้ำ", rom:"dam náam", en:"dive", pic:"🤿"},
+    {th:"ดำน้ำตื้น", rom:"dam náam dtûen", en:"snorkeling", pic:"🥽"},
+    {th:"ถังออกซิเจน", rom:"thǎng òk-sí-jen", en:"oxygen tank", pic:"🛢️"},
+    {th:"ปะการัง", rom:"bpà-gaa-rang", en:"coral", pic:"🪸"},
+    {th:"ปลา", rom:"bplaa", en:"fish", pic:"🐟"},
+    {th:"เต่าทะเล", rom:"dtào tá-lay", en:"sea turtle", pic:"🐢"},
+    {th:"ฉลาม", rom:"chà-làam", en:"shark", pic:"🦈"},
+    {th:"แมงกะพรุน", rom:"maeng gà-phrun", en:"jellyfish", pic:"🪼"},
+  ],
+  destination: [
+    {th:"ภูเก็ต", rom:"phuu-gèt", en:"Phuket", pic:"🏝️"},
+    {th:"กระบี่", rom:"grà-bìi", en:"Krabi", pic:"🧗"},
+    {th:"เกาะพีพี", rom:"gòr phi phi", en:"Phi Phi Island", pic:"🏖️"},
+    {th:"อ่าว", rom:"àao", en:"bay", pic:"🌊"},
+    {th:"จุดชมวิว", rom:"jùt chom wiu", en:"viewpoint", pic:"📸"},
+    {th:"พระอาทิตย์ตกสวยมาก", rom:"phrá aa-thít dtòk sǔay mâak", en:"the sunset is beautiful", pic:"🌇"},
+  ],
+  directions: [
+    {th:"ไป", rom:"Bpai", en:"Go", pic:"🚶"},
+    {th:"กลับ", rom:"Glàp", en:"Go back / Return", pic:"🔙"},
+    {th:"ซ้าย", rom:"Sáai", en:"Left", pic:"⬅️"},
+    {th:"ขวา", rom:"Khwǎa", en:"Right", pic:"➡️"},
+    {th:"ตรงไป", rom:"Trong bpai", en:"Go straight", pic:"⬆️"},
+    {th:"เลี้ยวซ้าย", rom:"Líao sáai", en:"Turn left", pic:"↩️"},
+    {th:"เลี้ยวขวา", rom:"Líao khwǎa", en:"Turn right", pic:"↪️"},
+    {th:"กลับรถ", rom:"Glàp rót", en:"Turn around / make a U-turn", pic:"🔄"},
+    {th:"ใกล้", rom:"Glâi", en:"Near", pic:"🤏"},
+    {th:"ไกล", rom:"Glai", en:"Far", pic:"🏔️"},
+    {th:"ใกล้หรือไกล", rom:"Glâi rǔe glai?", en:"Near or far?", pic:"🤔"},
+    {th:"ใกล้ไหม", rom:"Glâi mái?", en:"Is it near?", pic:"❓"},
+  ],
+  sentences: [
+    {th:"สบายดีไหม", rom:"Sabai dee mái?", en:"How are you?", pic:"😊"},
+    {th:"แล้วคุณล่ะ", rom:"Láew khun lâ?", en:"How about you?", pic:"🔁"},
+    {th:"วันนี้มีแผนอะไรไหม", rom:"Wan níi mii phǎen à-rai mái?", en:"What plan do you have today?", pic:"📅"},
+    {th:"กินข้าวหรือยัง", rom:"Gin khâao reu yang?", en:"Have you eaten yet?", pic:"🍚"},
+    {th:"กินอะไร", rom:"Gin à-rai?", en:"What did you eat?", pic:"🍜"},
+    {th:"อร่อยไหม", say:"อะ-ร่อย ไหม", rom:"À-ròi mái?", en:"Was it delicious?", pic:"😋"},
+    {th:"ดีเลย", rom:"Dii loei", en:"Sounds great!", pic:"🙌"},
+    {th:"ขอให้สนุก", rom:"Khǎw hâi sà-nùk", en:"Have fun!", pic:"🥳"},
+    {th:"วันนี้เป็นยังไงบ้าง", rom:"Wan níi bpen yang ngai bâang?", en:"How is your day today?", pic:"🌈"},
+    {th:"วันนี้อากาศเป็นยังไง", rom:"Wan níi aa-gàat bpen yang ngai?", en:"How's the weather today?", pic:"🌦️"},
+  ],
+  everyday: [
+    {th:"ค่อยเป็นค่อยไป", rom:"Khôi bpen khôi bpai", en:"Take it one step at a time.", pic:"🐢", textCat:true, pairId:1},
+    {th:"เอาที่สบายใจ", rom:"Ao thîi sa-baai jai", en:"Do whatever makes you feel comfortable.", pic:"😌", textCat:true, pairId:2},
+    {th:"อร่อยจนหยุดไม่ได้", rom:"À-ròi jon yùt mâi dâai", en:"It's so delicious I can't stop eating!", pic:"😋", textCat:true, pairId:3},
+    {th:"ไม่ต้องเกรงใจ", rom:"Mâi dtông kreng jai", en:"Don't worry about bothering me.", pic:"🤗", textCat:true, pairId:4},
+    {th:"ตามใจเลย", rom:"Dtaam jai loei", en:"It's totally up to you.", pic:"🤷", textCat:true, pairId:5},
+    {th:"ช่างมันเถอะ", rom:"Châng man thòe", en:"Forget about it. Let it go.", pic:"🍃", textCat:true, pairId:6},
+    {th:"ไม่ต้องรีบ", rom:"Mâi dtông rîip", en:"No need to hurry.", pic:"🐌", textCat:true, pairId:7},
+    {th:"ไว้ค่อยว่ากัน", rom:"Wái khôi wâa gan", en:"Let's talk about it later.", pic:"⏳", textCat:true, pairId:8},
+    {th:"อย่าคิดมาก", rom:"Yàa khít mâak", en:"Don't overthink it.", pic:"😄", textCat:true, pairId:9},
+    {th:"เดี๋ยวดีเอง", rom:"Dǐao dii eeng", en:"It'll be okay. It'll get better.", pic:"🌈", textCat:true, pairId:10},
+    {th:"ใจเย็นไว้ก่อน", rom:"Jai yen wái gòn", en:"Stay calm first.", pic:"🧘", textCat:true, pairId:11},
+    {th:"ไม่ใช่เรื่องใหญ่", rom:"Mâi châi rêuang yài", en:"It's not a big deal.", pic:"🤏", textCat:true, pairId:12},
+    {th:"ก็จริงนะ", rom:"Gôr jing ná", en:"That's true.", pic:"💯", textCat:true, pairId:13},
+    {th:"พูดเล่นน่า", rom:"Phûut lên nâa", en:"I'm just kidding!", pic:"😜", textCat:true, pairId:14},
+    {th:"เดี๋ยวก็รู้", rom:"Dǐao gôr rúu", en:"You'll find out soon.", pic:"🔮", textCat:true, pairId:15},
+    {th:"คิดดูดี ๆ", rom:"Khít duu dii dii", en:"Think about it carefully.", pic:"🤔", textCat:true, pairId:16},
+    {th:"ยังไงก็ได้", rom:"Yang-ngai gôr dâai", en:"I'm okay with anything.", pic:"🙆", textCat:true, pairId:17},
+    {th:"แค่มีความสุขก็พอ", rom:"Khâe mii khwaam-sùk gôr por", en:"As long as you're happy, that's enough.", pic:"😊", textCat:true, pairId:18},
+    {th:"พรุ่งนี้ค่อยว่ากัน", rom:"Phrûng-níi khôi wâa gan", en:"Let's talk about it tomorrow.", pic:"🌙", textCat:true, pairId:19},
+    {th:"อะไรก็เกิดขึ้นได้", rom:"À-rai gôr gèrt khûen dâai", en:"Anything can happen.", pic:"🎲", textCat:true, pairId:20},
+    {th:"อยู่ที่ใจ", rom:"Yùu thîi jai", en:"It depends on your mindset.", pic:"❤️", textCat:true, pairId:21},
+    /* — extra example sentences, one per expression above, showing it used in context — */
+    {th:"จะกินอะไรก็ตามใจเลย", rom:"Jà gin à-rai gôr dtaam jai loei", en:"Whatever you want to eat, it's up to you.", pic:"🤷", textCat:true, pairId:5},
+    {th:"เขาไม่ขอโทษก็ช่างมันเถอะ", rom:"Khǎo mâi khǒr-thôht gôr châng man thòe", en:"If he doesn't apologize, just let it go.", pic:"🍃", textCat:true, pairId:6},
+    {th:"เรามีเวลาเยอะ ไม่ต้องรีบ", rom:"Rao mii wehlaa yóe, mâi dtông rîip", en:"We have plenty of time, no need to hurry.", pic:"🐌", textCat:true, pairId:7},
+    {th:"เรื่องนี้ไว้ค่อยว่ากันพรุ่งนี้", rom:"Rêuang níi wái khôi wâa gan phrûng-níi", en:"Let's talk about this matter tomorrow.", pic:"⏳", textCat:true, pairId:8},
+    {th:"มันไม่ใช่เรื่องใหญ่ อย่าคิดมากนะ", rom:"Man mâi châi rêuang yài, yàa khít mâak ná", en:"It's not a big deal, don't overthink it.", pic:"😄", textCat:true, pairId:9},
+    {th:"ใจเย็น ๆ เดี๋ยวดีเอง", rom:"Jai yen yen, dǐao dii eeng", en:"Stay calm, it'll get better on its own.", pic:"🌈", textCat:true, pairId:10},
+    {th:"อย่าเพิ่งโกรธ ใจเย็นไว้ก่อนนะ", rom:"Yàa phêrng gròht, jai yen wái gòn ná", en:"Don't get angry yet, stay calm first.", pic:"🧘", textCat:true, pairId:11},
+    {th:"ทำพลาดนิดหน่อย ไม่ใช่เรื่องใหญ่", rom:"Tham phlàat nít-nòi, mâi châi rêuang yài", en:"Making a small mistake isn't a big deal.", pic:"🤏", textCat:true, pairId:12},
+    {th:"เธอพูดถูก ก็จริงนะ", rom:"Thoe phûut thùuk, gôr jing ná", en:"What you said is right, that's true.", pic:"💯", textCat:true, pairId:13},
+    {th:"ก่อนตัดสินใจ คิดดูดี ๆ ก่อนนะ", rom:"Gòn dtàt-sǐn-jai, khít duu dii dii gòn ná", en:"Before deciding, think about it carefully first.", pic:"🤔", textCat:true, pairId:16},
+    {th:"ไม่ต้องรวย แค่มีความสุขก็พอ", rom:"Mâi dtông ruay, khâe mii khwaam-sùk gôr por", en:"You don't need to be rich, just happy is enough.", pic:"😊", textCat:true, pairId:18},
+    {th:"วันนี้เหนื่อยแล้ว พรุ่งนี้ค่อยว่ากันนะ", rom:"Wan-níi nèuay láew, phrûng-níi khôi wâa gan ná", en:"I'm tired today, let's talk tomorrow.", pic:"🌙", textCat:true, pairId:19},
+    {th:"ในชีวิตอะไรก็เกิดขึ้นได้ ต้องพร้อมเสมอ", rom:"Nai chii-wít à-rai gôr gèrt khûen dâai, dtông phrôm sà-mǒe", en:"In life, anything can happen — always be ready.", pic:"🎲", textCat:true, pairId:20},
+    {th:"ความสุขอยู่ที่ใจ ไม่ใช่อยู่ที่เงิน", rom:"Khwaam-sùk yùu thîi jai, mâi châi yùu thîi ngern", en:"Happiness depends on your mindset, not on money.", pic:"❤️", textCat:true, pairId:21},
+  ],
+  introduce: [
+    {th:"สวัสดีครับ", rom:"Sà-wàt-dee khráp", en:"Hello (male speaker)", pic:"👋"},
+    {th:"สวัสดีค่ะ", rom:"Sà-wàt-dee khâ", en:"Hello (female speaker)", pic:"👋"},
+    {th:"คุณชื่ออะไร", rom:"Khun chûue à-rai?", en:"What's your name?", pic:"🙋"},
+    {th:"ผมชื่อ...", rom:"Phǒm chûue ___", en:"My name is ___ (male speaker)", pic:"🙋"},
+    {th:"ฉันชื่อ...", rom:"Chǎn chûue ___", en:"My name is ___ (female speaker)", pic:"🙋"},
+    {th:"สบายดีไหม", rom:"Sà-baai-dee mái?", en:"How are you?", pic:"😊"},
+    {th:"สบายดีครับ", rom:"Sà-baai-dee khráp", en:"I'm good (male speaker)", pic:"😊"},
+    {th:"สบายดีค่ะ", rom:"Sà-baai-dee khâ", en:"I'm good (female speaker)", pic:"😊"},
+    {th:"ยินดีที่ได้รู้จัก", rom:"Yin-dee thîi dâai rúu-jàk", en:"Nice to meet you.", pic:"🤝"},
+    {th:"คุณมาจากไหน", rom:"Khun maa jàak nǎi?", en:"Where are you from?", pic:"🌍"},
+    {th:"ผมมาจาก...", rom:"Phǒm maa jàak ___", en:"I'm from ___ (male speaker)", pic:"🌍"},
+    {th:"คุณมาจากประเทศอะไร", rom:"Khun maa jàak bprà-thêet à-rai?", en:"What country do you come from?", pic:"✈️"},
+    {th:"ผม/ฉันมาจากประเทศ...", rom:"Phǒm/Chǎn maa jàak bprà-thêet ___", en:"I come from ___ (country)", pic:"✈️"},
+    {th:"คุณอยู่ที่ไหน", rom:"Khun yùu thîi nǎi?", en:"Where do you live?", pic:"🏠"},
+    {th:"ฉันอยู่ที่...", rom:"Chǎn yùu thîi ___", en:"I live in ___ (female speaker)", pic:"🏠"},
+    {th:"คุณชอบอะไร", rom:"Khun chôrp à-rai?", en:"What do you like?", pic:"❤️"},
+    {th:"ผมชอบ...", rom:"Phǒm chôrp ___", en:"I like ___ (male speaker)", pic:"❤️"},
+    {th:"ฉันชอบ...", rom:"Chǎn chôrp ___", en:"I like ___ (female speaker)", pic:"❤️"},
+    {th:"คุณอายุเท่าไหร่", rom:"Khun aa-yú thâo-rài?", en:"How old are you?", pic:"🎂"},
+    {th:"ฉันอายุ...ปี", rom:"Chǎn aa-yú ___ bpii", en:"I'm ___ years old (female speaker)", pic:"🎂"},
+    {th:"คุณทำงานอะไร", rom:"Khun tham-ngaan à-rai?", en:"What do you do for work?", pic:"💼"},
+    {th:"ผมเป็นครู", rom:"Phǒm bpen khruu", en:"I'm a teacher (male speaker)", pic:"👩‍🏫"},
+    {th:"ฉันเป็นครู", rom:"Chǎn bpen khruu", en:"I'm a teacher (female speaker)", pic:"👩‍🏫"},
+    {th:"คุณชอบประเทศไทยไหม", rom:"Khun chôrp bprà-thêet Thai mái?", en:"Do you like Thailand?", pic:"🇹🇭"},
+    {th:"ชอบ", rom:"Chôrp!", en:"I like it!", pic:"🇹🇭"},
+    {th:"ไม่ชอบ", rom:"Mâi chôrp.", en:"I don't like it.", pic:"🇹🇭"},
+    {th:"คุณชอบอาหารไทยไหม", rom:"Khun chôrp aa-hǎan Thai mái?", en:"Do you like Thai food?", pic:"🍜"},
+    {th:"คุณพูดภาษาไทยได้ไหม", rom:"Khun phûut phaa-sǎa Thai dâai mái?", en:"Can you speak Thai?", pic:"🗣️"},
+    {th:"พูดได้นิดหน่อย", rom:"Phûut dâai nít-nòi", en:"I can speak a little.", pic:"🗣️"},
+    {th:"คุณมีพี่น้องไหม", rom:"Khun mii phîi-nóng mái?", en:"Do you have sibling?", pic:"👨‍👩‍👧"},
+    {th:"มี", rom:"Mii.", en:"I have.", pic:"👨‍👩‍👧"},
+    {th:"ไม่มี", rom:"Mâi mii.", en:"No, I don't have.", pic:"👨‍👩‍👧"},
+    {th:"ขอโทษครับ", rom:"Khǒr-thôot khráp", en:"I'm sorry / Excuse me (male speaker)", pic:"🙏"},
+    {th:"ขอโทษค่ะ", rom:"Khǒr-thôot khâ", en:"I'm sorry / Excuse me (female speaker)", pic:"🙏"},
+    {th:"ไม่เป็นไรครับ", rom:"Mâi bpen rai khráp", en:"No problem / It's okay (male speaker)", pic:"🙏"},
+    {th:"ไม่เป็นไรค่ะ", rom:"Mâi bpen rai khâ", en:"No problem / It's okay (female speaker)", pic:"🙏"},
+    {th:"แล้วคุณล่ะ", rom:"Láeo khun lâ?", en:"And you? / How about you?", pic:"🔄"},
+    {th:"จริงเหรอ", rom:"Jing rǒe?", en:"Really?", pic:"😲"},
+    {th:"ดี", rom:"Dii!", en:"Good!", pic:"👍"},
+    {th:"ดีมาก", rom:"Dii mâak!", en:"Very good!", pic:"😍"},
+    {th:"เหมือนกัน", rom:"Mǔean-gan", en:"Me too / Same.", pic:"😊"},
+  ],
+  seven11: [
+    {th:"เวฟไหม", rom:"Wêep mái?", en:"Do you want it microwaved?", pic:"🍱"},
+    {th:"เวฟ", rom:"Wêep.", en:"Yes, microwave it.", pic:"🍱"},
+    {th:"ใส่ถุงไหม", rom:"Sài thǔng mái?", en:"Do you want a bag?", pic:"🛍️"},
+    {th:"ใส่", rom:"Sài.", en:"Yes, put it in a bag.", pic:"🛍️"},
+    {th:"เอาหลอดไหม", rom:"Ao lòot mái?", en:"Do you want a straw?", pic:"🥤"},
+    {th:"เอา", rom:"Ao.", en:"Yes, I'll take one.", pic:"🥤"},
+    {th:"รับสลิปไหม", rom:"Ráp sà-lìp mái?", en:"Do you want the receipt?", pic:"🧾"},
+    {th:"รับ", rom:"Ráp.", en:"Yes, I'll take it.", pic:"🧾"},
+    {th:"มี ALL Member ไหม", rom:"Mii ALL Member mái?", en:"Do you have ALL Member?", pic:"📱"},
+    {th:"มี", rom:"Mii.", en:"Yes, I have one.", pic:"📱"},
+    {th:"ไม่มี", rom:"Mâi mii.", en:"No, I don't have one.", pic:"📱"},
+    {th:"ขอหลอดหน่อยครับ/ค่ะ", rom:"Khǎaw lòot nòi khráp/kha.", en:"Please give me a straw.", pic:"🥤"},
+    {th:"ไม่เอาถุงครับ/ค่ะ", rom:"Mâi ao thǔng khráp/kha.", en:"I don't want a bag.", pic:"🛍️"},
+    {th:"เวฟให้หน่อยครับ/ค่ะ", rom:"Wêep hâi nòi khráp/kha.", en:"Please microwave it for me.", pic:"🍱"},
+    {th:"ไม่รับสลิปครับ/ค่ะ", rom:"Mâi ráp sà-lìp khráp/kha.", en:"I don't want the receipt.", pic:"🧾"},
+    {th:"ไม่มีครับ/ค่ะ", rom:"Mâi mii khráp/kha.", en:"No, I don't have it.", pic:"📱"},
+    {th:"จ่ายเงินสดใช่ไหม", rom:"Jàai ngern-sòt châi mái?", en:"Paying cash, right?", pic:"💵"},
+    {th:"ใช่ครับ/ค่ะ", rom:"Châi khráp/kha.", en:"Yes, that's right.", pic:"💵"},
+  ],
+};
+const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
+                         PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
+                         PG_SETS.destination, PG_SETS.directions, PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
+// vocabulary pool used only by "Word Games" Mixed Challenge (sentences/everyday/introduce live in their own section)
+const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
+                         PG_SETS.classroom, PG_SETS.sea, PG_SETS.boats, PG_SETS.diving,
+                         PG_SETS.destination, PG_SETS.directions);
+// sentence pool used only by "Sentences Practice" Mixed option
+const PG_SENT_ALL = [].concat(PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
+
+// ---------- Sentence Builder data ----------
+// Each sentence is broken into tappable word/phrase chunks in the correct
+// order. Students tap the shuffled chunks to reassemble the sentence.
+const BUILDER_INTRODUCE = [
+  { en:"What's your name?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"ชื่อ",rom:"chûue"},{th:"อะไร",rom:"à-rai?"}] },
+  { en:"How are you?",
+    chunks:[{th:"สบายดี",rom:"Sà-baai-dee"},{th:"ไหม",rom:"mái?"}] },
+  { en:"Nice to meet you.",
+    chunks:[{th:"ยินดี",rom:"Yin-dee"},{th:"ที่ได้",rom:"thîi dâai"},{th:"รู้จัก",rom:"rúu-jàk"}] },
+  { en:"Where are you from?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"มาจาก",rom:"maa jàak"},{th:"ไหน",rom:"nǎi?"}] },
+  { en:"Where do you live?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"อยู่ที่",rom:"yùu thîi"},{th:"ไหน",rom:"nǎi?"}] },
+  { en:"What do you like?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"ชอบ",rom:"chôrp"},{th:"อะไร",rom:"à-rai?"}] },
+  { en:"How old are you?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"อายุ",rom:"aa-yú"},{th:"เท่าไหร่",rom:"thâo-rài?"}] },
+  { en:"What do you do for work?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"ทำงาน",rom:"tham-ngaan"},{th:"อะไร",rom:"à-rai?"}] },
+  { en:"Do you like Thailand?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"ชอบ",rom:"chôrp"},{th:"ประเทศไทย",rom:"bprà-thêet Thai"},{th:"ไหม",rom:"mái?"}] },
+  { en:"Do you like Thai food?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"ชอบ",rom:"chôrp"},{th:"อาหารไทย",rom:"aa-hǎan Thai"},{th:"ไหม",rom:"mái?"}] },
+  { en:"Can you speak Thai?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"พูด",rom:"phûut"},{th:"ภาษาไทย",rom:"phaa-sǎa Thai"},{th:"ได้ไหม",rom:"dâai mái?"}] },
+  { en:"Do you have sibling?",
+    chunks:[{th:"คุณ",rom:"Khun"},{th:"มี",rom:"mii"},{th:"พี่น้อง",rom:"phîi-nóng"},{th:"ไหม",rom:"mái?"}] },
+  { en:"And you? / How about you?",
+    chunks:[{th:"แล้ว",rom:"Láeo"},{th:"คุณ",rom:"khun"},{th:"ล่ะ",rom:"lâ?"}] },
+];
+
+const BUILDER_SENTENCES = [
+  { en:"How are you?",
+    chunks:[{th:"สบายดี",rom:"Sabai dee"},{th:"ไหม",rom:"mái?"}] },
+  { en:"How about you?",
+    chunks:[{th:"แล้ว",rom:"Láew"},{th:"คุณ",rom:"khun"},{th:"ล่ะ",rom:"lâ?"}] },
+  { en:"What plan do you have today?",
+    chunks:[{th:"วันนี้",rom:"Wan níi"},{th:"มี",rom:"mii"},{th:"แผน",rom:"phǎen"},{th:"อะไร",rom:"à-rai"},{th:"ไหม",rom:"mái?"}] },
+  { en:"Have you eaten yet?",
+    chunks:[{th:"กิน",rom:"Gin"},{th:"ข้าว",rom:"khâao"},{th:"หรือยัง",rom:"reu yang?"}] },
+  { en:"What did you eat?",
+    chunks:[{th:"กิน",rom:"Gin"},{th:"อะไร",rom:"à-rai?"}] },
+  { en:"Was it delicious?",
+    chunks:[{th:"อร่อย",rom:"À-ròi"},{th:"ไหม",rom:"mái?"}] },
+  { en:"Sounds great!",
+    chunks:[{th:"ดี",rom:"Dii"},{th:"เลย",rom:"loei"}] },
+  { en:"Have fun!",
+    chunks:[{th:"ขอให้",rom:"Khǎw hâi"},{th:"สนุก",rom:"sà-nùk"}] },
+  { en:"How is your day today?",
+    chunks:[{th:"วันนี้",rom:"Wan níi"},{th:"เป็น",rom:"bpen"},{th:"ยังไง",rom:"yang ngai"},{th:"บ้าง",rom:"bâang?"}] },
+  { en:"How's the weather today?",
+    chunks:[{th:"วันนี้",rom:"Wan níi"},{th:"อากาศ",rom:"aa-gàat"},{th:"เป็น",rom:"bpen"},{th:"ยังไง",rom:"yang ngai?"}] },
+];
+
+const BUILDER_EVERYDAY = [
+  { en:"Take it one step at a time.",
+    chunks:[{th:"ค่อย",rom:"Khôi"},{th:"เป็น",rom:"bpen"},{th:"ค่อย",rom:"khôi"},{th:"ไป",rom:"bpai"}] },
+  { en:"Do whatever makes you feel comfortable.",
+    chunks:[{th:"เอา",rom:"Ao"},{th:"ที่",rom:"thîi"},{th:"สบายใจ",rom:"sa-baai jai"}] },
+  { en:"It's so delicious I can't stop eating!",
+    chunks:[{th:"อร่อย",rom:"À-ròi"},{th:"จน",rom:"jon"},{th:"หยุด",rom:"yùt"},{th:"ไม่ได้",rom:"mâi dâai"}] },
+  { en:"Don't worry about bothering me.",
+    chunks:[{th:"ไม่ต้อง",rom:"Mâi dtông"},{th:"เกรงใจ",rom:"kreng jai"}] },
+  { en:"It's totally up to you.",
+    chunks:[{th:"ตามใจ",rom:"Dtaam jai"},{th:"เลย",rom:"loei"}] },
+  { en:"Forget about it. Let it go.",
+    chunks:[{th:"ช่างมัน",rom:"Châng man"},{th:"เถอะ",rom:"thòe"}] },
+  { en:"No need to hurry.",
+    chunks:[{th:"ไม่ต้อง",rom:"Mâi dtông"},{th:"รีบ",rom:"rîip"}] },
+  { en:"Let's talk about it later.",
+    chunks:[{th:"ไว้",rom:"Wái"},{th:"ค่อย",rom:"khôi"},{th:"ว่ากัน",rom:"wâa gan"}] },
+  { en:"Don't overthink it.",
+    chunks:[{th:"อย่า",rom:"Yàa"},{th:"คิด",rom:"khít"},{th:"มาก",rom:"mâak"}] },
+  { en:"It'll be okay. It'll get better.",
+    chunks:[{th:"เดี๋ยว",rom:"Dǐao"},{th:"ดีเอง",rom:"dii eeng"}] },
+  { en:"Stay calm first.",
+    chunks:[{th:"ใจเย็น",rom:"Jai yen"},{th:"ไว้ก่อน",rom:"wái gòn"}] },
+  { en:"It's not a big deal.",
+    chunks:[{th:"ไม่ใช่",rom:"Mâi châi"},{th:"เรื่องใหญ่",rom:"rêuang yài"}] },
+  { en:"That's true.",
+    chunks:[{th:"ก็",rom:"Gôr"},{th:"จริง",rom:"jing"},{th:"นะ",rom:"ná"}] },
+  { en:"I'm just kidding!",
+    chunks:[{th:"พูดเล่น",rom:"Phûut lên"},{th:"น่า",rom:"nâa"}] },
+  { en:"You'll find out soon.",
+    chunks:[{th:"เดี๋ยว",rom:"Dǐao"},{th:"ก็",rom:"gôr"},{th:"รู้",rom:"rúu"}] },
+  { en:"Think about it carefully.",
+    chunks:[{th:"คิดดู",rom:"Khít duu"},{th:"ดี ๆ",rom:"dii dii"}] },
+  { en:"I'm okay with anything.",
+    chunks:[{th:"ยังไง",rom:"Yang-ngai"},{th:"ก็",rom:"gôr"},{th:"ได้",rom:"dâai"}] },
+  { en:"As long as you're happy, that's enough.",
+    chunks:[{th:"แค่",rom:"Khâe"},{th:"มีความสุข",rom:"mii khwaam-sùk"},{th:"ก็",rom:"gôr"},{th:"พอ",rom:"por"}] },
+  { en:"Let's talk about it tomorrow.",
+    chunks:[{th:"พรุ่งนี้",rom:"Phrûng-níi"},{th:"ค่อย",rom:"khôi"},{th:"ว่ากัน",rom:"wâa gan"}] },
+  { en:"Anything can happen.",
+    chunks:[{th:"อะไร",rom:"À-rai"},{th:"ก็",rom:"gôr"},{th:"เกิดขึ้น",rom:"gèrt khûen"},{th:"ได้",rom:"dâai"}] },
+  { en:"It depends on your mindset.",
+    chunks:[{th:"อยู่",rom:"Yùu"},{th:"ที่",rom:"thîi"},{th:"ใจ",rom:"jai"}] },
+];
+
+const BUILDER_MIXED = [].concat(BUILDER_SENTENCES, BUILDER_EVERYDAY, BUILDER_INTRODUCE);
+
+// same 5 sentences used in the 7-Eleven Challenge's Type C rounds, offered
+// here too so students can practice building them any time via "Build it"
+const BUILDER_SEVEN11 = [
+  { en:"Please give me a straw.",
+    chunks:[{th:"ขอ",rom:"Khǎaw"},{th:"หลอด",rom:"lòot"},{th:"หน่อย",rom:"nòi"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}] },
+  { en:"I don't want a bag.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"เอา",rom:"ao"},{th:"ถุง",rom:"thǔng"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}] },
+  { en:"Please microwave it for me.",
+    chunks:[{th:"เวฟ",rom:"Wêep"},{th:"ให้",rom:"hâi"},{th:"หน่อย",rom:"nòi"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}] },
+  { en:"I don't want the receipt.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"รับ",rom:"ráp"},{th:"สลิป",rom:"sà-lìp"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}] },
+  { en:"I don't have ALL Member.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"มี",rom:"mii"},{th:"ALL Member",rom:"ALL Member"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}] },
+];
+
+const BUILDER_DATA_BY_KEY = {
+  sentences: BUILDER_SENTENCES,
+  everyday: BUILDER_EVERYDAY,
+  introduce: BUILDER_INTRODUCE,
+  allsent: BUILDER_MIXED,
+  seven11: BUILDER_SEVEN11,
+};
+
+
+const PG_META_VOCAB = [
+  {key:"greet",       emo:"👋", title:"Greetings & Politeness",  sub:"สวัสดี · สบายดี · ขอบคุณ · นะครับ",     cls:"mai"},
+  {key:"quest",       emo:"🤔", title:"Questions & Everyday",    sub:"ไหม · อะไร · เมื่อวาน · พรุ่งนี้ · แล้ว", cls:"kha"},
+  {key:"action",      emo:"🍽️", title:"Actions & Things",        sub:"ไป · ดื่ม · กิน · เป็น · กลับบ้าน",     cls:"kham"},
+  {key:"feel",        emo:"😋", title:"Feelings & Food",         sub:"ดี · ร้อน · เย็น · อร่อย · ก๋วยเตี๋ยว",  cls:"paa"},
+  {key:"classroom",   emo:"🎓", title:"Classroom Expressions",   sub:"ใช่ · ไม่ · ฟัง · พูด · อ่าน",          cls:"mai"},
+  {key:"sea",         emo:"🏖️", title:"Sea & Beach",             sub:"ทะเล · ชายหาด · เกาะ · ลม",            cls:"kha"},
+  {key:"boats",       emo:"⛵", title:"Boats & Safety",           sub:"เรือ · ท่าเรือ · เสื้อชูชีพ",             cls:"kham"},
+  {key:"diving",      emo:"🤿", title:"Diving & Marine Life",    sub:"ดำน้ำ · ปะการัง · ปลา · ฉลาม",          cls:"paa"},
+  {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mai"},
+  {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"kha"},
+  {key:"all",         emo:"🎯", title:"Mixed Challenge",          sub:"All "+PG_VOCAB_ALL.length+" words",    cls:"mix"},
+];
+const PG_META_SENT = [
+  {key:"sentences",   emo:"💬", title:"Sentences",                sub:"สบายดีไหม · กินข้าวหรือยัง",            cls:"kham"},
+  {key:"everyday",    emo:"🌈", title:"Everyday Expressions",     sub:"ค่อยเป็นค่อยไป · ตามใจเลย · อย่าคิดมาก",  cls:"paa"},
+  {key:"introduce",   emo:"🙋", title:"Introduce & Get to Know",  sub:"คุณชื่ออะไร · คุณมาจากไหน · แล้วคุณล่ะ",   cls:"mai"},
+  {key:"allsent",     emo:"🎯", title:"Mixed Sentences",          sub:"All "+PG_SENT_ALL.length+" sentences",  cls:"mix"},
+  {key:"seven11",     emo:"🏪", title:"7-Eleven Challenge",       sub:"Recognize, choose, and build real Thai", cls:"kha", special:true},
+];
+let PG_META = PG_META_VOCAB;   // active list — switches based on which hub button was tapped
+let pgHomeCtx = "vocab";       // "vocab" or "sent"
+const PG_LABEL = {};
+PG_META_VOCAB.concat(PG_META_SENT).forEach(m=>PG_LABEL[m.key]=m.title);
+
+let pgMode="practice", pgSetKey="greet";
+let ppList=[], ppIdx=0;
+let pgQueue=[], pgIdx=0, pgScore=0, pgAnswered=false;
+
+/* ---------- set menu ---------- */
+function renderPgSets(){
+  const host=document.getElementById("pgsets"); host.innerHTML="";
+  PG_META.forEach(m=>{
+    const b=document.createElement("button");
+    b.className="setbtn "+m.cls;
+    b.innerHTML='<span class="emo">'+m.emo+'</span><span><b>'+m.title+'</b><small>'+m.sub+'</small></span>';
+    b.onclick=()=>{
+      if(pgMode==="build"){ startSentenceBuilder(m.key); return; }
+      if(m.special && m.key==="seven11" && pgMode!=="practice"){ show("sevenintro"); return; }
+      if(pgMode==="practice") startPgPractice(m.key); else startPgGame(m.key);
+    };
+    host.appendChild(b);
+  });
+}
+document.querySelectorAll(".pgmodebtn").forEach(mb=>{
+  mb.onclick=()=>{
+    pgMode=mb.dataset.pgmode;
+    document.querySelectorAll(".pgmodebtn").forEach(x=>x.classList.toggle("active", x===mb));
+    document.getElementById("pgHint").textContent =
+      pgMode==="practice" ? "Learn first — picture, pronunciation and meaning. No pressure."
+      : pgMode==="mix" ? "Read the meaning, then pick the matching Thai phrase."
+      : "Pick a topic below to build sentences from it.";
+  };
+});
+
+// the "Build it" mode only makes sense for full sentences, so it's only
+// offered when the person is inside Sentences Practice, not Word Games
+function updateBuildModeVisibility(){
+  document.getElementById("pgBuildModeBtn").style.display = (pgHomeCtx==="sent") ? "inline-block" : "none";
+}
+
+/* ---------- PRACTICE ---------- */
+function startPgPractice(key){
+  pgSetKey=key;
+  ppList = key==="all" ? PG_VOCAB_ALL.slice() : key==="allsent" ? PG_SENT_ALL.slice() : PG_SETS[key].slice();
+  ppIdx=0; show("pgpractice"); renderPP();
+}
+function renderPP(){
+  const w=ppList[ppIdx];
+  document.getElementById("ppTag").textContent="PRACTICE · "+PG_LABEL[pgSetKey];
+  document.getElementById("ppPic").textContent=w.pic;
+  document.getElementById("ppThai").textContent=w.th;
+  document.getElementById("ppRom").textContent=w.rom;
+  document.getElementById("ppEn").textContent=w.en;
+  document.getElementById("ppCount").textContent=(ppIdx+1)+" / "+ppList.length;
+  document.getElementById("ppProg").style.width=((ppIdx+1)/ppList.length*100)+"%";
+  document.getElementById("ppPrev").disabled = ppIdx===0;
+  document.getElementById("ppNext").textContent = ppIdx===ppList.length-1 ? "Play the game →" : "Next →";
+  document.getElementById("ppNext").classList.toggle("finish", ppIdx===ppList.length-1);
+}
+document.getElementById("ppPrev").onclick=()=>{ if(ppIdx>0){ ppIdx--; renderPP(); } };
+document.getElementById("ppNext").onclick=()=>{
+  if(ppIdx<ppList.length-1){ ppIdx++; renderPP(); }
+  else startPgGame(pgSetKey);
+};
+
+/* ---------- GAME · picture / listening / mix ---------- */
+const LETTERS_PG=["A","B","C","D"];
+let lastGame="pic";
+
+function makeQ(w, pool, type){
+  let others = type==="pic" ? pool.filter(x=>x.th!==w.th) : pool.filter(x=>x.en!==w.en);
+  // avoid picking a "paired" sentence (same idiom, just reworded) as a wrong choice —
+  // it would share nearly the same meaning as the correct answer and confuse the quiz
+  if(w.pairId){ others = others.filter(x=>x.pairId!==w.pairId); }
+  if(others.length<2) others = type==="pic" ? PG_ALL.filter(x=>x.th!==w.th) : PG_ALL.filter(x=>x.en!==w.en);
+  const wrong = shuffle(others).slice(0,2);
+  return { w, type, choices: shuffle([{...w,correct:true},{...wrong[0],correct:false},{...wrong[1],correct:false}]) };
+}
+
+function startPgGame(key, mode){
+  pgSetKey=key;
+  lastGame="pic";
+  const pool = key==="all" ? PG_VOCAB_ALL : key==="allsent" ? PG_SENT_ALL : PG_SETS[key];
+  const n = Math.min(pool.length, (key==="all"||key==="allsent") ? 10 : 8);
+  pgQueue = shuffle(pool).slice(0,n).map(w=> makeQ(w, pool, "pic"));
+  pgIdx=0; pgScore=0; show("pgame"); renderPG();
+}
+
+function renderPG(){
+  pgAnswered=false;
+  const q=pgQueue[pgIdx];
+  document.getElementById("pgKicker").textContent = "📖 Read the meaning — which Thai phrase is it?";
+  const pic=document.getElementById("pgPic");
+  const meaning=document.getElementById("pgMeaning");
+  // always show the picture as supporting visual + the English meaning as the
+  // real clue — students should never have to guess from an ambiguous emoji alone
+  pic.style.display = "block";
+  pic.textContent = q.w.pic;
+  meaning.style.display = "block";
+  meaning.textContent = q.w.en;
+  document.getElementById("pgCount").textContent=(pgIdx+1)+" / "+pgQueue.length;
+  document.getElementById("pgProg").style.width=(pgIdx/pgQueue.length*100)+"%";
+  document.getElementById("pgReveal").innerHTML="";
+  const host=document.getElementById("pgChoices"); host.innerHTML="";
+  q.choices.forEach((c,i)=>{
+    const b=document.createElement("button"); b.className="choice";
+    b.innerHTML = '<span class="ltr">'+LETTERS_PG[i]+'</span><span><span class="cth">'+c.th+'</span><br><span class="crom">'+c.rom+'</span></span>';
+    b.onclick=()=>pgChoose(c,q);
+    host.appendChild(b);
+  });
+}
+
+function pgChoose(c,q){
+  if(pgAnswered) return; pgAnswered=true;
+  [...document.querySelectorAll("#pgChoices .choice")].forEach((el,i)=>{
+    const ch=q.choices[i];
+    if(ch.correct) el.classList.add("correct");
+    else if(ch===c) el.classList.add("wrong");
+    else el.classList.add("dim");
+    el.style.pointerEvents="none";
+  });
+  if(c.correct){ pgScore++; confetti(18); }
+  document.getElementById("pgProg").style.width=((pgIdx+1)/pgQueue.length*100)+"%";
+  const slot=document.getElementById("pgReveal");
+  slot.innerHTML=
+    '<div class="reveal">'+
+      '<div class="verdict" style="color:'+(c.correct?"#2f9e59":"#e0556b")+'">'+(c.correct?"✓ Correct!":"✗ Not quite")+'</div>'+
+      '<div style="font-size:44px;line-height:1.2;margin-top:4px;">'+q.w.pic+'</div>'+
+      '<div class="rev-th">'+q.w.th+'</div>'+
+      '<div class="rev-rom">'+q.w.rom+'</div>'+
+      '<div class="rev-en">'+q.w.en+'</div>'+
+      '<button class="nextbtn" id="pgNext">'+(pgIdx+1<pgQueue.length?"Next →":"See results")+'</button>'+
+    '</div>';
+  setTimeout(()=>{ slot.querySelector(".reveal").scrollIntoView({behavior:"smooth",block:"center"}); },60);
+  document.getElementById("pgNext").onclick=()=>{ pgIdx++; if(pgIdx<pgQueue.length) renderPG(); else pgFinish(); };
+}
+
+function pgFinish(){
+  show("pgresult");
+  const total=pgQueue.length, pct=pgScore/total;
+  document.getElementById("pgrScore").textContent=pgScore;
+  document.getElementById("pgrTotal").textContent=total;
+  const stars = pct>=1?5 : pct>=.8?4 : pct>=.6?3 : pct>=.4?2 : 1;
+  document.getElementById("pgrStars").innerHTML='<span style="color:var(--gold)">'+"★".repeat(stars)+
+    '</span><span style="color:#e7ddd4">'+"☆".repeat(5-stars)+'</span>';
+  let em="🌱", title="Keep practising!", th="สู้ๆ นะ", rom="sûu sûu ná", en="Try the practice again — you'll get it!";
+  if(pct>=1){ em="🏆"; title="Perfect!"; th="เก่งมาก"; rom="gèng mâak"; en="You knew every word!"; }
+  else if(pct>=.8){ em="🌟"; title="Great job!"; th="เยี่ยมมาก"; rom="yîam mâak"; en="Almost perfect!"; }
+  else if(pct>=.6){ em="😊"; title="Nice work!"; th="ดีมาก"; rom="dii mâak"; en="Good progress!"; }
+  else if(pct>=.4){ em="💪"; title="Getting there!"; th="พยายามอีกนิด"; rom="phá-yaa-yaam ìik nít"; en="A little more practice!"; }
+  document.getElementById("pgrEmoji").textContent=em;
+  document.getElementById("pgrTitle").textContent=title;
+  document.getElementById("pgrMsg").innerHTML='<span class="th">'+th+'</span> · <span class="rm">'+rom+'</span><br>'+en;
+  if(pct>=.8){ confetti(38,true); setTimeout(()=>confetti(28,true),300); }
+}
+document.getElementById("pgrAgain").onclick=()=>startPgGame(pgSetKey, lastGame);
+
+
+/* ---------- nav ---------- */
+document.querySelectorAll("[data-go]").forEach(b=> b.onclick=()=>show(b.dataset.go));
+
+// the two entry points into the picture-game screen (Word Games vs Sentences Practice)
+// need to set which category list to show before navigating in
+document.getElementById("hbWordGames").onclick=()=>{
+  pgHomeCtx="vocab"; PG_META=PG_META_VOCAB;
+  document.getElementById("pgHomeTitle").textContent="🎮 Word Games";
+  renderPgSets();
+  updateBuildModeVisibility();
+  resetToPracticeMode();
+  show("pghome");
+};
+document.getElementById("hbSentences").onclick=()=>{
+  pgHomeCtx="sent"; PG_META=PG_META_SENT;
+  document.getElementById("pgHomeTitle").textContent="📝 Sentences Practice";
+  renderPgSets();
+  updateBuildModeVisibility();
+  resetToPracticeMode();
+  show("pghome");
+};
+function resetToPracticeMode(){
+  pgMode = "practice";
+  document.querySelectorAll(".pgmodebtn").forEach(x=>x.classList.toggle("active", x.dataset.pgmode==="practice"));
+  document.getElementById("pgHint").textContent = "Learn first — picture, pronunciation and meaning. No pressure.";
+}
+renderPgSets();
+
+/* ==========================================================
+   FEEDBACK SYSTEM — sends directly to Teacher Palm's email
+   via Google Apps Script (free, reliable, uses your own Gmail)
+   ========================================================== */
+
+// ─── Paste your Google Apps Script web app URL here ───
+const FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbzZalOkwmDagl7wyq3WZKXN9YDV5l3kiXOZKip7c1Fe0B4M4AyjlczQCSZD0UAn1Sz4Uw/exec";
+// ──────────────────────────────────────────────────────
+
+const FB_RATINGS = {};
+
+// emoji rating selectors
+document.querySelectorAll(".fb-emoji-row").forEach(row=>{
+  const group = row.dataset.fb;
+  row.querySelectorAll("button").forEach(btn=>{
+    btn.onclick = () => {
+      row.querySelectorAll("button").forEach(b=>b.classList.remove("fb-sel"));
+      btn.classList.add("fb-sel");
+      FB_RATINGS[group] = btn.dataset.v;
+    };
+  });
+});
+
+// floating button → open modal
+document.getElementById("fbFloatBtn").onclick = () => {
+  document.getElementById("fbBubble").classList.add("fb-dismissed");
+  document.getElementById("fbOverlay").classList.remove("hidden");
+};
+// bubble click also opens modal
+document.getElementById("fbBubble").onclick = (e) => {
+  if(e.target.id === "fbBubClose") return;
+  document.getElementById("fbBubble").classList.add("fb-dismissed");
+  document.getElementById("fbOverlay").classList.remove("hidden");
+};
+// dismiss bubble only
+document.getElementById("fbBubClose").onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById("fbBubble").classList.add("fb-dismissed");
+};
+// close modal
+document.getElementById("fbClose").onclick = () => {
+  document.getElementById("fbOverlay").classList.add("hidden");
+};
+document.getElementById("fbOverlay").onclick = (e) => {
+  if(e.target === e.currentTarget) document.getElementById("fbOverlay").classList.add("hidden");
+};
+
+// send feedback directly from the app → your Gmail
+async function sendFeedback(type, ratingKey, textId, statusId, btnId){
+  const rating = FB_RATINGS[ratingKey] || "";
+  const comment = document.getElementById(textId).value.trim();
+  const statusEl = document.getElementById(statusId);
+  const btn = document.getElementById(btnId);
+
+  if(!rating){ statusEl.innerHTML='<div class="fb-err">Tap an emoji first 😊</div>'; return; }
+  if(!comment){ statusEl.innerHTML='<div class="fb-err">Write a short message too ✏️</div>'; return; }
+
+  // gather context
+  let context = type;
+  if(type==="Word Game" && pgSetKey) context += " · " + (PG_LABEL[pgSetKey]||pgSetKey) + " · Score: " + pgScore;
+  if(type==="Tone Test" && curSet) context += " · " + (SETLABEL[curSet]||curSet) + " · Score: " + score;
+  const ts = new Date().toLocaleString("en-GB", {timeZone:"Asia/Bangkok"});
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  // check if URL is configured
+  if(!FEEDBACK_URL || FEEDBACK_URL === "PASTE_YOUR_APPS_SCRIPT_URL_HERE"){
+    statusEl.innerHTML='<div class="fb-err">Feedback not set up yet — tell Teacher Palm to connect the Google Script!</div>';
+    btn.disabled = false; btn.textContent = "Send feedback ✉️";
+    return;
+  }
+
+  try {
+    const res = await fetch(FEEDBACK_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        rating: rating,
+        comment: comment,
+        game: context,
+        time: ts
+      })
+    });
+    // no-cors means we can't read the response, but the request goes through
+    statusEl.innerHTML='<div class="fb-done">✅ Sent! Thank you 🙏</div>';
+    btn.style.display="none";
+    document.getElementById(textId).style.display="none";
+  } catch(err){
+    statusEl.innerHTML='<div class="fb-err">Couldn\'t send — check your internet and try again</div>';
+    btn.disabled = false; btn.textContent = "Try again ✉️";
+  }
+}
+
+// wire up the three send buttons
+document.getElementById("pgFbSend").onclick  = () => sendFeedback("Word Game",  "pgrating",      "pgFbText",  "pgFbStatus",  "pgFbSend");
+document.getElementById("toneFbSend").onclick = () => sendFeedback("Tone Test",  "tonerating",    "toneFbText","toneFbStatus", "toneFbSend");
+document.getElementById("genFbSend").onclick  = () => sendFeedback("General",    "generalrating", "genFbText", "genFbStatus",  "genFbSend");
+
+// reset feedback cards when replaying
+const _origShow = show;
+show = function(id){
+  _origShow(id);
+  ["pgFbStatus","toneFbStatus","genFbStatus"].forEach(s=>{
+    const el=document.getElementById(s); if(el) el.innerHTML="";
+  });
+  ["pgFbText","toneFbText","genFbText"].forEach(s=>{
+    const el=document.getElementById(s); if(el){ el.value=""; el.style.display=""; }
+  });
+  ["pgFbSend","toneFbSend","genFbSend"].forEach(s=>{
+    const el=document.getElementById(s); if(el){ el.style.display=""; el.disabled=false; el.textContent="Send feedback ✉️"; }
+  });
+  document.querySelectorAll(".fb-emoji-row button").forEach(b=>b.classList.remove("fb-sel"));
+  Object.keys(FB_RATINGS).forEach(k=>delete FB_RATINGS[k]);
+};
+
+/* ==========================================================
+   7-ELEVEN CHALLENGE — RECOGNIZE → CHOOSE → PRODUCE
+   Three mixed question types, randomly shuffled together.
+   No timer on any type — students take as long as they need.
+     TYPE A ⚡ Listen/Read & React   — 2 choices,
+              meaningful distractor (not a simple polar pair)
+     TYPE B 🎯 Situation → What to say — 2 choices,
+              exactly ONE correct answer
+     TYPE C 🧩 Build the Sentence    — tap word chunks
+              into order, press CHECK, retry until correct
+   Data is kept separate from the game engine on purpose so the
+   same three-type system can be reused for future topics
+   (restaurants, cafés, markets, directions, etc.) just by
+   swapping SEVEN11_GAME_DATA for a different array.
+
+   Text-size hierarchy used throughout (per Teacher Palm's spec):
+     Romanized = BIGGEST, blue (.sv-rom)   — students read this first
+     English   = medium   (.sv-en / .sv-situation)
+     Thai      = SMALLEST (.sv-thai)       — visual pattern only
+   ========================================================== */
+
+const SEVEN11_GAME_DATA = [
+  // ---------------- TYPE A — Listen/Read & React ⚡ ----------------
+  { type:"A", icon:"🍱", rom:"Wêep mái?", th:"เวฟไหม", en:"Do you want it microwaved?",
+    correct:{rom:"Wêep.", th:"เวฟ"}, wrong:{rom:"Mâi ao.", th:"ไม่เอา"} },
+  { type:"A", icon:"🛍️", rom:"Sài thǔng mái?", th:"ใส่ถุงไหม", en:"Do you want a bag?",
+    correct:{rom:"Sài.", th:"ใส่"}, wrong:{rom:"Mâi ráp.", th:"ไม่รับ"} },
+  { type:"A", icon:"🥤", rom:"Ao lòot mái?", th:"เอาหลอดไหม", en:"Do you want a straw?",
+    correct:{rom:"Ao.", th:"เอา"}, wrong:{rom:"Mâi châi.", th:"ไม่ใช่"} },
+  { type:"A", icon:"🧾", rom:"Ráp sà-lìp mái?", th:"รับสลิปไหม", en:"Do you want the receipt?",
+    correct:{rom:"Ráp.", th:"รับ"}, wrong:{rom:"Mâi sài.", th:"ไม่ใส่"} },
+  { type:"A", icon:"📱", rom:"Mii ALL Member mái?", th:"มี ALL Member ไหม", en:"Do you have ALL Member?",
+    correct:{rom:"Mii.", th:"มี"}, wrong:{rom:"Mâi mii.", th:"ไม่มี"} },
+
+  // ---------------- TYPE B — Situation → What to say 🎯 ----------------
+  { type:"B", icon:"🥤", situation:"You want a straw. What do you say?",
+    correct:{rom:"Khǎaw lòot nòi khráp/kha.", th:"ขอหลอดหน่อยครับ/ค่ะ"},
+    wrong:{rom:"Mâi ao lòot khráp/kha.", th:"ไม่เอาหลอดครับ/ค่ะ"} },
+  { type:"B", icon:"🛍️", situation:"You DON'T want a bag.",
+    correct:{rom:"Mâi ao thǔng khráp/kha.", th:"ไม่เอาถุงครับ/ค่ะ"},
+    wrong:{rom:"Ao thǔng khráp/kha.", th:"เอาถุงครับ/ค่ะ"} },
+  { type:"B", icon:"🍱", situation:"You want the staff to microwave your food.",
+    correct:{rom:"Wêep hâi nòi khráp/kha.", th:"เวฟให้หน่อยครับ/ค่ะ"},
+    wrong:{rom:"Mâi wêep khráp/kha.", th:"ไม่เวฟครับ/ค่ะ"} },
+  { type:"B", icon:"🧾", situation:"You don't want the receipt.",
+    correct:{rom:"Mâi ráp sà-lìp khráp/kha.", th:"ไม่รับสลิปครับ/ค่ะ"},
+    wrong:{rom:"Ráp sà-lìp khráp/kha.", th:"รับสลิปครับ/ค่ะ"} },
+  { type:"B", icon:"📱", situation:"You don't have ALL Member.",
+    correct:{rom:"Mâi mii khráp/kha.", th:"ไม่มีครับ/ค่ะ"},
+    wrong:{rom:"Mii khráp/kha.", th:"มีครับ/ค่ะ"} },
+  { type:"B", icon:"💵", situation:"The cashier asks if you're paying cash. You ARE paying cash.",
+    correct:{rom:"Châi khráp/kha.", th:"ใช่ครับ/ค่ะ"},
+    wrong:{rom:"Mâi châi khráp/kha.", th:"ไม่ใช่ครับ/ค่ะ"} },
+
+  // ---------------- TYPE C — Build the Sentence 🧩 ----------------
+  { type:"C", icon:"🥤", en:"Please give me a straw.",
+    chunks:[{th:"ขอ",rom:"Khǎaw"},{th:"หลอด",rom:"lòot"},{th:"หน่อย",rom:"nòi"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}],
+    hint:"Start with \"Khǎaw...\"" },
+  { type:"C", icon:"🛍️", en:"I don't want a bag.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"เอา",rom:"ao"},{th:"ถุง",rom:"thǔng"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}],
+    hint:"Start with \"Mâi...\"" },
+  { type:"C", icon:"🍱", en:"Please microwave it for me.",
+    chunks:[{th:"เวฟ",rom:"Wêep"},{th:"ให้",rom:"hâi"},{th:"หน่อย",rom:"nòi"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}],
+    hint:"Start with \"Wêep...\"" },
+  { type:"C", icon:"🧾", en:"I don't want the receipt.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"รับ",rom:"ráp"},{th:"สลิป",rom:"sà-lìp"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}],
+    hint:"Start with \"Mâi...\"" },
+  { type:"C", icon:"📱", en:"I don't have ALL Member.",
+    chunks:[{th:"ไม่",rom:"Mâi"},{th:"มี",rom:"mii"},{th:"ALL Member",rom:"ALL Member"},{th:"ครับ/ค่ะ",rom:"khráp/kha"}],
+    hint:"Start with \"Mâi...\"" },
+];
+
+const SV_TYPE_BADGE = { A:"⚡", B:"🎯", C:"🧩" };
+
+let svQueue=[], svIdx=0, svMissedNext=[], svGoodCount=0, svMissCount=0, svCycleNum=1, svAnswered=false;
+let svTimerTimeout=null, svTimerInterval=null;
+let svCWrongTries=0, svCPlaced=[], svCChipEls=[];
+
+function svShuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function startSevenChallenge(){
+  svQueue = svShuffle(SEVEN11_GAME_DATA);
+  svIdx = 0; svMissedNext = []; svGoodCount = 0; svMissCount = 0; svCycleNum = 1;
+  show("sevengame");
+  renderSevenQ();
+}
+document.getElementById("svStartBtn").onclick = startSevenChallenge;
+document.getElementById("svAgainBtn").onclick = startSevenChallenge;
+
+function svClearTimers(){
+  if(svTimerTimeout){ clearTimeout(svTimerTimeout); svTimerTimeout=null; }
+  if(svTimerInterval){ clearInterval(svTimerInterval); svTimerInterval=null; }
+}
+
+function svUpdateProgress(){
+  const q = svQueue[svIdx];
+  const progLabel = svCycleNum===1
+    ? "Round "+(svIdx+1)+" of "+svQueue.length
+    : "Review "+(svIdx+1)+" of "+svQueue.length;
+  document.getElementById("svProgress").firstChild.textContent = progLabel+" ";
+  document.getElementById("svTypeBadge").textContent = SV_TYPE_BADGE[q.type];
+  const cycleLbl = document.getElementById("svCycleLabel");
+  if(svCycleNum>1){ cycleLbl.style.display="block"; cycleLbl.textContent = "🔄 Review Cycle "+svCycleNum+" — missed questions only"; }
+  else { cycleLbl.style.display="none"; }
+}
+
+function renderSevenQ(){
+  svAnswered = false;
+  svClearTimers();
+  const q = svQueue[svIdx];
+  svUpdateProgress();
+  if(q.type==="A") renderTypeA(q);
+  else if(q.type==="B") renderTypeB(q);
+  else renderTypeC(q);
+}
+
+/* ==================================================================
+   TYPE A — staff asks a Thai question, student reacts (2 choices)
+   ================================================================== */
+function renderTypeA(q){
+  const opts = svShuffle([
+    {...q.correct, isCorrect:true},
+    {...q.wrong, isCorrect:false}
+  ]);
+  document.getElementById("svMount").innerHTML =
+    '<div class="sv-speaklabel">👤 Staff asks</div>'+
+    '<div class="sv-card">'+
+      '<div class="sv-icon">'+q.icon+'</div>'+
+      '<div class="sv-rom">'+q.rom+'</div>'+
+      '<div class="sv-thai">'+q.th+'</div>'+
+    '</div>'+
+    '<div class="sv-speaklabel">💬 How do you respond?</div>'+
+    '<div class="sv-choices" id="svChoices"></div>'+
+    '<div class="sv-feedback" id="svFeedback"></div>';
+
+  const host = document.getElementById("svChoices");
+  opts.forEach(opt=>{
+    const b = document.createElement("button");
+    b.className = "sv-choice";
+    b.innerHTML = '<span class="sv-crom">'+opt.rom+'</span><span class="sv-cth">'+opt.th+'</span>';
+    b.onclick = ()=> svAbPick(b, opt, q);
+    host.appendChild(b);
+  });
+}
+
+/* ==================================================================
+   TYPE B — English situation, student picks the correct Thai line
+   ================================================================== */
+function renderTypeB(q){
+  const opts = svShuffle([
+    {...q.correct, isCorrect:true},
+    {...q.wrong, isCorrect:false}
+  ]);
+  document.getElementById("svMount").innerHTML =
+    '<div class="sv-speaklabel">🧑 Your situation</div>'+
+    '<div class="sv-card">'+
+      '<div class="sv-icon">'+q.icon+'</div>'+
+      '<div class="sv-situation">'+q.situation+'</div>'+
+    '</div>'+
+    '<div class="sv-speaklabel">💬 What do you say?</div>'+
+    '<div class="sv-choices" id="svChoices"></div>'+
+    '<div class="sv-feedback" id="svFeedback"></div>';
+
+  const host = document.getElementById("svChoices");
+  opts.forEach(opt=>{
+    const b = document.createElement("button");
+    b.className = "sv-choice";
+    b.innerHTML = '<span class="sv-crom">'+opt.rom+'</span><span class="sv-cth">'+opt.th+'</span>';
+    b.onclick = ()=> svAbPick(b, opt, q);
+    host.appendChild(b);
+  });
+}
+
+/* ---- shared pick handling for A & B: fast feedback, auto-continue ---- */
+function svAbPick(btnEl, opt, q){
+  if(svAnswered) return;
+  svAnswered = true;
+  const fb = document.getElementById("svFeedback");
+  const allBtns = [...document.querySelectorAll(".sv-choice")];
+
+  if(opt.isCorrect){
+    svGoodCount++;
+    allBtns.forEach(el=>{ el.style.pointerEvents="none"; if(el===btnEl) el.classList.add("sv-picked"); else el.classList.add("sv-dim"); });
+    fb.textContent = "✅ Correct!";
+    fb.className = "sv-feedback sv-fb-good";
+  } else {
+    svMissCount++;
+    svMissedNext.push(q);
+    allBtns.forEach(el=>{
+      el.style.pointerEvents="none";
+      if(el===btnEl) el.classList.add("sv-wrong-pick");
+      else el.classList.add("sv-correct-reveal");
+    });
+    fb.textContent = "❌ Not quite — that was the right one!";
+    fb.className = "sv-feedback sv-fb-miss";
+  }
+
+  // answer + feedback stay on screen — student continues when ready
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "sv-nextbtn";
+  nextBtn.textContent = "Next →";
+  nextBtn.onclick = svNext;
+  document.getElementById("svMount").appendChild(nextBtn);
+}
+
+/* ==================================================================
+   TYPE C — build the sentence: tap chunks into order, press CHECK
+   No timer. Wrong attempts can be rearranged and rechecked.
+   ================================================================== */
+function renderTypeC(q){
+  svCPlaced = []; svCWrongTries = 0; svCChipEls = [];
+
+  document.getElementById("svMount").innerHTML =
+    '<div class="sv-icon" style="text-align:center;margin-bottom:6px;">'+q.icon+'</div>'+
+    '<div class="sv-en-prompt">'+q.en+'</div>'+
+    '<div class="sv-answerrow" id="svAnswerRow"></div>'+
+    '<div class="sv-bank" id="svBank"></div>'+
+    '<button class="sv-checkbtn" id="svCheckBtn">✓ CHECK</button>'+
+    '<div class="sv-hinttext" id="svHintText"></div>'+
+    '<button class="sv-hintbtn" id="svHintBtn">💡 Hint</button>'+
+    '<div class="sv-feedback" id="svFeedback"></div>';
+
+  const bank = document.getElementById("svBank");
+  const shuffled = svShuffle(q.chunks.map((c,i)=>({...c, origIndex:i})));
+  shuffled.forEach(chunk=>{
+    const b = document.createElement("button");
+    b.className = "sv-chip";
+    b.innerHTML = '<b>'+chunk.rom+'</b><small>'+chunk.th+'</small>';
+    b.onclick = ()=> svCTapBank(chunk, b);
+    bank.appendChild(b);
+    svCChipEls.push(b);
+  });
+
+  document.getElementById("svCheckBtn").onclick = ()=> svCCheck(q);
+  document.getElementById("svHintBtn").onclick = ()=>{
+    document.getElementById("svHintText").textContent = "💡 "+q.hint;
+    document.getElementById("svHintText").style.display = "block";
+  };
+}
+
+function svCTapBank(chunk, btnEl){
+  if(btnEl.classList.contains("sv-used")) return;
+  btnEl.classList.add("sv-used");
+  svCPlaced.push({chunk, btnEl});
+
+  const row = document.getElementById("svAnswerRow");
+  const chip = document.createElement("button");
+  chip.className = "sv-chip-placed";
+  chip.innerHTML = '<b>'+chunk.rom+'</b><small>'+chunk.th+'</small>';
+  chip.onclick = ()=> svCRemovePlaced(chunk, btnEl, chip);
+  row.appendChild(chip);
+}
+
+// tapping a placed chip sends it back to the bank — lets the student rearrange
+function svCRemovePlaced(chunk, bankBtnEl, placedChipEl){
+  svCPlaced = svCPlaced.filter(p=>p.chunk!==chunk);
+  placedChipEl.remove();
+  bankBtnEl.classList.remove("sv-used");
+}
+
+function svCCheck(q){
+  if(svCPlaced.length < q.chunks.length){
+    const fb = document.getElementById("svFeedback");
+    fb.textContent = "Place all the words first!";
+    fb.className = "sv-feedback";
+    return;
+  }
+  const correct = q.chunks.every((c,i)=> svCPlaced[i] && svCPlaced[i].chunk.origIndex===i);
+  const fb = document.getElementById("svFeedback");
+
+  if(correct){
+    svGoodCount++;
+    fb.textContent = "✅ Correct!";
+    fb.className = "sv-feedback sv-fb-good";
+    document.getElementById("svCheckBtn").style.display = "none";
+    document.getElementById("svHintBtn").style.display = "none";
+    const full = q.chunks.map(c=>c.rom).join(" ");
+    document.getElementById("svAnswerRow").insertAdjacentHTML("afterend",
+      '<div class="sv-c-correct-line"><div class="sv-rom">'+full+'</div></div>');
+    const nextBtn = document.createElement("button");
+    nextBtn.className = "sv-nextbtn";
+    nextBtn.textContent = "Next →";
+    nextBtn.onclick = svNext;
+    document.getElementById("svMount").appendChild(nextBtn);
+  } else {
+    svCWrongTries++;
+    fb.textContent = "❌ Try again!";
+    fb.className = "sv-feedback sv-fb-miss";
+    if(svCWrongTries>=2){ document.getElementById("svHintBtn").style.display = "block"; }
+  }
+}
+
+/* ---------------- shared next/cycle logic ---------------- */
+function svNext(){
+  svIdx++;
+  if(svIdx < svQueue.length){ renderSevenQ(); }
+  else { svFinishCycle(); }
+}
+
+function svFinishCycle(){
+  const missedThisCycle = svMissedNext.length;
+  document.getElementById("svrGood").textContent = svQueue.length - missedThisCycle;
+  document.getElementById("svrMissed").textContent = missedThisCycle;
+
+  if(missedThisCycle === 0){
+    show("sevencomplete");
+    confetti(40, true);
+    return;
+  }
+
+  document.getElementById("svrTitle").textContent = svCycleNum===1 ? "Round complete!" : "Review cycle complete!";
+  document.getElementById("svrMsg").textContent =
+    missedThisCycle===1
+      ? "1 question needs another try — let's get it!"
+      : missedThisCycle+" questions need another try — let's get them!";
+  show("sevenroundresult");
+}
+
+document.getElementById("svrContinueBtn").onclick = ()=>{
+  svQueue = svShuffle(svMissedNext);
+  svMissedNext = [];
+  svIdx = 0;
+  svCycleNum++;
+  show("sevengame");
+  renderSevenQ();
+};
+
+/* ==========================================================
+   SENTENCE BUILDER — tap shuffled word chunks in order to
+   reassemble the Thai sentence. Words only, no translation
+   shown up front except the English prompt to translate FROM.
+   ========================================================== */
+
+let sbQueue=[], sbIdx=0, sbGoodCount=0, sbRetryCount=0;
+let sbPlaced=[], sbHasRetried=false, sbChipEls=[];
+
+function startSentenceBuilder(key){
+  const data = BUILDER_DATA_BY_KEY[key] || BUILDER_MIXED;
+  sbQueue = svShuffle(data);
+  sbIdx = 0; sbGoodCount = 0; sbRetryCount = 0;
+  document.getElementById("sbTopicLabel").textContent = "🧩 " + (PG_LABEL[key] || "Mixed Sentences");
+  show("sentbuilder");
+  renderBuilderQ();
+}
+
+function renderBuilderQ(){
+  const q = sbQueue[sbIdx];
+  sbPlaced = []; sbHasRetried = false; sbChipEls = [];
+
+  document.getElementById("sbProgress").textContent = "Sentence "+(sbIdx+1)+" of "+sbQueue.length;
+  document.getElementById("sbPrompt").textContent = q.en;
+  document.getElementById("sbAnswerRow").innerHTML = "";
+  document.getElementById("sbFeedback").textContent = "";
+  document.getElementById("sbFeedback").className = "sb-feedback";
+  document.getElementById("sbNextBtn").style.display = "none";
+
+  const bank = document.getElementById("sbBank");
+  bank.innerHTML = "";
+  const shuffled = svShuffle(q.chunks.map((c,i)=>({...c, origIndex:i})));
+  shuffled.forEach(chunk=>{
+    const b = document.createElement("button");
+    b.className = "sb-chip";
+    b.innerHTML = '<b>'+chunk.rom+'</b>';
+    b.onclick = ()=> sbTapChunk(chunk, b);
+    bank.appendChild(b);
+    sbChipEls.push(b);
+  });
+}
+
+function sbTapChunk(chunk, btnEl){
+  if(btnEl.classList.contains("sb-used")) return;
+  if(sbPlaced.length >= sbQueue[sbIdx].chunks.length) return;
+  btnEl.classList.add("sb-used");
+  sbPlaced.push(chunk);
+
+  const row = document.getElementById("sbAnswerRow");
+  const chip = document.createElement("div");
+  chip.className = "sb-chip-placed";
+  chip.innerHTML = '<b>'+chunk.rom+'</b>';
+  row.appendChild(chip);
+
+  if(sbPlaced.length === sbQueue[sbIdx].chunks.length){
+    setTimeout(sbCheckAnswer, 250);
+  }
+}
+
+function sbCheckAnswer(){
+  const q = sbQueue[sbIdx];
+  const correct = q.chunks.every((c,i)=> sbPlaced[i] && sbPlaced[i].origIndex===i);
+  const fb = document.getElementById("sbFeedback");
+
+  if(correct){
+    if(!sbHasRetried) sbGoodCount++; else sbRetryCount++;
+    fb.textContent = "✅ Correct! Nicely assembled.";
+    fb.className = "sb-feedback sb-fb-good";
+    document.getElementById("sbNextBtn").style.display = "inline-block";
+  } else {
+    sbHasRetried = true;
+    fb.textContent = "❌ Not quite the right order — try again!";
+    fb.className = "sb-feedback sb-fb-bad";
+    setTimeout(sbResetAttempt, 1200);
+  }
+}
+
+function sbResetAttempt(){
+  sbPlaced = [];
+  document.getElementById("sbAnswerRow").innerHTML = "";
+  document.getElementById("sbFeedback").textContent = "";
+  document.getElementById("sbFeedback").className = "sb-feedback";
+  sbChipEls.forEach(el=>el.classList.remove("sb-used"));
+}
+document.getElementById("sbResetBtn").onclick = sbResetAttempt;
+
+function sbNext(){
+  sbIdx++;
+  if(sbIdx < sbQueue.length){ renderBuilderQ(); }
+  else {
+    document.getElementById("sbrGood").textContent = sbGoodCount;
+    document.getElementById("sbrRetry").textContent = sbRetryCount;
+    show("sentbuilderresult");
+    confetti(35, true);
+  }
+}
+document.getElementById("sbNextBtn").onclick = sbNext;
+</script>
+</body>
+</html>
