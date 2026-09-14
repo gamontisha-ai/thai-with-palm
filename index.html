@@ -633,6 +633,7 @@
       <button class="sb-resetbtn" id="sbResetBtn">↺ Reset</button>
     </div>
 
+    <div id="sbSoundRow"></div>
     <div class="sb-feedback" id="sbFeedback"></div>
     <button class="sv-nextbtn" id="sbNextBtn" style="display:none;">Next →</button>
   </section>
@@ -2397,6 +2398,7 @@ function renderBuilderQ(){
   document.getElementById("sbAnswerRow").innerHTML = "";
   document.getElementById("sbFeedback").textContent = "";
   document.getElementById("sbFeedback").className = "sb-feedback";
+  document.getElementById("sbSoundRow").innerHTML = "";
   document.getElementById("sbNextBtn").style.display = "none";
 
   const bank = document.getElementById("sbBank");
@@ -2439,6 +2441,16 @@ function sbCheckAnswer(){
     fb.textContent = "✅ Correct! Nicely assembled.";
     fb.className = "sb-feedback sb-fb-good";
     document.getElementById("sbNextBtn").style.display = "inline-block";
+
+    const fullThai = q.chunks.map(c=>c.th).join("");
+    speak(fullThai);
+    const soundRow = document.getElementById("sbSoundRow");
+    soundRow.className = "soundrow";
+    soundRow.innerHTML =
+      '<button class="soundbtn voice">🗣️ Hear it again</button>'+
+      '<button class="soundbtn">🐢 Slow</button>';
+    soundRow.children[0].onclick=()=> speak(fullThai, undefined, true);
+    soundRow.children[1].onclick=()=> speakSlow(fullThai);
   } else {
     sbHasRetried = true;
     fb.textContent = "❌ Not quite the right order — try again!";
