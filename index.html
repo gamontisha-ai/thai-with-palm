@@ -765,6 +765,10 @@
       <div id="pToneWrap" style="margin:9px 0 3px;"></div>
       <div class="pmean" id="pMean"></div>
       <div id="pExample"></div>
+      <div class="soundrow">
+        <button class="soundbtn voice" id="tpSayBtn">🗣️ Hear it</button>
+        <button class="soundbtn" id="tpSlowBtn">🐢 Slow</button>
+      </div>
       <div id="pContour" style="display:flex;justify-content:center;margin-top:8px;"></div>
     </div>
     <div class="pnav">
@@ -1037,12 +1041,22 @@ function showReveal(correct, q){
       </div>
       <div class="mean"><span class="kara" style="font-size:20px">${q.rom}</span> &nbsp;·&nbsp; <b>${q.thai}</b> = ${q.mean}</div>
       ${q.example?exampleHTML(q.example):""}
+      <div class="soundrow">
+        <button class="soundbtn voice" id="tqSayBtn">🗣️ Hear it again</button>
+        <button class="soundbtn" id="tqSlowBtn">🐢 Slow</button>
+      </div>
       <button class="nextbtn" id="nextBtn">${idx+1<queue.length?'Next →':'See results'}</button>
     </div>`;
   const svg=slot.querySelector(".reveal svg");
   setTimeout(()=>{ animateTracer(svg,1300,false);
     slot.querySelector(".reveal").scrollIntoView({behavior:"smooth", block:"center"}); }, 180);
   document.getElementById("nextBtn").onclick=next;
+  // voice — plays on the reveal only (after the student has already
+  // answered), same safe pattern as Word Games: hearing the tone before
+  // picking would give the answer away
+  speak(q.thai);
+  document.getElementById("tqSayBtn").onclick=()=> speak(q.thai);
+  document.getElementById("tqSlowBtn").onclick=()=> speakSlow(q.thai);
 }
 
 function next(){
@@ -1128,7 +1142,12 @@ function renderPractice(){
   if(pIdx===pList.length-1){ next.textContent="Take the test →"; next.classList.add("finish"); }
   else { next.textContent="Next →"; next.classList.remove("finish"); }
   setTimeout(()=>animateTracer(svg,1300,false),150);
+  // voice — safe to auto-play here since Practice mode is just browsing,
+  // there's no answer at stake
+  speak(q.thai);
 }
+document.getElementById("tpSayBtn").onclick=()=> speak(pList[pIdx].thai);
+document.getElementById("tpSlowBtn").onclick=()=> speakSlow(pList[pIdx].thai);
 document.getElementById("pPrev").onclick=()=>{ if(pIdx>0){ pIdx--; renderPractice(); } };
 document.getElementById("pNext").onclick=()=>{
   if(pIdx<pList.length-1){ pIdx++; renderPractice(); }
@@ -1286,6 +1305,19 @@ const PG_SETS = {
     {th:"นี่คืออะไร", rom:"Nîi khuu à-rai?", en:"What is this?", pic:"❔"},
     {th:"นั่นคืออะไร", rom:"Nân khuu à-rai?", en:"What is that?", pic:"🧐"},
   ],
+  khong: [
+    {th:"ของ", rom:"khǒng", en:"of / belonging to", pic:"🔑"},
+    {th:"ผม", rom:"phǒm", en:"my (male speaker)", pic:"🙋‍♂️"},
+    {th:"ฉัน", rom:"chǎn", en:"my (female speaker)", pic:"🙋‍♀️"},
+    {th:"คุณ", rom:"khun", en:"your", pic:"🫵"},
+    {th:"เขา", rom:"kháo", en:"his / her", pic:"🧍"},
+    {th:"พวกเขา", rom:"phûak kháo", en:"their", pic:"👥"},
+    {th:"พวกเรา", rom:"phûak rao", en:"our", pic:"🙌"},
+    {th:"เงินของผม", rom:"Ngern khǒng phǒm", en:"My money", pic:"💰"},
+    {th:"แมวของคุณ", rom:"Maew khǒng khun", en:"Your cat", pic:"🐱"},
+    {th:"บ้านของเขา", rom:"Bâan khǒng kháo", en:"His / Her house", pic:"🏠"},
+    {th:"รถของพวกเรา", rom:"Rót khǒng phûak rao", en:"Our car", pic:"🚗"},
+  ],
   sentences: [
     {th:"สบายดีไหม", rom:"Sabai dee mái?", en:"How are you?", pic:"😊"},
     {th:"แล้วคุณล่ะ", rom:"Láew khun lâ?", en:"How about you?", pic:"🔁"},
@@ -1402,12 +1434,12 @@ const PG_SETS = {
 };
 const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.things, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea,
-                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat,
+                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat, PG_SETS.khong,
                          PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 // vocabulary pool used only by "Word Games" Mixed Challenge (sentences/everyday/introduce live in their own section)
 const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.things, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea,
-                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat);
+                         PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat, PG_SETS.khong);
 // sentence pool used only by "Sentences Practice" Mixed option
 const PG_SENT_ALL = [].concat(PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 
@@ -1546,6 +1578,7 @@ const PG_META_VOCAB = [
   {key:"feel",        emo:"😋", title:"Feelings",                 sub:"ดี · สนุก · ร้อน · เย็น · อร่อย",       cls:"mai"},
   {key:"questwords",  emo:"❓", title:"Question Words",            sub:"อะไร · ที่ไหน · ใคร · เมื่อไหร่ · ทำไม",   cls:"kha"},
   {key:"thisthat",    emo:"👉", title:"This, That, These & Those", sub:"นี่ · นั่น · พวกนี้ · พวกนั้น",           cls:"kham"},
+  {key:"khong",       emo:"🔑", title:"Whose Is It? (ของ)",       sub:"ของ · ผม · ฉัน · คุณ · เขา",           cls:"paa"},
   {key:"sea",         emo:"🏖️", title:"Sea, Boats & Diving",      sub:"ทะเล · เรือ · ดำน้ำ · ปะการัง · ฉลาม",  cls:"paa"},
   {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mix"},
   {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"mai"},
@@ -1610,7 +1643,7 @@ const PG_CARD_COLOR = {
 // how to group each context's categories into labeled sections on the new home screen
 const PG_GROUPS_VOCAB = [
   {label:"Core Basics",         keys:["classroom","greet","quest","action","things","feel"]},
-  {label:"Grammar & Reference", keys:["questwords","thisthat"]},
+  {label:"Grammar & Reference", keys:["questwords","thisthat","khong"]},
   {label:"Travel & Adventure",  keys:["sea","destination","directions"]},
 ];
 const PG_GROUPS_SENT = [
@@ -2472,22 +2505,25 @@ let _speakCallId = 0;
 let _lastSpeakText = null;
 let _lastSpeakTime = 0;
 
-function speak(text){
+function speak(text, rate){
   if(!text) return;
+  const isSlow = typeof rate === "number";
+  const SPEED = isSlow ? rate : 0.88; // default: slightly slower than natural; explicit rate used for the "Slow" button
   // de-duplication guard: if this exact word was spoken recently (from any
   // code path — a stray double-fire, a stale error handler, a browser
   // trying to auto-restart the clip, etc.) skip it rather than let it
   // overlap or re-trigger into an audible repeat. Window is generous
   // (covers realistic slow-network fallback delays, observed up to ~2.5s)
+  // A manual "Slow" replay is exempt from the guard — that's a deliberate
+  // repeat the student asked for, not an accidental one.
   const now = Date.now();
-  if(text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
+  if(!isSlow && text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
   _lastSpeakText = text; _lastSpeakTime = now;
 
   const a = initTTSAudio();
   const urlPrimary   = "https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=" + encodeURIComponent(text);
   const urlSecondary = "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=th&client=gtx&q=" + encodeURIComponent(text);
   const callId = ++_speakCallId;
-  const SPEED = 0.88; // slightly slower than natural — easier for students to catch each syllable
   // "commit once" flag: the first attempt (primary/secondary/local) that
   // actually starts playing wins; if an earlier attempt was slow and only
   // resolves AFTER a fallback already took over, it gets silenced instead
@@ -2498,7 +2534,7 @@ function speak(text){
   function tryLocal(){
     if(callId!==_speakCallId || committed) return;
     committed = true;
-    speakLocal(text);
+    speakLocal(text, SPEED);
   }
   function trySecondary(){
     if(callId!==_speakCallId || committed) return;
@@ -2527,6 +2563,7 @@ function speak(text){
   }
   try{ tryPrimary(); }catch(e){ trySecondary(); }
 }
+function speakSlow(text){ speak(text, 0.65); }
 let VOICES=[];
 function loadVoices(){ try{ VOICES=window.speechSynthesis.getVoices()||[]; }catch(e){ VOICES=[]; } }
 if("speechSynthesis" in window){
@@ -2553,7 +2590,7 @@ function pickThaiVoice(){
          th.find(v=>!isMale(v) && /google/i.test(v.name)) ||
          th.find(v=>!isMale(v));
 }
-function speakLocal(text){
+function speakLocal(text, rate){
   try{
     if(!("speechSynthesis" in window) || !text) return;
     const synth=window.speechSynthesis;
@@ -2562,7 +2599,7 @@ function speakLocal(text){
     synth.cancel();
     setTimeout(()=>{
       const u=new SpeechSynthesisUtterance(text);
-      u.voice=v; u.lang=v.lang || "th-TH"; u.pitch=1; u.volume=1; u.rate=0.85;
+      u.voice=v; u.lang=v.lang || "th-TH"; u.pitch=1; u.volume=1; u.rate=(typeof rate==="number"?rate:0.85);
       synth.speak(u);
     }, 80);
   }catch(e){/* voice unavailable, fail silently */}
