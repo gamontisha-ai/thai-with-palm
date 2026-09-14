@@ -2458,9 +2458,18 @@ function initTTSAudio(){
   return _ttsAudio;
 }
 let _speakCallId = 0;
+let _lastSpeakText = null;
+let _lastSpeakTime = 0;
 
 function speak(text){
   if(!text) return;
+  // de-duplication guard: if this exact word was just spoken a moment ago
+  // (from any code path — a stray double-fire, a stale error handler, etc.)
+  // skip it rather than let it overlap into an audible repeat
+  const now = Date.now();
+  if(text===_lastSpeakText && (now-_lastSpeakTime)<1200) return;
+  _lastSpeakText = text; _lastSpeakTime = now;
+
   const a = initTTSAudio();
   const urlPrimary   = "https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=" + encodeURIComponent(text);
   const urlSecondary = "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=th&client=gtx&q=" + encodeURIComponent(text);
@@ -2474,6 +2483,7 @@ function speak(text){
     a.pause(); a.src = urlSecondary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
     a.load();
     const p = a.play();
+    if(p && p.then) p.then(()=>{ if(callId===_speakCallId) a.onerror = null; }); // clear stale handler once it's actually playing
     if(p && p.catch) p.catch(tryLocal);
   }
   function tryPrimary(){
@@ -2481,6 +2491,7 @@ function speak(text){
     a.pause(); a.currentTime = 0; a.src = urlPrimary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
     a.load();
     const p = a.play();
+    if(p && p.then) p.then(()=>{ if(callId===_speakCallId) a.onerror = null; }); // clear stale handler once it's actually playing — a later mid-stream network hiccup should NOT trigger a duplicate fallback playback
     if(p && p.catch) p.catch(trySecondary);
   }
   try{ tryPrimary(); }catch(e){ trySecondary(); }
