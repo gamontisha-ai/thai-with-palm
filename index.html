@@ -161,6 +161,31 @@
 
   /* ---------- QUIZ ---------- */
   .topbar{ display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .voice-settings-btn{ border:none; background:var(--white); box-shadow:var(--shadow-sm); border-radius:12px;
+    width:40px; height:40px; font-size:17px; cursor:pointer; }
+  .voice-settings-btn:active{ transform:scale(.94); }
+  .voice-modal{ position:fixed; inset:0; background:rgba(58,51,64,.45); z-index:80; display:flex;
+    align-items:flex-end; justify-content:center; }
+  .voice-modal-card{ background:var(--white); border-radius:24px 24px 0 0; padding:22px 20px 28px;
+    width:100%; max-width:520px; max-height:78vh; overflow-y:auto; box-shadow:0 -10px 30px rgba(0,0,0,.2); }
+  .voice-modal-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .voice-modal-head h3{ margin:0; font-size:19px; color:var(--ink); }
+  .voice-modal-close{ border:none; background:var(--bg); border-radius:10px; width:32px; height:32px;
+    font-size:15px; cursor:pointer; color:var(--soft); }
+  .voice-modal-sub{ color:var(--soft); font-size:13px; margin:2px 0 16px; }
+  .voice-option{ display:flex; align-items:center; gap:12px; background:var(--bg); border-radius:16px;
+    padding:14px 16px; margin-bottom:10px; cursor:pointer; border:2.5px solid transparent; transition:all .15s; }
+  .voice-option.selected{ border-color:var(--teal); background:var(--mint); }
+  .voice-option .vo-icon{ font-size:24px; width:40px; height:40px; flex:0 0 40px; background:var(--white);
+    border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-sm); }
+  .voice-option .vo-info{ flex:1; }
+  .voice-option .vo-name{ font-weight:800; color:var(--ink); font-size:15px; }
+  .voice-option .vo-tag{ font-size:12px; color:var(--soft); font-weight:700; margin-top:2px; }
+  .voice-option .vo-check{ font-size:18px; color:var(--teal); opacity:0; }
+  .voice-option.selected .vo-check{ opacity:1; }
+  .voice-option .vo-play{ border:none; background:var(--white); box-shadow:var(--shadow-sm); border-radius:10px;
+    width:36px; height:36px; font-size:14px; cursor:pointer; flex:0 0 36px; }
+  .voice-empty-note{ text-align:center; color:var(--soft); font-size:13px; margin-top:6px; line-height:1.6; }
   .back{ border:none;background:var(--white); box-shadow:var(--shadow-sm); border-radius:12px; width:40px;height:40px;
     font-size:18px; cursor:pointer; color:var(--ink);}
   .progwrap{ flex:1; height:12px; background:#efe4da; border-radius:999px; overflow:hidden;}
@@ -600,6 +625,7 @@
     <div class="topbar">
       <button class="back" data-go="hub">←</button>
       <div class="hubtitle" id="pgHomeTitle">🎮 Word Games</div>
+      <button class="voice-settings-btn" id="voiceSettingsBtn" title="Choose voice">🎙️</button>
     </div>
     <div class="modes">
       <button class="pgmodebtn active" data-pgmode="practice">📚 Practice</button>
@@ -614,6 +640,18 @@
     <div id="pgsets"></div>
     <div class="foot" id="pgHomeFoot">Read the meaning shown, then pick the matching Thai phrase.</div>
   </section>
+
+  <!-- ================= VOICE SETTINGS ================= -->
+  <div class="voice-modal hidden" id="voiceModal">
+    <div class="voice-modal-card">
+      <div class="voice-modal-head">
+        <h3>🎙️ Choose a voice</h3>
+        <button class="voice-modal-close" id="voiceModalClose">✕</button>
+      </div>
+      <p class="voice-modal-sub">Tap any option to hear a preview, then pick your favorite.</p>
+      <div id="voiceOptionsList"></div>
+    </div>
+  </div>
 
   <!-- ================= SENTENCE BUILDER ================= -->
   <section id="sentbuilder" class="hidden">
@@ -2458,8 +2496,24 @@ function initTTSAudio(){
   return _ttsAudio;
 }
 let _speakCallId = 0;
+const VOICE_PREF_KEY = "twp_voice_pref_v1";
+function getVoicePref(){
+  try{ return localStorage.getItem(VOICE_PREF_KEY) || "google"; }catch(e){ return "google"; }
+}
+function setVoicePref(name){
+  try{ localStorage.setItem(VOICE_PREF_KEY, name); }catch(e){/* storage unavailable */}
+}
+
 function speak(text){
   if(!text) return;
+  const pref = getVoicePref();
+  if(pref !== "google"){
+    // student/teacher explicitly picked a specific device voice — use exactly
+    // that one, skip Google entirely so there's no ambiguity about which
+    // voice will play
+    speakNamedVoice(text, pref);
+    return;
+  }
   const a = initTTSAudio();
   const urlPrimary   = "https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=" + encodeURIComponent(text);
   const urlSecondary = "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=th&client=gtx&q=" + encodeURIComponent(text);
@@ -2483,6 +2537,26 @@ function speak(text){
     if(p && p.catch) p.catch(trySecondary);
   }
   try{ tryPrimary(); }catch(e){ trySecondary(); }
+}
+function speakNamedVoice(text, voiceName){
+  try{
+    if(!("speechSynthesis" in window) || !text) return;
+    const synth=window.speechSynthesis;
+    const v = VOICES.find(x=>x.name===voiceName);
+    if(!v){ speak0Google(text); return; } // saved voice no longer available, fall back once
+    synth.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.voice=v; u.lang=v.lang || "th-TH"; u.pitch=1; u.volume=1; u.rate=0.85;
+      synth.speak(u);
+    }, 80);
+  }catch(e){/* voice unavailable, fail silently */}
+}
+function speak0Google(text){
+  const pref = getVoicePref();
+  setVoicePref("google");
+  speak(text);
+  setVoicePref(pref);
 }
 let VOICES=[];
 function loadVoices(){ try{ VOICES=window.speechSynthesis.getVoices()||[]; }catch(e){ VOICES=[]; } }
@@ -2524,6 +2598,52 @@ function speakLocal(text){
     }, 80);
   }catch(e){/* voice unavailable, fail silently */}
 }
+
+/* ---------- voice picker modal ---------- */
+function openVoiceModal(){
+  loadVoices();
+  const host = document.getElementById("voiceOptionsList");
+  const pref = getVoicePref();
+  const isTh=v=>/^th\b|th-|th_/i.test(v.lang) || /thai/i.test(v.name);
+  const thaiVoices = VOICES.filter(isTh);
+
+  let html = "";
+  html += voiceOptionHTML("google", "🌐", "Google Voice", "Recommended · standard Thai female voice", pref==="google");
+  thaiVoices.forEach(v=>{
+    html += voiceOptionHTML(v.name, "🔊", v.name.replace(/^Microsoft |^Google /,""), v.lang, pref===v.name);
+  });
+  host.innerHTML = html;
+  if(!thaiVoices.length){
+    host.innerHTML += '<div class="voice-empty-note">No other Thai voices found on this device — Google Voice is the best option here.</div>';
+  }
+
+  host.querySelectorAll(".voice-option").forEach(el=>{
+    const key = el.dataset.key;
+    el.querySelector(".vo-play").onclick = (e)=>{
+      e.stopPropagation();
+      const prevPref = getVoicePref();
+      setVoicePref(key); speak("สวัสดี"); setVoicePref(prevPref);
+    };
+    el.onclick = ()=>{
+      setVoicePref(key);
+      host.querySelectorAll(".voice-option").forEach(x=>x.classList.remove("selected"));
+      el.classList.add("selected");
+      speak("สวัสดี");
+    };
+  });
+  document.getElementById("voiceModal").classList.remove("hidden");
+}
+function voiceOptionHTML(key, icon, name, tag, selected){
+  return '<div class="voice-option'+(selected?' selected':'')+'" data-key="'+key.replace(/"/g,"&quot;")+'">'+
+    '<span class="vo-icon">'+icon+'</span>'+
+    '<div class="vo-info"><div class="vo-name">'+name+'</div><div class="vo-tag">'+tag+'</div></div>'+
+    '<span class="vo-check">✓</span>'+
+    '<button class="vo-play">▶️</button>'+
+  '</div>';
+}
+document.getElementById("voiceSettingsBtn").onclick = openVoiceModal;
+document.getElementById("voiceModalClose").onclick = ()=> document.getElementById("voiceModal").classList.add("hidden");
+document.getElementById("voiceModal").onclick = (e)=>{ if(e.target.id==="voiceModal") document.getElementById("voiceModal").classList.add("hidden"); };
 
 // Practice mode: auto-play + manual replay button — Word Games only for now (piloting here first)
 const _origRenderPP = renderPP;
