@@ -1055,7 +1055,7 @@ function showReveal(correct, q){
   // answered), same safe pattern as Word Games: hearing the tone before
   // picking would give the answer away
   speak(q.thai);
-  document.getElementById("tqSayBtn").onclick=()=> speak(q.thai);
+  document.getElementById("tqSayBtn").onclick=()=> speak(q.thai, undefined, true);
   document.getElementById("tqSlowBtn").onclick=()=> speakSlow(q.thai);
 }
 
@@ -1146,7 +1146,7 @@ function renderPractice(){
   // there's no answer at stake
   speak(q.thai);
 }
-document.getElementById("tpSayBtn").onclick=()=> speak(pList[pIdx].thai);
+document.getElementById("tpSayBtn").onclick=()=> speak(pList[pIdx].thai, undefined, true);
 document.getElementById("tpSlowBtn").onclick=()=> speakSlow(pList[pIdx].thai);
 document.getElementById("pPrev").onclick=()=>{ if(pIdx>0){ pIdx--; renderPractice(); } };
 document.getElementById("pNext").onclick=()=>{
@@ -2505,7 +2505,7 @@ let _speakCallId = 0;
 let _lastSpeakText = null;
 let _lastSpeakTime = 0;
 
-function speak(text, rate){
+function speak(text, rate, force){
   if(!text) return;
   const isSlow = typeof rate === "number";
   const SPEED = isSlow ? rate : 0.88; // default: slightly slower than natural; explicit rate used for the "Slow" button
@@ -2514,10 +2514,12 @@ function speak(text, rate){
   // trying to auto-restart the clip, etc.) skip it rather than let it
   // overlap or re-trigger into an audible repeat. Window is generous
   // (covers realistic slow-network fallback delays, observed up to ~2.5s)
-  // A manual "Slow" replay is exempt from the guard — that's a deliberate
-  // repeat the student asked for, not an accidental one.
+  // Manual replay buttons ("Hear it again", "Slow") always pass force=true
+  // to bypass this — the student explicitly asked to hear it again, so it
+  // must never be silently swallowed by the same guard that protects
+  // against accidental auto-repeats.
   const now = Date.now();
-  if(!isSlow && text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
+  if(!force && !isSlow && text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
   _lastSpeakText = text; _lastSpeakTime = now;
 
   const a = initTTSAudio();
@@ -2563,7 +2565,7 @@ function speak(text, rate){
   }
   try{ tryPrimary(); }catch(e){ trySecondary(); }
 }
-function speakSlow(text){ speak(text, 0.65); }
+function speakSlow(text){ speak(text, 0.65, true); }
 let VOICES=[];
 function loadVoices(){ try{ VOICES=window.speechSynthesis.getVoices()||[]; }catch(e){ VOICES=[]; } }
 if("speechSynthesis" in window){
@@ -2614,7 +2616,7 @@ renderPP = function(){
     speak(w.th);
   }
 };
-document.getElementById("ppSayBtn").onclick = ()=> speak(ppList[ppIdx].th);
+document.getElementById("ppSayBtn").onclick = ()=> speak(ppList[ppIdx].th, undefined, true);
 
 // Quiz mode: auto-play only on reveal (after answering), plus a replay button — Word Games only for now
 const _origPgChoose = pgChoose;
@@ -2632,7 +2634,7 @@ pgChoose = function(c,q){
     btn.className="soundbtn voice";
     btn.textContent="🗣️ Hear it again";
     btn.style.marginTop="10px";
-    btn.onclick=()=> speak(q.w.th);
+    btn.onclick=()=> speak(q.w.th, undefined, true);
     const nextBtn=document.getElementById("pgNext");
     nextBtn.parentNode.insertBefore(btn, nextBtn);
   }
