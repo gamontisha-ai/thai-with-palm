@@ -2607,36 +2607,37 @@ function speakLocal(text, rate){
   }catch(e){/* voice unavailable, fail silently */}
 }
 
-// Practice mode: auto-play + manual replay button — Word Games only for now (piloting here first)
+// Practice mode: auto-play + manual replay button — now covers both Word Games and Sentences Practice
 const _origRenderPP = renderPP;
 renderPP = function(){
   _origRenderPP();
-  if(pgHomeCtx==="vocab"){
-    const w = ppList[ppIdx];
-    speak(w.th);
-  }
+  const w = ppList[ppIdx];
+  speak(w.th);
 };
 document.getElementById("ppSayBtn").onclick = ()=> speak(ppList[ppIdx].th, undefined, true);
 
-// Quiz mode: auto-play only on reveal (after answering), plus a replay button — Word Games only for now
+// Quiz mode: auto-play only on reveal (after answering), plus Hear it again + Slow buttons —
+// now covers both Word Games and Sentences Practice
 const _origPgChoose = pgChoose;
 pgChoose = function(c,q){
   const alreadyAnswered = pgAnswered; // capture BEFORE the original handler runs
   _origPgChoose(c,q);
   if(alreadyAnswered) return; // this call was a duplicate/late fire — original handler
                                // already no-op'd, so the voice must too, or it repeats
-  if(pgHomeCtx!=="vocab") return;
   speak(q.w.th);
   const slot=document.getElementById("pgReveal");
   const revealEl = slot.querySelector(".reveal");
   if(revealEl){
-    const btn=document.createElement("button");
-    btn.className="soundbtn voice";
-    btn.textContent="🗣️ Hear it again";
-    btn.style.marginTop="10px";
-    btn.onclick=()=> speak(q.w.th, undefined, true);
+    const row=document.createElement("div");
+    row.className="soundrow";
+    row.style.marginTop="10px";
+    row.innerHTML =
+      '<button class="soundbtn voice">🗣️ Hear it again</button>'+
+      '<button class="soundbtn">🐢 Slow</button>';
+    row.children[0].onclick=()=> speak(q.w.th, undefined, true);
+    row.children[1].onclick=()=> speakSlow(q.w.th);
     const nextBtn=document.getElementById("pgNext");
-    nextBtn.parentNode.insertBefore(btn, nextBtn);
+    nextBtn.parentNode.insertBefore(row, nextBtn);
   }
 };
 </script>
