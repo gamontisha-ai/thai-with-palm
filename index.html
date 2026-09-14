@@ -2475,15 +2475,29 @@ function speak(text){
   const urlSecondary = "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=th&client=gtx&q=" + encodeURIComponent(text);
   const callId = ++_speakCallId;
   const SPEED = 0.88; // slightly slower than natural — easier for students to catch each syllable
+  // "commit once" flag: the first attempt (primary/secondary/local) that
+  // actually starts playing wins; if an earlier attempt was slow and only
+  // resolves AFTER a fallback already took over, it gets silenced instead
+  // of being allowed to play on top of the fallback — this is what was
+  // causing the same word to sound like it played twice
+  let committed = false;
 
-  function tryLocal(){ if(callId===_speakCallId) speakLocal(text); }
+  function tryLocal(){
+    if(callId!==_speakCallId || committed) return;
+    committed = true;
+    speakLocal(text);
+  }
   function trySecondary(){
-    if(callId!==_speakCallId) return;
+    if(callId!==_speakCallId || committed) return;
     a.onerror = tryLocal;
     a.pause(); a.src = urlSecondary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
     a.load();
     const p = a.play();
-    if(p && p.then) p.then(()=>{ if(callId===_speakCallId) a.onerror = null; }); // clear stale handler once it's actually playing
+    if(p && p.then) p.then(()=>{
+      if(callId!==_speakCallId) return;
+      if(committed){ a.pause(); return; } // a fallback already took over while this was loading — don't overlap
+      committed = true; a.onerror = null;
+    });
     if(p && p.catch) p.catch(tryLocal);
   }
   function tryPrimary(){
@@ -2491,7 +2505,11 @@ function speak(text){
     a.pause(); a.currentTime = 0; a.src = urlPrimary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
     a.load();
     const p = a.play();
-    if(p && p.then) p.then(()=>{ if(callId===_speakCallId) a.onerror = null; }); // clear stale handler once it's actually playing — a later mid-stream network hiccup should NOT trigger a duplicate fallback playback
+    if(p && p.then) p.then(()=>{
+      if(callId!==_speakCallId) return;
+      if(committed){ a.pause(); return; } // a fallback already took over while this was loading — don't overlap
+      committed = true; a.onerror = null;
+    });
     if(p && p.catch) p.catch(trySecondary);
   }
   try{ tryPrimary(); }catch(e){ trySecondary(); }
