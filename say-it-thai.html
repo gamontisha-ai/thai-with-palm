@@ -334,7 +334,6 @@
       <button class="brand" id="brand-btn">
         <span class="mark">🗣️</span> Say It Thai
       </button>
-      <button class="btn btn-outline" data-nav="manage">⚙️ Manage words</button>
     </div>
 
     <div class="hero">
@@ -352,7 +351,7 @@
       <div class="topics-grid" id="topics-grid"></div>
     </div>
 
-    <p class="footer-note">Made for class · your changes in Manage words are saved right here</p>
+    <p class="footer-note">Made for class</p>
   </section>
 
   <!-- ============ PLAY VIEW ============ -->
@@ -392,34 +391,6 @@
     </div>
   </section>
 
-  <!-- ============ MANAGE VIEW ============ -->
-  <section id="view-manage" class="view">
-    <div class="topnav">
-      <button class="brand" data-nav="home"><span class="mark">🗣️</span> Say It Thai</button>
-      <button class="btn btn-outline" data-nav="home">← Back to topics</button>
-    </div>
-    <div class="manage-wrap">
-      <div class="manage-head">
-        <h2>Manage your word bank</h2>
-      </div>
-      <div class="save-note" id="save-note">💾 Saving here updates the app for next time you open it.</div>
-
-      <div id="topics-list"></div>
-
-      <h3 style="margin:1.6rem 0 .8rem;font-size:1rem;">➕ Add a new topic</h3>
-      <div class="add-topic-form">
-        <div class="field">
-          <label for="new-topic-emoji">Emoji</label>
-          <input id="new-topic-emoji" maxlength="4" placeholder="⭐" value="⭐">
-        </div>
-        <div class="field" style="flex:3;">
-          <label for="new-topic-name">Topic name</label>
-          <input id="new-topic-name" placeholder="e.g. Family Members">
-        </div>
-        <button class="btn btn-teal" id="add-topic-btn">Add topic</button>
-      </div>
-    </div>
-  </section>
 
 </div>
 
@@ -430,7 +401,7 @@
   "use strict";
 
   /* ---------- seed data (baked in at publish time) ---------- */
-  var SEED_DATA = {"topics":[{"id":"greetings-politeness","name":"Greetings & Politeness","emoji":"👋","words":[{"id":"greetings-politeness-1","thai":"สวัสดี","karaoke":"sà-wàt-dee","english":"Hello","exKaraoke":"sà-wàt-dee kráp, yin-dee tôn-ráp","exEnglish":"“Hello, welcome!”"},{"id":"greetings-politeness-2","thai":"สบายดี","karaoke":"sabai dee","english":"Fine, well","exKaraoke":"sabai dee, kòp-kun kráp","exEnglish":"“I’m fine, thank you.”"},{"id":"greetings-politeness-3","thai":"ขอบคุณ","karaoke":"khòp khun","english":"Thank you","exKaraoke":"khòp khun mâak kráp","exEnglish":"“Thank you very much.”"},{"id":"greetings-politeness-4","thai":"คุณ","karaoke":"khun","english":"You","exKaraoke":"khun bpai nǎai?","exEnglish":"Where are you going?"},{"id":"greetings-politeness-5","thai":"ครับ","karaoke":"khráp","english":"Polite particle (male)","exKaraoke":"sà-wàt-dee khráp","exEnglish":"Hello (from a male speaker)."},{"id":"greetings-politeness-6","thai":"ค่ะ","karaoke":"khâ","english":"Polite particle (female)","exKaraoke":"sà-wàt-dee khâ","exEnglish":"Hello (from a female speaker)."},{"id":"greetings-politeness-7","thai":"นะครับ","karaoke":"ná khráp","english":"Softening particle","exKaraoke":"sà-bai dee ná khráp","exEnglish":"“are you well?”"}]},{"id":"questions-everyday-words","name":"Questions & Everyday Words","emoji":"💬","words":[{"id":"questions-everyday-words-1","thai":"ไหม","karaoke":"mái","english":"Yes/no question","exKaraoke":"à-ròi mái?","exEnglish":"Is it delicious?"},{"id":"questions-everyday-words-2","thai":"ล่ะ","karaoke":"lâ","english":"How about...?","exKaraoke":"Láew khun lâ khráp?","exEnglish":"“And how about you, sir?”"},{"id":"questions-everyday-words-3","thai":"อะไร","karaoke":"à-rai","english":"What","exKaraoke":"nîi khue à-rai?","exEnglish":"What is this?"},{"id":"questions-everyday-words-4","thai":"วันนี้","karaoke":"wan níi","english":"Today","exKaraoke":"wan níi aa-gàat dii","exEnglish":"Today the weather is good."},{"id":"questions-everyday-words-5","thai":"เมื่อวาน","karaoke":"Mûea Wan","english":"Yesterday","exKaraoke":"Mûea wan phǒm bpai tá-lay","exEnglish":"“Yesterday I went to the sea.”"},{"id":"questions-everyday-words-6","thai":"พรุ่งนี้","karaoke":"Phrûng-níi","english":"Tomorrow","exKaraoke":"Phrûng-níi phǒm jà bpai tá-lay","exEnglish":"“Tomorrow I will go to the sea.”"},{"id":"questions-everyday-words-7","thai":"มี","karaoke":"mii","english":"To have","exKaraoke":"chǎn mii phûean lǎai khon","exEnglish":"I have many friends."},{"id":"questions-everyday-words-8","thai":"แผน","karaoke":"phǎen","english":"Plan","exKaraoke":"khun mii phǎen à-rai?","exEnglish":"“What plan do you have?”"},{"id":"questions-everyday-words-9","thai":"ทุกวัน","karaoke":"thúk wan","english":"Every day","exKaraoke":"chǎn dèum gaa-fae thúk wan","exEnglish":"I drink coffee every day."},{"id":"questions-everyday-words-10","thai":"ยัง","karaoke":"yang","english":"Yet / Still","exKaraoke":"chǎn yang mâi gin khâao","exEnglish":"I haven’t eaten yet."},{"id":"questions-everyday-words-11","thai":"แล้ว","karaoke":"láew","english":"Already","exKaraoke":"chǎn gin khâao láew","exEnglish":"I’ve already eaten."}]},{"id":"question-words","name":"Question Words","emoji":"❓","words":[{"id":"question-words-1","thai":"อะไร","karaoke":"à-rai","english":"What?","exKaraoke":"nîî à-rai?","exEnglish":"“What is this?”"},{"id":"question-words-2","thai":"ที่ไหน","karaoke":"thîi-nǎi","english":"Where?","exKaraoke":"hông-náam yùu thîi-nǎi?","exEnglish":"“Where is the bathroom?”"},{"id":"question-words-3","thai":"ใคร","karaoke":"khrai","english":"Who?","exKaraoke":"nân khrai?","exEnglish":"“Who is that?”"},{"id":"question-words-4","thai":"เมื่อไหร่","karaoke":"mûea-rài","english":"When?","exKaraoke":"khun jà bpai mûea-rài?","exEnglish":"“When will you go?”"},{"id":"question-words-5","thai":"ทำไม","karaoke":"tham-mai","english":"Why?","exKaraoke":"tham-mai mâi maa?","exEnglish":"“Why didn't you come?”"},{"id":"question-words-6","thai":"ยังไง","karaoke":"yang-ngai","english":"How?","exKaraoke":"bpai yang-ngai?","exEnglish":"“How do I get there?”"},{"id":"question-words-7","thai":"อันไหน","karaoke":"an-nǎi","english":"Which?","exKaraoke":"chôop an-nǎi?","exEnglish":"“Which one do you like?”"}]},{"id":"this-that-these-those","name":"This, That, These & Those","emoji":"👉","words":[{"id":"this-that-these-those-1","thai":"นี่","karaoke":"Nîi","english":"This / This one","exKaraoke":"Nîi khuu à-rai?","exEnglish":"“What is this?”"},{"id":"this-that-these-those-2","thai":"นั่น","karaoke":"Nân","english":"That / That one","exKaraoke":"Nân khuu à-rai?","exEnglish":"“What is that?”"},{"id":"this-that-these-those-3","thai":"พวกนี้","karaoke":"Phûak níi","english":"These / These ones","exKaraoke":"Ao phûak níi.","exEnglish":"“I’ll take these.”"},{"id":"this-that-these-those-4","thai":"พวกนั้น","karaoke":"Phûak nán","english":"Those / Those ones","exKaraoke":"Ao phûak nán.","exEnglish":"“I’ll take those.”"},{"id":"this-that-these-those-5","thai":"อันนี้","karaoke":"An níi","english":"This one","exKaraoke":"Ao an níi.","exEnglish":"“I’ll take this one.”"},{"id":"this-that-these-those-6","thai":"อันนั้น","karaoke":"An nán","english":"That one","exKaraoke":"Ao an nán.","exEnglish":"“I’ll take that one.”"},{"id":"this-that-these-those-7","thai":"อันไหน","karaoke":"An nǎi","english":"Which one?","exKaraoke":"Ao an nǎi?","exEnglish":"“Which one do you want?”"},{"id":"this-that-these-those-8","thai":"อะไร","karaoke":"À-rai","english":"What?","exKaraoke":"Nîi khuu à-rai?","exEnglish":"“What is this?”"},{"id":"this-that-these-those-9","thai":"ที่นี่","karaoke":"Thîi nîi","english":"Here","exKaraoke":"Phǒm yùu thîi nîi.","exEnglish":"“I live here.”"},{"id":"this-that-these-those-10","thai":"ที่นั่น","karaoke":"Thîi nân","english":"There","exKaraoke":"Phǒm yùu thîi nân.","exEnglish":"“I live there.”"},{"id":"this-that-these-those-11","thai":"นี่คืออะไร","karaoke":"Nîi khuu à-rai?","english":"What is this?","exKaraoke":"","exEnglish":""},{"id":"this-that-these-those-12","thai":"นั่นคืออะไร","karaoke":"Nân khuu à-rai?","english":"What is that?","exKaraoke":"","exEnglish":""}]},{"id":"actions-things","name":"Actions & Things","emoji":"🏃","words":[{"id":"actions-things-1","thai":"ไป","karaoke":"bpai","english":"To go","exKaraoke":"chǎn bpai tá-lay","exEnglish":"I go to the sea."},{"id":"actions-things-2","thai":"ดื่ม","karaoke":"dèum","english":"To drink","exKaraoke":"chǎn dèum gaa-fae","exEnglish":"I drink coffee."},{"id":"actions-things-3","thai":"กาแฟ","karaoke":"gaa-fae","english":"Coffee","exKaraoke":"chǎn chôp gaa-fae mâak","exEnglish":"“I like coffee very much.”"},{"id":"actions-things-4","thai":"เพื่อน","karaoke":"phûean","english":"Friend","exKaraoke":"nîi khue phûean khǒong chǎn","exEnglish":"This is my friend."},{"id":"actions-things-5","thai":"กิน","karaoke":"gin","english":"To eat","exKaraoke":"khun yàak gin à-rai?","exEnglish":"What do you want to eat?"},{"id":"actions-things-6","thai":"ข้าว","karaoke":"khâao","english":"Rice, food","exKaraoke":"chǎn gin khâao thúk wan","exEnglish":"I eat rice every day."},{"id":"actions-things-7","thai":"เป็น","karaoke":"bpen","english":"Is / Am / Are","exKaraoke":"chǎn bpen khon Thai","exEnglish":"I am Thai."},{"id":"actions-things-8","thai":"กลับบ้าน","karaoke":"kràp bâan","english":"To go back home","exKaraoke":"chǎn kràp bâan láew","exEnglish":"I’ve already gone home."},{"id":"actions-things-9","thai":"ขอ","karaoke":"khǒr","english":"To ask for / May I have…","exKaraoke":"khǒr náam nòi","exEnglish":"Can I have some water?"},{"id":"actions-things-10","thai":"ให้","karaoke":"hâi","english":"Give","exKaraoke":"hâi phǒm dúai","exEnglish":"Give me some too."}]},{"id":"feelings-food","name":"Feelings & Food","emoji":"😋","words":[{"id":"feelings-food-1","thai":"ดี","karaoke":"dii","english":"Good","exKaraoke":"aa-gàat wan níi dii mâak","exEnglish":"The weather today is very good."},{"id":"feelings-food-2","thai":"สนุก","karaoke":"sà-nùk","english":"Fun","exKaraoke":"wan níi sà-nùk mâak","exEnglish":"Today was very fun."},{"id":"feelings-food-3","thai":"อากาศ","karaoke":"aa-gàat","english":"Weather","exKaraoke":"aa-gàat róon mâak","exEnglish":"The weather is very hot."},{"id":"feelings-food-4","thai":"ร้อน","karaoke":"róon","english":"Hot","exKaraoke":"wan níi róon mâak","exEnglish":"Today is very hot."},{"id":"feelings-food-5","thai":"เย็น","karaoke":"yen","english":"Cold","exKaraoke":"aa-gàat wan níi yen","exEnglish":"The weather today is cold."},{"id":"feelings-food-6","thai":"มาก","karaoke":"mâak","english":"Very, a lot","exKaraoke":"à-ròi mâak","exEnglish":"It’s very delicious."},{"id":"feelings-food-7","thai":"อร่อย","karaoke":"à-ròi","english":"Delicious","exKaraoke":"aa-hǎen Thai à-ròi mâak","exEnglish":"Thai food is very delicious."},{"id":"feelings-food-8","thai":"ก๋วยเตี๋ยว","karaoke":"gǔay dtǐao","english":"Noodles","exKaraoke":"chǎn chôp gǔay dtǐao mâak","exEnglish":"“I like noodles very much.”"}]},{"id":"classroom-expressions","name":"Classroom Expressions","emoji":"🎓","words":[{"id":"classroom-expressions-1","thai":"ใช่","karaoke":"châi","english":"Yes","exKaraoke":"châi, chǎn bpen khon Thai","exEnglish":"Yes, I am Thai."},{"id":"classroom-expressions-2","thai":"ไม่","karaoke":"mâi","english":"No","exKaraoke":"mâi châi","exEnglish":"Not right."},{"id":"classroom-expressions-3","thai":"ถูกต้อง","karaoke":"thùuk tôong","english":"Correct","exKaraoke":"thúuk tôong láew","exEnglish":"That’s correct. ( Correct already )"},{"id":"classroom-expressions-4","thai":"เก่งมาก","karaoke":"gèng mâak","english":"Great job!","exKaraoke":"gèng mâak khráp!","exEnglish":"Great job!"},{"id":"classroom-expressions-5","thai":"เยี่ยมมาก","karaoke":"yiam mâak","english":"Excellent!","exKaraoke":"yiam mâak khâ!","exEnglish":"Excellent!"},{"id":"classroom-expressions-6","thai":"เริ่ม","karaoke":"rôerm","english":"Start · Begin","exKaraoke":"rao rôerm","exEnglish":"We begin"},{"id":"classroom-expressions-7","thai":"เริ่มค่ะ","karaoke":"rôerm khâ","english":"Let's begin","exKaraoke":"rôerm khâ!","exEnglish":"Let’s begin!"},{"id":"classroom-expressions-8","thai":"พร้อมไหมคะ","karaoke":"phrôm mâi khá","english":"Are you ready?","exKaraoke":"phrôm mái khá?","exEnglish":"Are you ready?"},{"id":"classroom-expressions-9","thai":"ฟัง","karaoke":"fang","english":"Listen","exKaraoke":"fang phǒm nòi","exEnglish":"Listen to me."},{"id":"classroom-expressions-10","thai":"พูด","karaoke":"phûut","english":"Speak","exKaraoke":"khun phûut phaa-sǎa Thai gèng","exEnglish":"You speak Thai well."},{"id":"classroom-expressions-11","thai":"อ่าน","karaoke":"àan","english":"Read","exKaraoke":"chǎn àan nǎng-sǐeu thúk wan","exEnglish":"I read a book every day."},{"id":"classroom-expressions-12","thai":"ลองอีกครั้ง","karaoke":"loong ìik khráng","english":"Try again","exKaraoke":"loong îik khráng ná khráp","exEnglish":"Try again, please."},{"id":"classroom-expressions-13","thai":"ไม่เป็นไร","karaoke":"mâi pen rai","english":"No problem","exKaraoke":"mâi pen rai khâ","exEnglish":"No problem."},{"id":"classroom-expressions-14","thai":"จำได้ไหม","karaoke":"jam dâai mái","english":"Do you remember?","exKaraoke":"jam dâai mái khá?","exEnglish":"Do you remember?"},{"id":"classroom-expressions-15","thai":"เข้าใจไหม","karaoke":"khâo jai mái","english":"Do you understand?","exKaraoke":"khâo jai mái khá?","exEnglish":"Do you understand?"},{"id":"classroom-expressions-16","thai":"มีคำถามไหม","karaoke":"mii kham thǎam mái","english":"Do you have a question?","exKaraoke":"mii kham thǎam mái khá?","exEnglish":"Do you have a question?"}]},{"id":"sea-beach","name":"Sea & Beach","emoji":"🏖️","words":[{"id":"sea-beach-1","thai":"ทะเล","karaoke":"tá-lay","english":"Sea","exKaraoke":"chǎn chôp tá-lay mâak","exEnglish":"“I like the sea very much.”"},{"id":"sea-beach-2","thai":"ชายหาด","karaoke":"chaai hàat","english":"Beach","exKaraoke":"chaai hàat sǔai mâak","exEnglish":"The beach is very beautiful."},{"id":"sea-beach-3","thai":"เกาะ","karaoke":"gòr","english":"Island","exKaraoke":"gòr phi phi sǔai mâak","exEnglish":"Phi Phi Island is very beautiful."},{"id":"sea-beach-4","thai":"คลื่น","karaoke":"khlûen","english":"Wave","exKaraoke":"khlûen yài mâak","exEnglish":"The waves are very big."},{"id":"sea-beach-5","thai":"ทราย","karaoke":"saai","english":"Sand","exKaraoke":"saai khǎao mâak","exEnglish":"The sand is very white."},{"id":"sea-beach-6","thai":"น้ำทะเล","karaoke":"náam tá-lay","english":"Sea water","exKaraoke":"náam tá-lay sǎi mâak","exEnglish":"The sea water is very clear."},{"id":"sea-beach-7","thai":"พระอาทิตย์","karaoke":"phrá aa-thít","english":"Sun","exKaraoke":"phrá aa-thít róon mâak","exEnglish":"The sun is very hot."},{"id":"sea-beach-8","thai":"พระอาทิตย์ตก","karaoke":"phrá aa-thít dtòk","english":"Sunset","exKaraoke":"phrá aa-thít dtòk sǔai mâak","exEnglish":"The sunset is very beautiful."},{"id":"sea-beach-9","thai":"พระอาทิตย์ขึ้น","karaoke":"phrá aa-thít khûen","english":"Sunrise","exKaraoke":"phrá aa-thít khûen sǔai mâak","exEnglish":"The sunrise is very beautiful."},{"id":"sea-beach-10","thai":"ลม","karaoke":"lom","english":"Wind","exKaraoke":"lom raeng mâak","exEnglish":"The wind is very strong."}]},{"id":"boats-safety","name":"Boats & Safety","emoji":"🛟","words":[{"id":"boats-safety-1","thai":"เรือ","karaoke":"ruea","english":"Boat","exKaraoke":"rao bpai dooi ruea","exEnglish":"“We go by boat.”"},{"id":"boats-safety-2","thai":"ท่าเรือ","karaoke":"thâa ruea","english":"Pier","exKaraoke":"rao ror thîi thâa ruea","exEnglish":"We wait at the pier."},{"id":"boats-safety-3","thai":"เสื้อชูชีพ","karaoke":"sûea chuu chîip","english":"Life jacket","exKaraoke":"sài sûea chuu chîip gòn","exEnglish":"Put on the life jacket first."}]},{"id":"diving-marine-life","name":"Diving & Marine Life","emoji":"🤿","words":[{"id":"diving-marine-life-1","thai":"ดำน้ำ","karaoke":"dam náam","english":"Dive","exKaraoke":"chǎn chôp dam náam mâak","exEnglish":"“I like diving very much.”"},{"id":"diving-marine-life-2","thai":"ดำน้ำตื้น","karaoke":"dam náam dtûen","english":"Snorkeling","exKaraoke":"rao bpai dam náam dtûen","exEnglish":"We go snorkeling."},{"id":"diving-marine-life-3","thai":"ถังออกซิเจน","karaoke":"thǎng òk-sí-jen","english":"Oxygen tank","exKaraoke":"chái thǎng òk-sí-jen dam náam","exEnglish":"Use an oxygen tank to dive."},{"id":"diving-marine-life-4","thai":"ปะการัง","karaoke":"bpà-gaa-rang","english":"Coral","exKaraoke":"bpà-gaa-rang sǔai mâak","exEnglish":"The coral is very beautiful."},{"id":"diving-marine-life-5","thai":"ปลา","karaoke":"bplaa","english":"Fish","exKaraoke":"mii bplaa yóe mâak","exEnglish":"There are many fish."},{"id":"diving-marine-life-6","thai":"เต่าทะเล","karaoke":"dtào tá-lay","english":"Sea turtle","exKaraoke":"chǎn hěn dtào tá-lay","exEnglish":"I saw a sea turtle."},{"id":"diving-marine-life-7","thai":"ฉลาม","karaoke":"chà-làam","english":"Shark","exKaraoke":"chà-làam yài mâak","exEnglish":"The shark is very big."},{"id":"diving-marine-life-8","thai":"แมงกะพรุน","karaoke":"maeng gà-phrun","english":"Jellyfish","exKaraoke":"rá-wang maeng gà-phrun","exEnglish":"Watch out for jellyfish."}]},{"id":"thai-destinations","name":"Thai Destinations","emoji":"🗺️","words":[{"id":"thai-destinations-1","thai":"ภูเก็ต","karaoke":"phuu-gèt","english":"Phuket","exKaraoke":"chǎn bpai phuu-gèt","exEnglish":"I go to Phuket."},{"id":"thai-destinations-2","thai":"กระบี่","karaoke":"grà-bìi","english":"Krabi","exKaraoke":"grà-bìi sǔai mâak","exEnglish":"Krabi is very beautiful."},{"id":"thai-destinations-3","thai":"เกาะพีพี","karaoke":"gòr phi phi","english":"Phi Phi Island","exKaraoke":"rao bpai gòr phi phi","exEnglish":"We go to Phi Phi Island."},{"id":"thai-destinations-4","thai":"อ่าว","karaoke":"àao","english":"Bay","exKaraoke":"àao nîi sǔai mâak","exEnglish":"This bay is very beautiful."},{"id":"thai-destinations-5","thai":"จุดชมวิว","karaoke":"jùt chom wiu","english":"Viewpoint","exKaraoke":"jùt chom wiu sǔai mâak","exEnglish":"The viewpoint is very beautiful."},{"id":"thai-destinations-6","thai":"พระอาทิตย์ตกสวยมาก","karaoke":"phrá aa-thít dtòk sǔay mâak","english":"The sunset is beautiful","exKaraoke":"phrá aa-thít dtòk sǔay mâak thîi phuu-gèt","exEnglish":"The sunset is beautiful in Phuket."}]}]};
+  var SEED_DATA = {"topics":[{"id":"classroom-expressions","name":"Classroom Expressions","emoji":"🎓","words":[{"id":"classroom-expressions-1","thai":"ใช่","karaoke":"châi","english":"Yes","exKaraoke":"châi, chǎn bpen khon Thai","exEnglish":"Yes, I am Thai."},{"id":"classroom-expressions-2","thai":"ไม่","karaoke":"mâi","english":"No","exKaraoke":"mâi châi","exEnglish":"Not right."},{"id":"classroom-expressions-3","thai":"ถูกต้อง","karaoke":"thùuk tôong","english":"Correct","exKaraoke":"thúuk tôong láew","exEnglish":"That’s correct. ( Correct already )"},{"id":"classroom-expressions-4","thai":"เก่งมาก","karaoke":"gèng mâak","english":"Great job!","exKaraoke":"gèng mâak khráp!","exEnglish":"Great job!"},{"id":"classroom-expressions-5","thai":"เยี่ยมมาก","karaoke":"yiam mâak","english":"Excellent!","exKaraoke":"yiam mâak khâ!","exEnglish":"Excellent!"},{"id":"classroom-expressions-6","thai":"เริ่ม","karaoke":"rôerm","english":"Start · Begin","exKaraoke":"rao rôerm","exEnglish":"We begin"},{"id":"classroom-expressions-7","thai":"เริ่มค่ะ","karaoke":"rôerm khâ","english":"Let's begin","exKaraoke":"rôerm khâ!","exEnglish":"Let’s begin!"},{"id":"classroom-expressions-8","thai":"พร้อมไหมคะ","karaoke":"phrôm mâi khá","english":"Are you ready?","exKaraoke":"phrôm mái khá?","exEnglish":"Are you ready?"},{"id":"classroom-expressions-9","thai":"ฟัง","karaoke":"fang","english":"Listen","exKaraoke":"fang phǒm nòi","exEnglish":"Listen to me."},{"id":"classroom-expressions-10","thai":"พูด","karaoke":"phûut","english":"Speak","exKaraoke":"khun phûut phaa-sǎa Thai gèng","exEnglish":"You speak Thai well."},{"id":"classroom-expressions-11","thai":"อ่าน","karaoke":"àan","english":"Read","exKaraoke":"chǎn àan nǎng-sǐeu thúk wan","exEnglish":"I read a book every day."},{"id":"classroom-expressions-12","thai":"ลองอีกครั้ง","karaoke":"loong ìik khráng","english":"Try again","exKaraoke":"loong îik khráng ná khráp","exEnglish":"Try again, please."},{"id":"classroom-expressions-13","thai":"ไม่เป็นไร","karaoke":"mâi pen rai","english":"No problem","exKaraoke":"mâi pen rai khâ","exEnglish":"No problem."},{"id":"classroom-expressions-14","thai":"จำได้ไหม","karaoke":"jam dâai mái","english":"Do you remember?","exKaraoke":"jam dâai mái khá?","exEnglish":"Do you remember?"},{"id":"classroom-expressions-15","thai":"เข้าใจไหม","karaoke":"khâo jai mái","english":"Do you understand?","exKaraoke":"khâo jai mái khá?","exEnglish":"Do you understand?"},{"id":"classroom-expressions-16","thai":"มีคำถามไหม","karaoke":"mii kham thǎam mái","english":"Do you have a question?","exKaraoke":"mii kham thǎam mái khá?","exEnglish":"Do you have a question?"}]},{"id":"greetings-politeness","name":"Greetings & Politeness","emoji":"👋","words":[{"id":"greetings-politeness-1","thai":"สวัสดี","karaoke":"sà-wàt-dee","english":"Hello","exKaraoke":"sà-wàt-dee kráp, yin-dee tôn-ráp","exEnglish":"“Hello, welcome!”"},{"id":"greetings-politeness-2","thai":"สบายดี","karaoke":"sabai dee","english":"Fine, well","exKaraoke":"sabai dee, kòp-kun kráp","exEnglish":"“I’m fine, thank you.”"},{"id":"greetings-politeness-3","thai":"ขอบคุณ","karaoke":"khòp khun","english":"Thank you","exKaraoke":"khòp khun mâak kráp","exEnglish":"“Thank you very much.”"},{"id":"greetings-politeness-4","thai":"คุณ","karaoke":"khun","english":"You","exKaraoke":"khun bpai nǎai?","exEnglish":"Where are you going?"},{"id":"greetings-politeness-5","thai":"ครับ","karaoke":"khráp","english":"Polite particle (male)","exKaraoke":"sà-wàt-dee khráp","exEnglish":"Hello (from a male speaker)."},{"id":"greetings-politeness-6","thai":"ค่ะ","karaoke":"khâ","english":"Polite particle (female)","exKaraoke":"sà-wàt-dee khâ","exEnglish":"Hello (from a female speaker)."},{"id":"greetings-politeness-7","thai":"นะครับ","karaoke":"ná khráp","english":"Softening particle","exKaraoke":"sà-bai dee ná khráp","exEnglish":"“are you well?”"}]},{"id":"questions-everyday-words","name":"Questions & Everyday Words","emoji":"💬","words":[{"id":"questions-everyday-words-1","thai":"ไหม","karaoke":"mái","english":"Yes/no question","exKaraoke":"à-ròi mái?","exEnglish":"Is it delicious?"},{"id":"questions-everyday-words-2","thai":"ล่ะ","karaoke":"lâ","english":"How about...?","exKaraoke":"Láew khun lâ khráp?","exEnglish":"“And how about you, sir?”"},{"id":"questions-everyday-words-3","thai":"อะไร","karaoke":"à-rai","english":"What","exKaraoke":"nîi khue à-rai?","exEnglish":"What is this?"},{"id":"questions-everyday-words-4","thai":"วันนี้","karaoke":"wan níi","english":"Today","exKaraoke":"wan níi aa-gàat dii","exEnglish":"Today the weather is good."},{"id":"questions-everyday-words-5","thai":"เมื่อวาน","karaoke":"Mûea Wan","english":"Yesterday","exKaraoke":"Mûea wan phǒm bpai tá-lay","exEnglish":"“Yesterday I went to the sea.”"},{"id":"questions-everyday-words-6","thai":"พรุ่งนี้","karaoke":"Phrûng-níi","english":"Tomorrow","exKaraoke":"Phrûng-níi phǒm jà bpai tá-lay","exEnglish":"“Tomorrow I will go to the sea.”"},{"id":"questions-everyday-words-7","thai":"มี","karaoke":"mii","english":"To have","exKaraoke":"chǎn mii phûean lǎai khon","exEnglish":"I have many friends."},{"id":"questions-everyday-words-8","thai":"แผน","karaoke":"phǎen","english":"Plan","exKaraoke":"khun mii phǎen à-rai?","exEnglish":"“What plan do you have?”"},{"id":"questions-everyday-words-9","thai":"ทุกวัน","karaoke":"thúk wan","english":"Every day","exKaraoke":"chǎn dèum gaa-fae thúk wan","exEnglish":"I drink coffee every day."},{"id":"questions-everyday-words-10","thai":"ยัง","karaoke":"yang","english":"Yet / Still","exKaraoke":"chǎn yang mâi gin khâao","exEnglish":"I haven’t eaten yet."},{"id":"questions-everyday-words-11","thai":"แล้ว","karaoke":"láew","english":"Already","exKaraoke":"chǎn gin khâao láew","exEnglish":"I’ve already eaten."},{"id":"questions-everyday-words-12","thai":"ช่วงเช้า","karaoke":"Chûang cháao","english":"Around morning time","exKaraoke":"","exEnglish":""},{"id":"questions-everyday-words-13","thai":"ช่วงเที่ยง","karaoke":"Chûang thîang","english":"Around noon time","exKaraoke":"","exEnglish":""},{"id":"questions-everyday-words-14","thai":"ช่วงบ่าย","karaoke":"Chûang bàai","english":"Around afternoon time","exKaraoke":"","exEnglish":""},{"id":"questions-everyday-words-15","thai":"ช่วงเย็น","karaoke":"Chûang yen","english":"Around evening time","exKaraoke":"","exEnglish":""},{"id":"questions-everyday-words-16","thai":"ช่วงค่ำ","karaoke":"Chûang khâm","english":"Around night time","exKaraoke":"","exEnglish":""}]},{"id":"actions","name":"Actions","emoji":"🏃","words":[{"id":"actions-things-1","thai":"ไป","karaoke":"bpai","english":"To go","exKaraoke":"chǎn bpai tá-lay","exEnglish":"I go to the sea."},{"id":"actions-things-2","thai":"ดื่ม","karaoke":"dèum","english":"To drink","exKaraoke":"chǎn dèum gaa-fae","exEnglish":"I drink coffee."},{"id":"actions-things-5","thai":"กิน","karaoke":"gin","english":"To eat","exKaraoke":"khun yàak gin à-rai?","exEnglish":"What do you want to eat?"},{"id":"actions-things-7","thai":"เป็น","karaoke":"bpen","english":"Is / Am / Are","exKaraoke":"chǎn bpen khon Thai","exEnglish":"I am Thai."},{"id":"actions-things-8","thai":"กลับบ้าน","karaoke":"kràp bâan","english":"To go back home","exKaraoke":"chǎn kràp bâan láew","exEnglish":"I’ve already gone home."},{"id":"actions-things-9","thai":"ขอ","karaoke":"khǎw","english":"To ask for / May I have…","exKaraoke":"khǒr náam nòi","exEnglish":"Can I have some water?"},{"id":"actions-things-10","thai":"ให้","karaoke":"hâi","english":"Give","exKaraoke":"hâi phǒm dúai","exEnglish":"Give me some too."}]},{"id":"things","name":"Things","emoji":"☕","words":[{"id":"actions-things-3","thai":"กาแฟ","karaoke":"gaa-fae","english":"Coffee","exKaraoke":"chǎn chôp gaa-fae mâak","exEnglish":"“I like coffee very much.”"},{"id":"actions-things-4","thai":"เพื่อน","karaoke":"phûean","english":"Friend","exKaraoke":"nîi khue phûean khǒong chǎn","exEnglish":"This is my friend."},{"id":"actions-things-6","thai":"ข้าว","karaoke":"khâao","english":"Rice, food","exKaraoke":"chǎn gin khâao thúk wan","exEnglish":"I eat rice every day."},{"id":"feelings-food-3","thai":"อากาศ","karaoke":"aa-gàat","english":"Weather","exKaraoke":"aa-gàat róon mâak","exEnglish":"The weather is very hot."},{"id":"feelings-food-8","thai":"ก๋วยเตี๋ยว","karaoke":"gǔay dtǐao","english":"Noodles","exKaraoke":"chǎn chôp gǔay dtǐao mâak","exEnglish":"“I like noodles very much.”"}]},{"id":"feelings-food","name":"Feelings","emoji":"😋","words":[{"id":"feelings-food-1","thai":"ดี","karaoke":"dii","english":"Good","exKaraoke":"aa-gàat wan níi dii mâak","exEnglish":"The weather today is very good."},{"id":"feelings-food-2","thai":"สนุก","karaoke":"sà-nùk","english":"Fun","exKaraoke":"wan níi sà-nùk mâak","exEnglish":"Today was very fun."},{"id":"feelings-food-4","thai":"ร้อน","karaoke":"róon","english":"Hot","exKaraoke":"wan níi róon mâak","exEnglish":"Today is very hot."},{"id":"feelings-food-5","thai":"เย็น","karaoke":"yen","english":"Cold","exKaraoke":"aa-gàat wan níi yen","exEnglish":"The weather today is cold."},{"id":"feelings-food-6","thai":"มาก","karaoke":"mâak","english":"Very, a lot","exKaraoke":"à-ròi mâak","exEnglish":"It’s very delicious."},{"id":"feelings-food-7","thai":"อร่อย","karaoke":"à-ròi","english":"Delicious","exKaraoke":"aa-hǎen Thai à-ròi mâak","exEnglish":"Thai food is very delicious."}]},{"id":"question-words","name":"Question Words","emoji":"❓","words":[{"id":"question-words-1","thai":"อะไร","karaoke":"à-rai","english":"What?","exKaraoke":"nîî à-rai?","exEnglish":"“What is this?”"},{"id":"question-words-2","thai":"ที่ไหน","karaoke":"thîi-nǎi","english":"Where?","exKaraoke":"hông-náam yùu thîi-nǎi?","exEnglish":"“Where is the bathroom?”"},{"id":"question-words-3","thai":"ใคร","karaoke":"khrai","english":"Who?","exKaraoke":"nân khrai?","exEnglish":"“Who is that?”"},{"id":"question-words-4","thai":"เมื่อไหร่","karaoke":"mûea-rài","english":"When?","exKaraoke":"khun jà bpai mûea-rài?","exEnglish":"“When will you go?”"},{"id":"question-words-5","thai":"ทำไม","karaoke":"tham-mai","english":"Why?","exKaraoke":"tham-mai mâi maa?","exEnglish":"“Why didn't you come?”"},{"id":"question-words-6","thai":"ยังไง","karaoke":"yang-ngai","english":"How?","exKaraoke":"bpai yang-ngai?","exEnglish":"“How do I get there?”"},{"id":"question-words-7","thai":"อันไหน","karaoke":"an-nǎi","english":"Which?","exKaraoke":"chôop an-nǎi?","exEnglish":"“Which one do you like?”"}]},{"id":"this-that-these-those","name":"This, That, These & Those","emoji":"👉","words":[{"id":"this-that-these-those-1","thai":"นี่","karaoke":"Nîi","english":"This / This one","exKaraoke":"Nîi khuu à-rai?","exEnglish":"“What is this?”"},{"id":"this-that-these-those-2","thai":"นั่น","karaoke":"Nân","english":"That / That one","exKaraoke":"Nân khuu à-rai?","exEnglish":"“What is that?”"},{"id":"this-that-these-those-3","thai":"พวกนี้","karaoke":"Phûak níi","english":"These / These ones","exKaraoke":"Ao phûak níi.","exEnglish":"“I’ll take these.”"},{"id":"this-that-these-those-4","thai":"พวกนั้น","karaoke":"Phûak nán","english":"Those / Those ones","exKaraoke":"Ao phûak nán.","exEnglish":"“I’ll take those.”"},{"id":"this-that-these-those-5","thai":"อันนี้","karaoke":"An níi","english":"This one","exKaraoke":"Ao an níi.","exEnglish":"“I’ll take this one.”"},{"id":"this-that-these-those-6","thai":"อันนั้น","karaoke":"An nán","english":"That one","exKaraoke":"Ao an nán.","exEnglish":"“I’ll take that one.”"},{"id":"this-that-these-those-7","thai":"อันไหน","karaoke":"An nǎi","english":"Which one?","exKaraoke":"Ao an nǎi?","exEnglish":"“Which one do you want?”"},{"id":"this-that-these-those-8","thai":"อะไร","karaoke":"À-rai","english":"What?","exKaraoke":"Nîi khuu à-rai?","exEnglish":"“What is this?”"},{"id":"this-that-these-those-9","thai":"ที่นี่","karaoke":"Thîi nîi","english":"Here","exKaraoke":"Phǒm yùu thîi nîi.","exEnglish":"“I live here.”"},{"id":"this-that-these-those-10","thai":"ที่นั่น","karaoke":"Thîi nân","english":"There","exKaraoke":"Phǒm yùu thîi nân.","exEnglish":"“I live there.”"},{"id":"this-that-these-those-11","thai":"นี่คืออะไร","karaoke":"Nîi khuu à-rai?","english":"What is this?","exKaraoke":"","exEnglish":""},{"id":"this-that-these-those-12","thai":"นั่นคืออะไร","karaoke":"Nân khuu à-rai?","english":"What is that?","exKaraoke":"","exEnglish":""}]},{"id":"sea-boats-diving","name":"Sea, Boats & Diving","emoji":"🏖️","words":[{"id":"sea-beach-1","thai":"ทะเล","karaoke":"tá-lay","english":"Sea","exKaraoke":"chǎn chôp tá-lay mâak","exEnglish":"“I like the sea very much.”"},{"id":"sea-beach-2","thai":"ชายหาด","karaoke":"chaai hàat","english":"Beach","exKaraoke":"chaai hàat sǔai mâak","exEnglish":"The beach is very beautiful."},{"id":"sea-beach-3","thai":"เกาะ","karaoke":"gòr","english":"Island","exKaraoke":"gòr phi phi sǔai mâak","exEnglish":"Phi Phi Island is very beautiful."},{"id":"sea-beach-4","thai":"คลื่น","karaoke":"khlûen","english":"Wave","exKaraoke":"khlûen yài mâak","exEnglish":"The waves are very big."},{"id":"sea-beach-5","thai":"ทราย","karaoke":"saai","english":"Sand","exKaraoke":"saai khǎao mâak","exEnglish":"The sand is very white."},{"id":"sea-beach-6","thai":"น้ำทะเล","karaoke":"náam tá-lay","english":"Sea water","exKaraoke":"náam tá-lay sǎi mâak","exEnglish":"The sea water is very clear."},{"id":"sea-beach-7","thai":"พระอาทิตย์","karaoke":"phrá aa-thít","english":"Sun","exKaraoke":"phrá aa-thít róon mâak","exEnglish":"The sun is very hot."},{"id":"sea-beach-8","thai":"พระอาทิตย์ตก","karaoke":"phrá aa-thít dtòk","english":"Sunset","exKaraoke":"phrá aa-thít dtòk sǔai mâak","exEnglish":"The sunset is very beautiful."},{"id":"sea-beach-9","thai":"พระอาทิตย์ขึ้น","karaoke":"phrá aa-thít khûen","english":"Sunrise","exKaraoke":"phrá aa-thít khûen sǔai mâak","exEnglish":"The sunrise is very beautiful."},{"id":"sea-beach-10","thai":"ลม","karaoke":"lom","english":"Wind","exKaraoke":"lom raeng mâak","exEnglish":"The wind is very strong."},{"id":"boats-safety-1","thai":"เรือ","karaoke":"ruea","english":"Boat","exKaraoke":"rao bpai dooi ruea","exEnglish":"“We go by boat.”"},{"id":"boats-safety-2","thai":"ท่าเรือ","karaoke":"thâa ruea","english":"Pier","exKaraoke":"rao ror thîi thâa ruea","exEnglish":"We wait at the pier."},{"id":"boats-safety-3","thai":"เสื้อชูชีพ","karaoke":"sûea chuu chîip","english":"Life jacket","exKaraoke":"sài sûea chuu chîip gòn","exEnglish":"Put on the life jacket first."},{"id":"diving-marine-life-1","thai":"ดำน้ำ","karaoke":"dam náam","english":"Dive","exKaraoke":"chǎn chôp dam náam mâak","exEnglish":"“I like diving very much.”"},{"id":"diving-marine-life-2","thai":"ดำน้ำตื้น","karaoke":"dam náam dtûen","english":"Snorkeling","exKaraoke":"rao bpai dam náam dtûen","exEnglish":"We go snorkeling."},{"id":"diving-marine-life-3","thai":"ถังออกซิเจน","karaoke":"thǎng òk-sí-jen","english":"Oxygen tank","exKaraoke":"chái thǎng òk-sí-jen dam náam","exEnglish":"Use an oxygen tank to dive."},{"id":"diving-marine-life-4","thai":"ปะการัง","karaoke":"bpà-gaa-rang","english":"Coral","exKaraoke":"bpà-gaa-rang sǔai mâak","exEnglish":"The coral is very beautiful."},{"id":"diving-marine-life-5","thai":"ปลา","karaoke":"bplaa","english":"Fish","exKaraoke":"mii bplaa yóe mâak","exEnglish":"There are many fish."},{"id":"diving-marine-life-6","thai":"เต่าทะเล","karaoke":"dtào tá-lay","english":"Sea turtle","exKaraoke":"chǎn hěn dtào tá-lay","exEnglish":"I saw a sea turtle."},{"id":"diving-marine-life-7","thai":"ฉลาม","karaoke":"chà-làam","english":"Shark","exKaraoke":"chà-làam yài mâak","exEnglish":"The shark is very big."},{"id":"diving-marine-life-8","thai":"แมงกะพรุน","karaoke":"maeng gà-phrun","english":"Jellyfish","exKaraoke":"rá-wang maeng gà-phrun","exEnglish":"Watch out for jellyfish."}]},{"id":"thai-destinations","name":"Thai Destinations","emoji":"🗺️","words":[{"id":"thai-destinations-1","thai":"ภูเก็ต","karaoke":"phuu-gèt","english":"Phuket","exKaraoke":"chǎn bpai phuu-gèt","exEnglish":"I go to Phuket."},{"id":"thai-destinations-2","thai":"กระบี่","karaoke":"grà-bìi","english":"Krabi","exKaraoke":"grà-bìi sǔai mâak","exEnglish":"Krabi is very beautiful."},{"id":"thai-destinations-3","thai":"เกาะพีพี","karaoke":"gòr phi phi","english":"Phi Phi Island","exKaraoke":"rao bpai gòr phi phi","exEnglish":"We go to Phi Phi Island."},{"id":"thai-destinations-4","thai":"อ่าว","karaoke":"àao","english":"Bay","exKaraoke":"àao nîi sǔai mâak","exEnglish":"This bay is very beautiful."},{"id":"thai-destinations-5","thai":"จุดชมวิว","karaoke":"jùt chom wiu","english":"Viewpoint","exKaraoke":"jùt chom wiu sǔai mâak","exEnglish":"The viewpoint is very beautiful."},{"id":"thai-destinations-6","thai":"พระอาทิตย์ตกสวยมาก","karaoke":"phrá aa-thít dtòk sǔay mâak","english":"The sunset is beautiful","exKaraoke":"phrá aa-thít dtòk sǔay mâak thîi phuu-gèt","exEnglish":"The sunset is beautiful in Phuket."}]}]};
 
   var PASTELS = ["#FFE9CC","#CFEAF7","#E0C3FC","#FFF3B0","#FFB4B4","#B8F2E6","#FFD6BA","#D6E4FF","#FFD1DC","#FFE5A0"];
   var MODE_CAPTIONS = {
@@ -441,7 +412,6 @@
   var MODE_PROMPTS = { part1: 'What does it mean?', part2: 'How do you say it?' };
 
   var state = null;
-  var artifactApi = null;
 
   var nav = { view:'home', topicId:null, words:[], order:[], index:0, revealed:false, mode:'study', topicName:'', topicEmoji:'', colorIdx:0 };
 
@@ -451,28 +421,11 @@
     route();
     window.addEventListener('hashchange', route);
     window.addEventListener('keydown', onKeydown);
-    tryFetchLatest();
-    if (window.claude && typeof window.claude.use === 'function') {
-      window.claude.use('artifact').then(function(ns){ artifactApi = ns; });
-    }
   }
 
   function loadEmbeddedState(){
     try { return JSON.parse(JSON.stringify(SEED_DATA)); }
     catch(e){ return { topics: [] }; }
-  }
-
-  function tryFetchLatest(){
-    fetch('data/words.json', { cache: 'no-store' }).then(function(res){
-      if (!res.ok) return null;
-      return res.json();
-    }).then(function(json){
-      if (json && json.topics) {
-        state = json;
-        renderHome();
-        if (nav.view === 'manage') renderManage();
-      }
-    }).catch(function(){});
   }
 
   /* ---------- routing ---------- */
@@ -483,9 +436,6 @@
       var freshTopic = nav.topicId !== parts[1];
       nav.view = 'play';
       startTopic(parts[1], freshTopic);
-    } else if (parts[0] === 'manage') {
-      nav.view = 'manage';
-      renderManage();
     } else {
       nav.view = 'home';
     }
@@ -494,7 +444,7 @@
   }
 
   function showView(name){
-    ['home','play','manage'].forEach(function(v){
+    ['home','play'].forEach(function(v){
       document.getElementById('view-'+v).classList.toggle('active', v === name);
     });
   }
@@ -521,11 +471,6 @@
     document.getElementById('stats-pill').textContent = totalWords + ' words · ' + state.topics.length + ' topics';
 
     var html = '';
-    html += '<button class="topic-card shuffle-card" data-nav="play/__all__">' +
-      '<span class="topic-icon">🔀</span>' +
-      '<h3>All topics, shuffled</h3>' +
-      '<span class="topic-meta">' + totalWords + ' words · big review</span>' +
-      '</button>';
 
     state.topics.forEach(function(t, i){
       var color = PASTELS[i % PASTELS.length];
@@ -840,185 +785,12 @@
     }
   }
 
-  /* ================= MANAGE ================= */
-  var openTopicId = null;
-
-  function renderManage(){
-    var list = document.getElementById('topics-list');
-    var html = '';
-    if (!state.topics.length) {
-      html = '<p class="empty-note">No topics yet — add your first one below.</p>';
-    }
-    state.topics.forEach(function(t, i){
-      var color = PASTELS[i % PASTELS.length];
-      var isOpen = openTopicId === t.id;
-      html += '<div class="topic-block' + (isOpen ? ' open' : '') + '" data-topic="' + t.id + '">';
-      html += '<div class="topic-block-head" data-toggle="' + t.id + '">' +
-        '<span class="topic-icon" style="background:' + color + ';">' + t.emoji + '</span>' +
-        '<h3>' + escapeHtml(t.name) + ' <span style="color:var(--ink-soft);font-weight:700;font-size:.85rem;">· ' + t.words.length + '</span></h3>' +
-        '<button class="icon-btn danger" data-del-topic="' + t.id + '" title="Delete topic">🗑</button>' +
-        '<span class="chev">▾</span>' +
-        '</div>';
-      html += '<div class="topic-block-body">';
-      t.words.forEach(function(w){
-        html += '<div class="word-row" data-word="' + w.id + '">' +
-          '<span class="thai">' + escapeHtml(w.thai) + '</span>' +
-          '<span class="wk">' + escapeHtml(w.karaoke) + '</span>' +
-          '<span class="we">' + escapeHtml(w.english) + '</span>' +
-          '<span class="row-actions">' +
-          '<button class="icon-btn" data-edit="' + t.id + '|' + w.id + '" title="Edit">✎</button>' +
-          '<button class="icon-btn danger" data-del-word="' + t.id + '|' + w.id + '" title="Delete">🗑</button>' +
-          '</span></div>';
-      });
-      html += '<button class="btn btn-outline btn-sm" style="margin-top:.8rem;" data-addword="' + t.id + '">+ Add word</button>';
-      html += '<div class="form-slot" data-formslot="' + t.id + '"></div>';
-      html += '</div></div>';
-    });
-    list.innerHTML = html;
-
-    if (!artifactApi) {
-      document.getElementById('save-note').innerHTML = '🔓 View-only in this window — open your saved app link to keep new words for next time.';
-    }
-  }
-
-  document.addEventListener('click', function(e){
-    var toggle = e.target.closest('[data-toggle]');
-    if (toggle && !e.target.closest('[data-del-topic]')) {
-      var id = toggle.getAttribute('data-toggle');
-      openTopicId = (openTopicId === id) ? null : id;
-      renderManage();
-      return;
-    }
-    var addWordBtn = e.target.closest('[data-addword]');
-    if (addWordBtn) { showWordForm(addWordBtn.getAttribute('data-addword'), null); return; }
-    var editBtn = e.target.closest('[data-edit]');
-    if (editBtn) {
-      var parts = editBtn.getAttribute('data-edit').split('|');
-      showWordForm(parts[0], parts[1]);
-      return;
-    }
-    var delWordBtn = e.target.closest('[data-del-word]');
-    if (delWordBtn) {
-      var p = delWordBtn.getAttribute('data-del-word').split('|');
-      deleteWord(p[0], p[1]);
-      return;
-    }
-    var delTopicBtn = e.target.closest('[data-del-topic]');
-    if (delTopicBtn) { deleteTopic(delTopicBtn.getAttribute('data-del-topic')); return; }
-  });
-
-  function findTopic(topicId){ return state.topics.filter(function(t){ return t.id === topicId; })[0]; }
-
-  function showWordForm(topicId, wordId){
-    var slot = document.querySelector('[data-formslot="' + topicId + '"]');
-    if (!slot) return;
-    var t = findTopic(topicId);
-    var w = wordId ? t.words.filter(function(x){ return x.id === wordId; })[0] : null;
-    var html = '<div class="word-form">' +
-      field('Thai script', 'f-thai', w ? w.thai : '', 'thai') +
-      field('Pronunciation', 'f-karaoke', w ? w.karaoke : '') +
-      field('Meaning', 'f-english', w ? w.english : '') +
-      field('Example (romanized)', 'f-exk', w ? w.exKaraoke : '') +
-      field('Example (English)', 'f-exe', w ? w.exEnglish : '', '', true) +
-      '<div class="word-form-actions">' +
-      '<button class="btn btn-ghost btn-sm" data-cancel="' + topicId + '">Cancel</button>' +
-      '<button class="btn btn-teal btn-sm" data-save="' + topicId + (wordId ? ('|' + wordId) : '') + '">Save word</button>' +
-      '</div></div>';
-    slot.innerHTML = html;
-    slot.querySelector('[data-cancel]').onclick = function(){ slot.innerHTML = ''; };
-    slot.querySelector('[data-save]').onclick = function(){ saveWordForm(topicId, wordId, slot); };
-  }
-
-  function field(label, id, val, extraClass, full){
-    return '<div class="field' + (full ? ' full' : '') + '">' +
-      '<label for="' + id + '">' + label + '</label>' +
-      '<input id="' + id + '" class="' + (extraClass||'') + '" value="' + escapeAttr(val||'') + '">' +
-      '</div>';
-  }
-
-  function saveWordForm(topicId, wordId, slot){
-    var thai = slot.querySelector('#f-thai').value.trim();
-    var karaoke = slot.querySelector('#f-karaoke').value.trim();
-    var english = slot.querySelector('#f-english').value.trim();
-    var exk = slot.querySelector('#f-exk').value.trim();
-    var exe = slot.querySelector('#f-exe').value.trim();
-    if (!thai || !karaoke || !english) { toast('⚠️ Thai, pronunciation and meaning are required'); return; }
-
-    var t = findTopic(topicId);
-    if (wordId) {
-      var w = t.words.filter(function(x){ return x.id === wordId; })[0];
-      w.thai = thai; w.karaoke = karaoke; w.english = english; w.exKaraoke = exk; w.exEnglish = exe;
-    } else {
-      var newId = topicId + '-' + (Date.now().toString(36));
-      t.words.push({ id: newId, thai: thai, karaoke: karaoke, english: english, exKaraoke: exk, exEnglish: exe });
-    }
-    persist('✅ Word saved');
-    renderManage();
-  }
-
-  function deleteWord(topicId, wordId){
-    var t = findTopic(topicId);
-    t.words = t.words.filter(function(x){ return x.id !== wordId; });
-    persist('🗑 Word deleted');
-    renderManage();
-  }
-
-  function deleteTopic(topicId){
-    var t = findTopic(topicId);
-    if (!t) return;
-    if (!confirm('Delete "' + t.name + '" and all ' + t.words.length + ' words in it?')) return;
-    state.topics = state.topics.filter(function(x){ return x.id !== topicId; });
-    persist('🗑 Topic deleted');
-    renderManage();
-  }
-
-  document.getElementById('add-topic-btn').addEventListener('click', function(){
-    var nameEl = document.getElementById('new-topic-name');
-    var emojiEl = document.getElementById('new-topic-emoji');
-    var name = nameEl.value.trim();
-    var emoji = emojiEl.value.trim() || '⭐';
-    if (!name) { toast('⚠️ Give the topic a name'); return; }
-    var id = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') || ('topic-' + Date.now());
-    var base = id, n = 2;
-    while (findTopic(id)) { id = base + '-' + n; n++; }
-    state.topics.push({ id: id, name: name, emoji: emoji, words: [] });
-    nameEl.value = ''; emojiEl.value = '⭐';
-    openTopicId = id;
-    persist('✅ Topic added');
-    renderManage();
-  });
-
-  /* ---------- persistence ---------- */
-  var persistTimer = null;
-  function persist(msg){
-    renderHome();
-    toast(msg);
-    clearTimeout(persistTimer);
-    persistTimer = setTimeout(doPersist, 400);
-  }
-
-  function doPersist(){
-    if (!artifactApi || !artifactApi.publish) return;
-    artifactApi.publish({ 'data/words.json': JSON.stringify(state) }).then(function(){
-      /* saved */
-    }).catch(function(err){
-      if (err && (err.code === 'not_writer' || err.code === 'not_granted' || err.code === 'capability_disabled')) {
-        document.getElementById('save-note').innerHTML = '🔓 View-only in this window — open your saved app link to keep new words for next time.';
-      } else if (err && err.code === 'conflict') {
-        /* another save won; harmless, in-memory state stays usable this session */
-      } else {
-        toast('⚠️ Could not save — try again');
-      }
-    });
-  }
-
   /* ---------- utils ---------- */
   function escapeHtml(str){
     return String(str==null?'':str).replace(/[&<>"']/g, function(c){
       return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
     });
   }
-  function escapeAttr(str){ return escapeHtml(str); }
 
   boot();
 })();
