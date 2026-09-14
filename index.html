@@ -47,6 +47,43 @@
 
   .choose{ text-align:center; font-weight:800; color:var(--soft); font-size:15px; margin:2px 0 10px; letter-spacing:.3px;}
   .setbtns{ display:flex; flex-direction:column; gap:12px; }
+
+  /* ---------- new garden-style category grid ---------- */
+  .pg-searchbox{ display:flex; align-items:center; gap:10px; background:var(--white); border-radius:16px;
+    padding:13px 16px; box-shadow:0 8px 20px -10px rgba(232,102,60,.25); border:2px solid #FFE0C2; margin:2px 0 16px; }
+  .pg-searchbox input{ border:none; outline:none; font-family:var(--sans); font-size:15px; color:var(--ink);
+    width:100%; font-weight:700; background:transparent; }
+  .pg-searchbox input::placeholder{ color:var(--soft); font-weight:600; }
+  .pg-search-icon{ font-size:16px; }
+
+  .pg-bed-label{ font-family:var(--sans); font-weight:800; color:#D9631E; font-size:13.5px; margin:18px 2px 10px; }
+  .pg-bed-label:first-child{ margin-top:0; }
+
+  .pg-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .pg-card{ background:var(--white); border-radius:20px; padding:18px 12px 14px; text-align:center; cursor:pointer;
+    box-shadow:0 8px 18px -10px rgba(0,0,0,.15); transition:transform .15s; border:2.5px solid transparent; }
+  .pg-card:active{ transform:scale(.96); }
+  .pg-card.done{ border-color:#4CAF50; }
+  .pg-card .pg-icon{ font-size:34px; margin-bottom:8px; display:block; }
+  .pg-card h3{ font-family:var(--sans); font-weight:900; font-size:17px; margin:0 0 5px; line-height:1.25; color:var(--ink); }
+  .pg-card .pg-sample{ font-family:var(--thai); color:var(--soft); font-size:12.5px; font-weight:600; line-height:1.35; min-height:17px; }
+  .pg-growbar{ height:8px; background:#F0E6D8; border-radius:99px; margin-top:11px; overflow:hidden; }
+  .pg-growfill{ height:100%; border-radius:99px; transition:width .3s; }
+  .pg-countrow{ display:flex; align-items:center; justify-content:center; gap:5px; margin-top:7px; }
+  .pg-count{ font-size:9.5px; color:var(--soft); font-weight:800; letter-spacing:.3px; }
+  .pg-badge{ font-size:11px; }
+
+  .pg-card.pg-wide{ grid-column:1 / -1; display:flex; align-items:center; gap:14px; text-align:left; padding:16px 18px; }
+  .pg-card.pg-wide .pg-icon{ margin-bottom:0; font-size:32px; }
+  .pg-card.pg-wide .pg-growbar{ margin-top:8px; }
+
+  .pg-word-row{ background:var(--white); border-radius:14px; padding:13px 16px; margin-bottom:8px;
+    box-shadow:0 4px 12px -8px rgba(0,0,0,.12); display:flex; justify-content:space-between; align-items:center;
+    border-left:3px solid #E8663C; }
+  .pg-word-row b{ font-family:var(--thai); font-size:18px; color:var(--ink); font-weight:600; }
+  .pg-word-row .pg-word-meta{ color:var(--soft); font-size:12.5px; font-weight:700; }
+  .pg-word-row .pg-word-cat{ color:var(--soft); font-size:10.5px; font-weight:800; text-transform:uppercase; }
+  .pg-empty{ text-align:center; color:var(--soft); font-weight:700; margin-top:26px; font-size:14px; }
   .setbtn{
     border:none; cursor:pointer; border-radius:20px; padding:16px 18px; text-align:left;
     display:flex; align-items:center; gap:14px; box-shadow:var(--shadow-sm); color:#fff;
@@ -57,11 +94,11 @@
     border-radius:14px; display:flex; align-items:center; justify-content:center;}
   .setbtn b{ font-size:20px; display:block; }
   .setbtn small{ font-size:13px; opacity:.92; font-family:var(--thai); font-weight:500; }
-  .setbtn.mai{ background:linear-gradient(135deg,var(--coral),#ff8a5c); }
-  .setbtn.kha{ background:linear-gradient(135deg,var(--teal),#3fc4b0); }
+  .setbtn.mai{ background:linear-gradient(135deg,#FF6B5C,#ff8a5c); }
+  .setbtn.kha{ background:linear-gradient(135deg,#12A79E,#3fc4b0); }
   .setbtn.kham{ background:linear-gradient(135deg,#7C5CBF,#9d86dd); }
   .setbtn.paa{ background:linear-gradient(135deg,#E5567F,#ff88a8); }
-  .setbtn.mix{ background:linear-gradient(135deg,var(--gold-d),var(--gold)); }
+  .setbtn.mix{ background:linear-gradient(135deg,#E0912A,#FFB23E); }
   .foot{ text-align:center; color:var(--soft); font-size:12.5px; margin-top:16px; line-height:1.5;}
 
   /* ---------- Teacher Section ---------- */
@@ -280,8 +317,8 @@
     border-radius:15px; display:flex; align-items:center; justify-content:center; }
   .hubbtn b{ font-size:21px; display:block; }
   .hubbtn small{ font-size:13.5px; opacity:.93; font-weight:700; }
-  .hb1{ background:linear-gradient(135deg,var(--coral),#ff8a5c); }
-  .hb2{ background:linear-gradient(135deg,var(--teal),#3fc4b0); }
+  .hb1{ background:linear-gradient(135deg,#FF6B5C,#ff8a5c); }
+  .hb2{ background:linear-gradient(135deg,#12A79E,#3fc4b0); }
   .hb3{ background:linear-gradient(135deg,#7C5CBF,#9d86dd); }
   .hb4{ background:linear-gradient(135deg,#E5567F,#ff88a8); }
   .hubtitle{ flex:1; font-weight:800; font-size:19px; color:var(--ink); }
@@ -499,7 +536,7 @@
       <button class="back" id="teacherBackBtn">←</button>
       <div class="hubtitle">🔒 Teacher Section</div>
     </div>
-    <div class="teacher-note">🔓 Note: edits made in "Manage word bank" below are view-only in this embedded window — they won't be saved after you refresh.</div>
+    <div class="teacher-note">📖 Reference & practice tool — browse topics and play through the words. To add or change vocabulary, just tell Claude in chat.</div>
     <iframe class="teacher-iframe" src="say-it-thai.html" title="Say It Thai"></iframe>
   </section>
 
@@ -570,7 +607,11 @@
       <button class="pgmodebtn" data-pgmode="build" id="pgBuildModeBtn" style="display:none;">🧩 Build it</button>
     </div>
     <div class="choose" id="pgHint">Learn first — picture, pronunciation and meaning. No pressure.</div>
-    <div class="setbtns" id="pgsets"></div>
+    <div class="pg-searchbox">
+      <span class="pg-search-icon">🔍</span>
+      <input type="text" id="pgSearchInput" placeholder="Search a word or a section…">
+    </div>
+    <div id="pgsets"></div>
     <div class="foot" id="pgHomeFoot">Read the meaning shown, then pick the matching Thai phrase.</div>
   </section>
 
@@ -623,6 +664,7 @@
       <div class="ppthai" id="ppThai">สวัสดี</div>
       <div class="pprom" id="ppRom">sà-wàt-dee</div>
       <div class="ppen" id="ppEn">hello</div>
+      <div class="soundrow"><button class="soundbtn voice" id="ppSayBtn">🗣️ Hear it</button></div>
     </div>
     <div class="pnav">
       <button class="pprev" id="ppPrev">← Prev</button>
@@ -1137,24 +1179,26 @@ const PG_SETS = {
   action: [
     {th:"ไป", rom:"bpai", en:"to go", pic:"🚶"},
     {th:"ดื่ม", rom:"dèum", en:"to drink", pic:"🥤"},
-    {th:"กาแฟ", rom:"gaa-fae", en:"coffee", pic:"☕"},
-    {th:"เพื่อน", rom:"phûean", en:"friend", pic:"👬"},
     {th:"กิน", rom:"gin", en:"to eat", pic:"🍽️"},
-    {th:"ข้าว", rom:"khâao", en:"rice, food", pic:"🍚"},
     {th:"เป็น", rom:"bpen", en:"is / am / are", pic:"🟰"},
     {th:"กลับบ้าน", rom:"kràp bâan", en:"to go back home", pic:"🏠"},
     {th:"ขอ", rom:"khǎw", en:"wish / to ask for", pic:"✨"},
     {th:"ให้", rom:"hâi", en:"give", pic:"🎁"},
   ],
+  things: [
+    {th:"กาแฟ", rom:"gaa-fae", en:"coffee", pic:"☕"},
+    {th:"เพื่อน", rom:"phûean", en:"friend", pic:"👬"},
+    {th:"ข้าว", rom:"khâao", en:"rice, food", pic:"🍚"},
+    {th:"อากาศ", rom:"aa-gàat", en:"weather", pic:"🌤️"},
+    {th:"ก๋วยเตี๋ยว", rom:"gǔay dtǐao", en:"noodles", pic:"🍜"},
+  ],
   feel: [
     {th:"ดี", rom:"dii", en:"good", pic:"👍"},
     {th:"สนุก", rom:"sà-nùk", en:"fun", pic:"🎉"},
-    {th:"อากาศ", rom:"aa-gàat", en:"weather", pic:"🌤️"},
     {th:"ร้อน", rom:"róon", en:"hot", pic:"🔥"},
     {th:"เย็น", rom:"yen", en:"cold", pic:"❄️"},
     {th:"มาก", rom:"mâak", en:"very, a lot", pic:"💯"},
     {th:"อร่อย", say:"อะ-ร่อย", rom:"à-ròi", en:"delicious", pic:"😋"},
-    {th:"ก๋วยเตี๋ยว", rom:"gǔay dtǐao", en:"noodles", pic:"🍜"},
   ],
   classroom: [
     {th:"ใช่", rom:"châi", en:"yes", pic:"✅"},
@@ -1170,6 +1214,9 @@ const PG_SETS = {
     {th:"อ่าน", rom:"àan", en:"read", pic:"📖"},
     {th:"ลองอีกครั้ง", rom:"loong ìik khráng", en:"try again", pic:"🔄"},
     {th:"ไม่เป็นไร", rom:"mâi pen rai", en:"no problem", pic:"😌"},
+    {th:"จำได้ไหม", rom:"jam dâai mái", en:"Do you remember?", pic:"🧠"},
+    {th:"เข้าใจไหม", rom:"khâo jai mái", en:"Do you understand?", pic:"💡"},
+    {th:"มีคำถามไหม", rom:"mii kham thǎam mái", en:"Do you have a question?", pic:"🙋"},
   ],
   sea: [
     {th:"ทะเล", rom:"tá-lay", en:"sea", pic:"🌊"},
@@ -1232,6 +1279,8 @@ const PG_SETS = {
     {th:"พวกนั้น", rom:"Phûak nán", en:"Those / Those ones", pic:"🤲"},
     {th:"อันนี้", rom:"An níi", en:"This one", pic:"☝️"},
     {th:"อันนั้น", rom:"An nán", en:"That one", pic:"👆"},
+    {th:"อันไหน", rom:"An nǎi", en:"Which one?", pic:"👆"},
+    {th:"อะไร", rom:"À-rai", en:"What?", pic:"❔"},
     {th:"ที่นี่", rom:"Thîi nîi", en:"Here", pic:"📍"},
     {th:"ที่นั่น", rom:"Thîi nân", en:"There", pic:"📌"},
     {th:"นี่คืออะไร", rom:"Nîi khuu à-rai?", en:"What is this?", pic:"❔"},
@@ -1351,12 +1400,12 @@ const PG_SETS = {
     {th:"ใช่ครับ/ค่ะ", rom:"Châi khráp/kha.", en:"Yes, that's right.", pic:"💵"},
   ],
 };
-const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
+const PG_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.things, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea,
                          PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat,
                          PG_SETS.sentences, PG_SETS.everyday, PG_SETS.introduce);
 // vocabulary pool used only by "Word Games" Mixed Challenge (sentences/everyday/introduce live in their own section)
-const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.feel,
+const PG_VOCAB_ALL = [].concat(PG_SETS.greet, PG_SETS.quest, PG_SETS.action, PG_SETS.things, PG_SETS.feel,
                          PG_SETS.classroom, PG_SETS.sea,
                          PG_SETS.destination, PG_SETS.directions, PG_SETS.questwords, PG_SETS.thisthat);
 // sentence pool used only by "Sentences Practice" Mixed option
@@ -1489,16 +1538,17 @@ const BUILDER_DATA_BY_KEY = {
 
 
 const PG_META_VOCAB = [
-  {key:"greet",       emo:"👋", title:"Greetings & Politeness",  sub:"สวัสดี · สบายดี · ขอบคุณ · นะครับ",     cls:"mai"},
-  {key:"quest",       emo:"🤔", title:"Questions & Everyday",    sub:"ไหม · อะไร · เมื่อวาน · พรุ่งนี้ · แล้ว", cls:"kha"},
-  {key:"action",      emo:"🍽️", title:"Actions & Things",        sub:"ไป · ดื่ม · กิน · เป็น · กลับบ้าน",     cls:"kham"},
-  {key:"feel",        emo:"😋", title:"Feelings & Food",         sub:"ดี · ร้อน · เย็น · อร่อย · ก๋วยเตี๋ยว",  cls:"paa"},
   {key:"classroom",   emo:"🎓", title:"Classroom Expressions",   sub:"ใช่ · ไม่ · ฟัง · พูด · อ่าน",          cls:"mai"},
-  {key:"sea",         emo:"🏖️", title:"Sea, Boats & Diving",      sub:"ทะเล · เรือ · ดำน้ำ · ปะการัง · ฉลาม",  cls:"kha"},
-  {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mai"},
-  {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"kha"},
-  {key:"questwords",  emo:"❓", title:"Question Words",            sub:"อะไร · ที่ไหน · ใคร · เมื่อไหร่ · ทำไม",   cls:"kham"},
-  {key:"thisthat",    emo:"👉", title:"This, That, These & Those", sub:"นี่ · นั่น · พวกนี้ · พวกนั้น",           cls:"paa"},
+  {key:"greet",       emo:"👋", title:"Greetings & Politeness",  sub:"สวัสดี · สบายดี · ขอบคุณ · นะครับ",     cls:"kha"},
+  {key:"quest",       emo:"🤔", title:"Questions & Everyday",    sub:"ไหม · อะไร · เมื่อวาน · พรุ่งนี้ · แล้ว", cls:"kham"},
+  {key:"action",      emo:"🏃", title:"Actions",                  sub:"ไป · ดื่ม · กิน · เป็น · กลับบ้าน",     cls:"paa"},
+  {key:"things",      emo:"☕", title:"Things",                   sub:"กาแฟ · เพื่อน · ข้าว · อากาศ · ก๋วยเตี๋ยว", cls:"mix"},
+  {key:"feel",        emo:"😋", title:"Feelings",                 sub:"ดี · สนุก · ร้อน · เย็น · อร่อย",       cls:"mai"},
+  {key:"questwords",  emo:"❓", title:"Question Words",            sub:"อะไร · ที่ไหน · ใคร · เมื่อไหร่ · ทำไม",   cls:"kha"},
+  {key:"thisthat",    emo:"👉", title:"This, That, These & Those", sub:"นี่ · นั่น · พวกนี้ · พวกนั้น",           cls:"kham"},
+  {key:"sea",         emo:"🏖️", title:"Sea, Boats & Diving",      sub:"ทะเล · เรือ · ดำน้ำ · ปะการัง · ฉลาม",  cls:"paa"},
+  {key:"destination", emo:"📍", title:"Thai Destinations",        sub:"ภูเก็ต · กระบี่ · เกาะพีพี",              cls:"mix"},
+  {key:"directions",  emo:"🧭", title:"Directions",                sub:"ไป · ซ้าย · ขวา · เลี้ยวซ้าย · ใกล้ · ไกล", cls:"mai"},
   {key:"all",         emo:"🎯", title:"Mixed Challenge",          sub:"All "+PG_VOCAB_ALL.length+" words",    cls:"mix"},
 ];
 const PG_META_SENT = [
@@ -1513,25 +1563,173 @@ let pgHomeCtx = "vocab";       // "vocab" or "sent"
 const PG_LABEL = {};
 PG_META_VOCAB.concat(PG_META_SENT).forEach(m=>PG_LABEL[m.key]=m.title);
 
+/* ==========================================================
+   PROGRESS TRACKING — real completion, not decorative.
+   Stored in localStorage (this is a real deployed website now,
+   not a sandboxed Claude artifact, so localStorage is fine here).
+   A word counts as "done" once the student has answered it
+   correctly at least once in the picture/meaning quiz.
+   ========================================================== */
+const PG_PROGRESS_KEY = "twp_progress_v1";
+let PG_PROGRESS = {};
+try{ PG_PROGRESS = JSON.parse(localStorage.getItem(PG_PROGRESS_KEY)) || {}; }catch(e){ PG_PROGRESS = {}; }
+function savePgProgress(){
+  try{ localStorage.setItem(PG_PROGRESS_KEY, JSON.stringify(PG_PROGRESS)); }catch(e){/* storage unavailable, ignore */}
+}
+// build a lookup from every word's Thai text -> the real category key it
+// belongs to, so progress marks correctly even when answered inside a
+// "Mixed" pool that spans several categories
+const WORD_CATEGORY_MAP = {};
+const PG_TRACKED_KEYS = ["classroom","greet","quest","action","things","feel","questwords","thisthat",
+  "sea","destination","directions","sentences","everyday","introduce"];
+PG_TRACKED_KEYS.forEach(key=>{
+  (PG_SETS[key]||[]).forEach(w=>{ WORD_CATEGORY_MAP[w.th] = key; });
+});
+function markWordCorrect(thaiText){
+  const catKey = WORD_CATEGORY_MAP[thaiText];
+  if(!catKey) return;
+  if(!PG_PROGRESS[catKey]) PG_PROGRESS[catKey] = {};
+  PG_PROGRESS[catKey][thaiText] = true;
+  savePgProgress();
+}
+function getCategoryProgress(key){
+  const total = (PG_SETS[key]||[]).length;
+  if(!total) return {done:0, total:0, pct:0};
+  const done = Object.keys(PG_PROGRESS[key]||{}).length;
+  return {done, total, pct: Math.round((done/total)*100)};
+}
+
+// per-category accent color for the new card design (warm, varied, easy on the eyes)
+const PG_CARD_COLOR = {
+  classroom:"#F0C05A", greet:"#FF6B8B", quest:"#FFD24B", action:"#FF7F6B", things:"#8DC63F",
+  feel:"#E85D75", questwords:"#C983E0", thisthat:"#5DBB7A", sea:"#3FB6C9", destination:"#6BAA6E",
+  directions:"#E8663C", sentences:"#FF6B8B", everyday:"#8DC63F", introduce:"#FFD24B",
+  seven11:"#3FB6C9", all:"#E8663C", allsent:"#E8663C",
+};
+
+// how to group each context's categories into labeled sections on the new home screen
+const PG_GROUPS_VOCAB = [
+  {label:"Core Basics",         keys:["classroom","greet","quest","action","things","feel"]},
+  {label:"Grammar & Reference", keys:["questwords","thisthat"]},
+  {label:"Travel & Adventure",  keys:["sea","destination","directions"]},
+];
+const PG_GROUPS_SENT = [
+  {label:"Practice",   keys:["sentences","everyday","introduce"]},
+  {label:"Challenges", keys:["seven11","allsent"]},
+];
+
 let pgMode="practice", pgSetKey="greet";
 let ppList=[], ppIdx=0;
 let pgQueue=[], pgIdx=0, pgScore=0, pgAnswered=false;
 
 /* ---------- set menu ---------- */
+function pgCardClickHandler(m){
+  if(pgMode==="build"){ startSentenceBuilder(m.key); return; }
+  if(m.special && m.key==="seven11" && pgMode!=="practice"){ show("sevenintro"); return; }
+  if(pgMode==="practice") startPgPractice(m.key); else startPgGame(m.key);
+}
+
+function pgCardHTML(m){
+  const isSpecial = m.key==="all" || m.key==="allsent" || m.key==="seven11";
+  const prog = isSpecial ? null : getCategoryProgress(m.key);
+  const color = PG_CARD_COLOR[m.key] || "#E8663C";
+  const done = prog && prog.total>0 && prog.pct>=100;
+  const countLabel = m.key==="all" ? "All "+PG_VOCAB_ALL.length+" words"
+    : m.key==="allsent" ? "All "+PG_SENT_ALL.length+" sentences"
+    : (PG_SETS[m.key]?PG_SETS[m.key].length:"")+" WORDS";
+  const barHTML = prog
+    ? '<div class="pg-growbar"><div class="pg-growfill" style="width:'+prog.pct+'%;background:'+color+'"></div></div>'
+    : '';
+  const badge = done ? '<span class="pg-badge">✅</span>' : '';
+  return '<div class="pg-card'+(done?' done':'')+'" data-key="'+m.key+'">'+
+    '<span class="pg-icon">'+m.emo+'</span>'+
+    '<h3>'+m.title+'</h3>'+
+    '<div class="pg-sample">'+m.sub.replace(/^All \d+ (words|sentences)$/,'')+'</div>'+
+    barHTML+
+    '<div class="pg-countrow"><span class="pg-count">'+countLabel+'</span>'+badge+'</div>'+
+  '</div>';
+}
+
 function renderPgSets(){
-  const host=document.getElementById("pgsets"); host.innerHTML="";
-  PG_META.forEach(m=>{
-    const b=document.createElement("button");
-    b.className="setbtn "+m.cls;
-    b.innerHTML='<span class="emo">'+m.emo+'</span><span><b>'+m.title+'</b><small>'+m.sub+'</small></span>';
-    b.onclick=()=>{
-      if(pgMode==="build"){ startSentenceBuilder(m.key); return; }
-      if(m.special && m.key==="seven11" && pgMode!=="practice"){ show("sevenintro"); return; }
-      if(pgMode==="practice") startPgPractice(m.key); else startPgGame(m.key);
+  const host=document.getElementById("pgsets");
+  const searchBox = document.getElementById("pgSearchInput");
+  if(searchBox) searchBox.value = "";
+  renderPgGrid("");
+}
+
+function renderPgGrid(filter){
+  const host=document.getElementById("pgsets");
+  filter = (filter||"").trim().toLowerCase();
+  const groups = pgHomeCtx==="sent" ? PG_GROUPS_SENT : PG_GROUPS_VOCAB;
+  const metaByKey = {}; PG_META.forEach(m=>metaByKey[m.key]=m);
+  // "Mixed Challenge" isn't part of any group for vocab (shown as a trailing
+  // wide card instead); for sentences, "Mixed Sentences" already lives inside
+  // the "Challenges" group above, so there's nothing extra to trail here
+  const trailingKey = pgHomeCtx==="sent" ? null : "all";
+
+  if(!filter){
+    let html = "";
+    groups.forEach(g=>{
+      const cards = g.keys.map(k=>metaByKey[k]).filter(Boolean);
+      if(!cards.length) return;
+      html += '<div class="pg-bed-label">'+g.label+'</div><div class="pg-grid">'+
+        cards.map(pgCardHTML).join('') + '</div>';
+    });
+    const trailing = trailingKey ? metaByKey[trailingKey] : null;
+    if(trailing){
+      html += '<div class="pg-bed-label">Challenge</div>'+
+        '<div class="pg-grid"><div class="pg-card pg-wide" data-key="'+trailing.key+'">'+
+        '<span class="pg-icon">'+trailing.emo+'</span>'+
+        '<div><h3>'+trailing.title+'</h3><div class="pg-count">'+trailing.sub+'</div></div></div></div>';
+    }
+    host.innerHTML = html;
+  } else {
+    const catMatches = PG_META.filter(m=>m.title.toLowerCase().includes(filter));
+    const wordPool = pgHomeCtx==="sent" ? PG_SENT_ALL : PG_VOCAB_ALL;
+    const wordMatches = wordPool.filter(w=>
+      w.en.toLowerCase().includes(filter) || w.rom.toLowerCase().includes(filter) || w.th.includes(filter)
+    ).slice(0,20);
+
+    let html = "";
+    if(catMatches.length){
+      html += '<div class="pg-bed-label">Sections</div><div class="pg-grid">'+catMatches.map(pgCardHTML).join('')+'</div>';
+    }
+    if(wordMatches.length){
+      html += '<div class="pg-bed-label">Words</div>';
+      wordMatches.forEach(w=>{
+        const catKey = WORD_CATEGORY_MAP[w.th];
+        const catLabel = catKey ? (PG_LABEL[catKey]||"") : "";
+        html += '<div class="pg-word-row" data-wordcat="'+(catKey||"")+'">'+
+          '<span><b>'+w.th+'</b> <span class="pg-word-meta">'+w.rom+' · '+w.en+'</span></span>'+
+          '<span class="pg-word-cat">'+catLabel+'</span></div>';
+      });
+    }
+    if(!catMatches.length && !wordMatches.length){
+      html = '<div class="pg-empty">Nothing found — try another word!</div>';
+    }
+    host.innerHTML = html;
+  }
+
+  host.querySelectorAll(".pg-card").forEach(el=>{
+    el.onclick = ()=>{
+      const m = PG_META.find(x=>x.key===el.dataset.key);
+      if(m) pgCardClickHandler(m);
     };
-    host.appendChild(b);
+  });
+  host.querySelectorAll(".pg-word-row").forEach(el=>{
+    el.onclick = ()=>{
+      const key = el.dataset.wordcat;
+      const m = PG_META.find(x=>x.key===key);
+      if(m) pgCardClickHandler(m);
+    };
   });
 }
+
+const pgSearchInputEl = document.getElementById("pgSearchInput");
+if(pgSearchInputEl){
+  pgSearchInputEl.addEventListener("input", e=> renderPgGrid(e.target.value));
+}
+
 document.querySelectorAll(".pgmodebtn").forEach(mb=>{
   mb.onclick=()=>{
     pgMode=mb.dataset.pgmode;
@@ -1630,7 +1828,7 @@ function pgChoose(c,q){
     else el.classList.add("dim");
     el.style.pointerEvents="none";
   });
-  if(c.correct){ pgScore++; confetti(18); }
+  if(c.correct){ pgScore++; confetti(18); markWordCorrect(q.w.th); }
   document.getElementById("pgProg").style.width=((pgIdx+1)/pgQueue.length*100)+"%";
   const slot=document.getElementById("pgReveal");
   slot.innerHTML=
@@ -2236,6 +2434,126 @@ function sbNext(){
   }
 }
 document.getElementById("sbNextBtn").onclick = sbNext;
+
+/* ==========================================================
+   VOICE — Word Games pilot. Real spoken Thai for each word.
+   Practice mode: auto-plays when a card appears (safe, no
+   right-answer to spoil — it's just browsing/studying).
+   Quiz mode: only plays on the reveal, AFTER the student has
+   already answered, so it never gives the answer away early.
+   Manual "🗣️ Hear it" buttons are included as a replay option
+   and as a fallback in case a browser blocks autoplay.
+   ========================================================== */
+let _ttsAudio = null;
+function initTTSAudio(){
+  if(_ttsAudio) return _ttsAudio;
+  _ttsAudio = document.createElement("audio");
+  _ttsAudio.id = "ttsPlayer";
+  _ttsAudio.preload = "auto";
+  _ttsAudio.setAttribute("playsinline", "");
+  _ttsAudio.setAttribute("webkit-playsinline", "");
+  _ttsAudio.referrerPolicy = "no-referrer";
+  _ttsAudio.style.cssText = "position:absolute;width:0;height:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(_ttsAudio);
+  return _ttsAudio;
+}
+let _speakCallId = 0;
+function speak(text){
+  if(!text) return;
+  const a = initTTSAudio();
+  const urlPrimary   = "https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=" + encodeURIComponent(text);
+  const urlSecondary = "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=th&client=gtx&q=" + encodeURIComponent(text);
+  const callId = ++_speakCallId;
+  const SPEED = 0.88; // slightly slower than natural — easier for students to catch each syllable
+
+  function tryLocal(){ if(callId===_speakCallId) speakLocal(text); }
+  function trySecondary(){
+    if(callId!==_speakCallId) return;
+    a.onerror = tryLocal;
+    a.pause(); a.src = urlSecondary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
+    a.load();
+    const p = a.play();
+    if(p && p.catch) p.catch(tryLocal);
+  }
+  function tryPrimary(){
+    a.onerror = trySecondary;
+    a.pause(); a.currentTime = 0; a.src = urlPrimary; a.playbackRate = SPEED; a.volume = 1; a.muted = false;
+    a.load();
+    const p = a.play();
+    if(p && p.catch) p.catch(trySecondary);
+  }
+  try{ tryPrimary(); }catch(e){ trySecondary(); }
+}
+let VOICES=[];
+function loadVoices(){ try{ VOICES=window.speechSynthesis.getVoices()||[]; }catch(e){ VOICES=[]; } }
+if("speechSynthesis" in window){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged=loadVoices;
+  setTimeout(loadVoices, 500);
+}
+function pickThaiVoice(){
+  if(!VOICES.length) loadVoices();
+  const isTh=v=>/^th\b|th-|th_/i.test(v.lang) || /thai/i.test(v.name);
+  const th=VOICES.filter(isTh);
+  if(!th.length) return null;
+  // known standard Thai voice names by platform/engine, so we can positively
+  // identify gender by name even when the voice object has no gender field
+  const isFemale = v=>/female|women|kanya|premwadee|narisa|achara|somsi/i.test(v.name);
+  const isMale = v=>/male|\bmen\b|\bboy\b|niwat|somchai|kritsana/i.test(v.name) && !isFemale(v);
+  // strong preference order: confirmed-female > gender-unknown (never a
+  // confirmed-male voice, even as a last resort — better to fall through
+  // to the primary Google voice again than hand a student a male voice
+  // when a female one was asked for)
+  return th.find(v=>isFemale(v) && /natural|neural|premium|enhanced/i.test(v.name)) ||
+         th.find(v=>isFemale(v)) ||
+         th.find(v=>!isMale(v) && /natural|neural|premium|enhanced/i.test(v.name)) ||
+         th.find(v=>!isMale(v) && /google/i.test(v.name)) ||
+         th.find(v=>!isMale(v));
+}
+function speakLocal(text){
+  try{
+    if(!("speechSynthesis" in window) || !text) return;
+    const synth=window.speechSynthesis;
+    const v=pickThaiVoice();
+    if(!v) return;
+    synth.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.voice=v; u.lang=v.lang || "th-TH"; u.pitch=1; u.volume=1; u.rate=0.85;
+      synth.speak(u);
+    }, 80);
+  }catch(e){/* voice unavailable, fail silently */}
+}
+
+// Practice mode: auto-play + manual replay button — Word Games only for now (piloting here first)
+const _origRenderPP = renderPP;
+renderPP = function(){
+  _origRenderPP();
+  if(pgHomeCtx==="vocab"){
+    const w = ppList[ppIdx];
+    speak(w.th);
+  }
+};
+document.getElementById("ppSayBtn").onclick = ()=> speak(ppList[ppIdx].th);
+
+// Quiz mode: auto-play only on reveal (after answering), plus a replay button — Word Games only for now
+const _origPgChoose = pgChoose;
+pgChoose = function(c,q){
+  _origPgChoose(c,q);
+  if(pgHomeCtx!=="vocab") return;
+  speak(q.w.th);
+  const slot=document.getElementById("pgReveal");
+  const revealEl = slot.querySelector(".reveal");
+  if(revealEl){
+    const btn=document.createElement("button");
+    btn.className="soundbtn voice";
+    btn.textContent="🗣️ Hear it again";
+    btn.style.marginTop="10px";
+    btn.onclick=()=> speak(q.w.th);
+    const nextBtn=document.getElementById("pgNext");
+    nextBtn.parentNode.insertBefore(btn, nextBtn);
+  }
+};
 </script>
 
 <!-- ==========================================================
