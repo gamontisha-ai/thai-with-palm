@@ -2450,10 +2450,21 @@ function initTTSAudio(){
   _ttsAudio = document.createElement("audio");
   _ttsAudio.id = "ttsPlayer";
   _ttsAudio.preload = "auto";
+  _ttsAudio.loop = false; // explicit — some browsers/streamed-audio combinations
+                           // have been seen to restart a clip as if looping
   _ttsAudio.setAttribute("playsinline", "");
   _ttsAudio.setAttribute("webkit-playsinline", "");
   _ttsAudio.referrerPolicy = "no-referrer";
   _ttsAudio.style.cssText = "position:absolute;width:0;height:0;opacity:0;pointer-events:none;";
+  // hard stop if the browser ever tries to replay/loop this element on its
+  // own — 'ended' should fire once per clip; if it fires again without us
+  // having assigned a new src in between, something is trying to restart
+  // playback on its own, so we forcibly stop it right there
+  let lastEndedSrc = null;
+  _ttsAudio.addEventListener("ended", ()=>{
+    if(_ttsAudio.src === lastEndedSrc){ _ttsAudio.pause(); _ttsAudio.currentTime = 0; return; }
+    lastEndedSrc = _ttsAudio.src;
+  });
   document.body.appendChild(_ttsAudio);
   return _ttsAudio;
 }
@@ -2463,11 +2474,13 @@ let _lastSpeakTime = 0;
 
 function speak(text){
   if(!text) return;
-  // de-duplication guard: if this exact word was just spoken a moment ago
-  // (from any code path — a stray double-fire, a stale error handler, etc.)
-  // skip it rather than let it overlap into an audible repeat
+  // de-duplication guard: if this exact word was spoken recently (from any
+  // code path — a stray double-fire, a stale error handler, a browser
+  // trying to auto-restart the clip, etc.) skip it rather than let it
+  // overlap or re-trigger into an audible repeat. Window is generous
+  // (covers realistic slow-network fallback delays, observed up to ~2.5s)
   const now = Date.now();
-  if(text===_lastSpeakText && (now-_lastSpeakTime)<1200) return;
+  if(text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
   _lastSpeakText = text; _lastSpeakTime = now;
 
   const a = initTTSAudio();
