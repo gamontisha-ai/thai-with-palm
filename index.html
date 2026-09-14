@@ -2659,7 +2659,10 @@ document.getElementById("ppSayBtn").onclick = ()=> speak(ppList[ppIdx].th);
 // Quiz mode: auto-play only on reveal (after answering), plus a replay button — Word Games only for now
 const _origPgChoose = pgChoose;
 pgChoose = function(c,q){
+  const alreadyAnswered = pgAnswered; // capture BEFORE the original handler runs
   _origPgChoose(c,q);
+  if(alreadyAnswered) return; // this call was a duplicate/late fire — original handler
+                               // already no-op'd, so the voice must too, or it repeats
   if(pgHomeCtx!=="vocab") return;
   speak(q.w.th);
   const slot=document.getElementById("pgReveal");
