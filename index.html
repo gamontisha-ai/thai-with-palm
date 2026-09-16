@@ -300,6 +300,9 @@
   .pgmodebtn{ flex:1; border:none; cursor:pointer; border-radius:12px; padding:11px; font-weight:800; font-size:16px;
     background:transparent; color:var(--soft); font-family:var(--sans); transition:all .15s; }
   .pgmodebtn.active{ background:var(--white); color:var(--ink); box-shadow:var(--shadow-sm); }
+  .khongmodebtn{ flex:1; border:none; cursor:pointer; border-radius:12px; padding:11px; font-weight:800; font-size:16px;
+    background:transparent; color:var(--soft); font-family:var(--sans); transition:all .15s; }
+  .khongmodebtn.active{ background:var(--white); color:var(--ink); box-shadow:var(--shadow-sm); }
   .bigspeak{ border:none; cursor:pointer; background:var(--mint); color:var(--teal-d); width:118px; height:118px;
     border-radius:50%; font-size:52px; box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .12s; }
   .bigspeak:active{ transform:scale(.94); }
@@ -368,6 +371,41 @@
     color:#fff; font-weight:800; font-size:17px; padding:16px; border-radius:16px; box-shadow:var(--shadow-sm);
     font-family:var(--sans); margin-top:8px; }
   .sv-startbtn:active{ transform:scale(.98); }
+
+  /* ================= WHOSE IS IT? (ของ) BUILDER ================= */
+  .khong-score{ border:none; background:var(--mint); color:var(--teal-d); font-weight:800; font-size:13px;
+    padding:8px 14px; border-radius:12px; }
+  .khong-promptcard{ text-align:center; padding:26px 20px; margin-bottom:16px; }
+  .khong-promptpic{ font-size:56px; line-height:1; margin-bottom:6px; }
+  .khong-promptbig{ font-size:22px; font-weight:800; color:var(--ink); }
+  .khong-slotsrow{ display:flex; gap:10px; justify-content:center; margin-bottom:16px; flex-wrap:wrap; }
+  .khong-slot{ min-width:96px; min-height:52px; background:var(--white); border:2.5px dashed #d8cfc2; border-radius:14px;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; color:var(--kara);
+    padding:8px 14px; cursor:pointer; }
+  .khong-slot.filled{ border-style:solid; border-color:var(--teal); background:var(--mint); }
+  .khong-slot.correct{ border-color:#37b26b; background:#eafaf0; cursor:default; }
+  .khong-slot.wrong{ border-color:#e8556b; background:#fdecef; animation:shake .4s; }
+  .khong-bankrow{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
+  .khong-tile{ border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff;
+    font-weight:800; font-size:15px; padding:12px 18px; border-radius:14px; box-shadow:var(--shadow-sm);
+    font-family:var(--sans); transition:opacity .15s; }
+  .khong-tile:active{ transform:scale(.95); }
+  .khong-tile.used{ opacity:0; pointer-events:none; }
+  .khong-reveal{ display:none; text-align:center; background:var(--white); border-radius:20px; box-shadow:var(--shadow);
+    padding:20px; margin-bottom:16px; animation:pop .35s cubic-bezier(.2,1.3,.4,1); }
+  .khong-reveal.show{ display:block; }
+  .khong-pronountag{ display:inline-block; background:var(--peach); color:var(--coral-d); font-weight:800;
+    font-size:12.5px; padding:6px 14px; border-radius:999px; margin-bottom:10px; }
+  .khong-navrow{ display:flex; gap:10px; margin-bottom:14px; }
+  .khong-navrow button{ flex:1; border:none; cursor:pointer; border-radius:16px; padding:14px; font-weight:800;
+    font-size:16px; box-shadow:var(--shadow-sm); font-family:var(--sans); }
+  .khong-navrow .pprev{ background:var(--white); color:var(--ink); }
+  .khong-navrow .pprev:disabled{ opacity:.4; }
+  .khong-navrow .pnext{ background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff; }
+  .khong-navrow .pnext:disabled{ opacity:.4; }
+  .khong-clearbtn{ width:100%; border:none; cursor:pointer; background:var(--white); box-shadow:var(--shadow-sm);
+    border-radius:14px; padding:12px; font-weight:800; font-size:14.5px; color:var(--soft); font-family:var(--sans); }
+  .khong-clearbtn.as-next{ background:linear-gradient(135deg,var(--coral),var(--coral-d)); color:#fff; }
 
   .sv-progress{ text-align:center; color:var(--soft); font-weight:800; font-size:13px; letter-spacing:.5px;
     text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -591,6 +629,74 @@
       <h2>7-Eleven Challenge Complete!</h2>
       <p>You got every question right. Nice work — that's exactly the real-life Thai you'll use in the store!</p>
       <button class="sv-continuebtn" id="svAgainBtn">Play again</button>
+    </div>
+  </section>
+
+  <!-- ================= WHOSE IS IT? · INTRO ================= -->
+  <section id="khongintro" class="hidden">
+    <div class="topbar">
+      <button class="back" id="khongIntroBack">←</button>
+      <div class="hubtitle">🔑 Whose Is It?</div>
+    </div>
+    <div class="sv-intro-card">
+      <h2>🧩 Build: [Thing] + ของ + [Person]</h2>
+      <p>Every round mixes a random thing with a random person — 30 × 6 combinations, so no two playthroughs are the same. Tap the tiles in order; one extra tile is a decoy.</p>
+    </div>
+    <div class="modes" style="margin-top:14px;">
+      <button class="khongmodebtn active" id="khongTabPic">🖼️ Picture mode</button>
+      <button class="khongmodebtn" id="khongTabEng">🔤 English mode</button>
+    </div>
+    <button class="sv-startbtn" id="khongStartBtn">Start the Round →</button>
+  </section>
+
+  <!-- ================= WHOSE IS IT? · GAME ================= -->
+  <section id="khonggame" class="hidden">
+    <div class="topbar">
+      <button class="back" id="khongGameBack">←</button>
+      <div class="hubtitle">🔑 Whose Is It?</div>
+      <div class="khong-score" id="khongScorePill">✅ 0</div>
+    </div>
+    <div class="sv-progress" id="khongProgress">Card 1 of 15</div>
+    <div class="progwrap" style="margin-bottom:14px;"><div class="progbar" id="khongProgressFill"></div></div>
+
+    <div class="wordcard card khong-promptcard">
+      <div class="khong-promptpic" id="khongPromptPic"></div>
+      <div class="khong-promptbig" id="khongPromptBig"></div>
+    </div>
+
+    <div class="khong-slotsrow" id="khongSlotsRow"></div>
+    <div class="khong-bankrow" id="khongBankRow"></div>
+
+    <div class="khong-reveal" id="khongReveal">
+      <div class="khong-pronountag" id="khongPronounTag"></div>
+      <div class="ppthai" id="khongThaiText" style="font-size:34px;"></div>
+      <div class="pprom" id="khongKaraokeText" style="font-size:24px;"></div>
+      <div class="ppen" id="khongEnglishText"></div>
+      <div class="soundrow">
+        <button class="soundbtn voice" id="khongSayBtn">🗣️ Hear it again</button>
+        <button class="soundbtn" id="khongSlowBtn">🐢 Slow</button>
+      </div>
+    </div>
+
+    <div class="khong-navrow" id="khongNavRow">
+      <button class="pprev" id="khongPrevBtn">← Prev</button>
+      <button class="pnext" id="khongCheckBtn" disabled>Check</button>
+      <button class="pnext" id="khongNextBtn" style="display:none;">Next →</button>
+    </div>
+    <button class="khong-clearbtn" id="khongClearBtn">↺ Clear</button>
+  </section>
+
+  <!-- ================= WHOSE IS IT? · RESULT ================= -->
+  <section id="khongresult" class="hidden">
+    <div class="result card">
+      <div class="em" id="khongEndEmoji">🌱</div>
+      <h2>Round Complete!</h2>
+      <div class="scorebig"><span id="khongEndScore">0/15</span></div>
+      <div class="stars" id="khongEndStars">⭐</div>
+      <div class="ractions">
+        <button class="again" id="khongAgainBtn">Play again</button>
+        <button class="change" id="khongBackBtn">Back to topics</button>
+      </div>
     </div>
   </section>
 
@@ -1095,6 +1201,7 @@ function show(id){
   if(id!=="sevengame" && typeof svClearTimers==="function") svClearTimers();
   ["hub","home","quiz","practice","result","pghome","pgpractice","pgame","pgresult",
    "sevenintro","sevengame","sevenroundresult","sevencomplete",
+   "khongintro","khonggame","khongresult",
    "sentbuilder","sentbuilderresult",
    "teacherlogin","teachersection"].forEach(s=>document.getElementById(s).classList.toggle("hidden", s!==id));
   window.scrollTo(0,0);
@@ -1658,6 +1765,7 @@ let pgQueue=[], pgIdx=0, pgScore=0, pgAnswered=false;
 
 /* ---------- set menu ---------- */
 function pgCardClickHandler(m){
+  if(m.key==="khong" && pgMode!=="practice"){ show("khongintro"); return; }
   if(pgMode==="build"){ startSentenceBuilder(m.key); return; }
   if(m.special && m.key==="seven11" && pgMode!=="practice"){ show("sevenintro"); return; }
   if(pgMode==="practice") startPgPractice(m.key); else startPgGame(m.key);
@@ -2064,6 +2172,262 @@ show = function(id){
      English   = medium   (.sv-en / .sv-situation)
      Thai      = SMALLEST (.sv-thai)       — visual pattern only
    ========================================================== */
+
+/* ==========================================================
+   WHOSE IS IT? (ของ) — dedicated builder game for the khong topic.
+   Randomly combines a noun + pronoun each round ("[Noun] khǒng
+   [Pronoun]") from a large pool, so the deck is different every
+   time — 30 nouns × 6 pronouns = 180 possible combinations.
+   ========================================================== */
+const KHONG_NOUNS = [
+  {emoji:"💰", th:"เงิน", rom:"Ngern", en:"money"},
+  {emoji:"💳", th:"บัตรเครดิต", rom:"Bàt khré-dit", en:"credit card"},
+  {emoji:"🐱", th:"แมว", rom:"Maew", en:"cat"},
+  {emoji:"🐟", th:"ปลา", rom:"Bplaa", en:"fish"},
+  {emoji:"🍲", th:"อาหาร", rom:"Aa-hǎan", en:"food"},
+  {emoji:"💧", th:"น้ำ", rom:"Náam", en:"water"},
+  {emoji:"🦆", th:"เป็ด", rom:"Bpèt", en:"duck"},
+  {emoji:"🥚", th:"ไข่", rom:"Khài", en:"eggs"},
+  {emoji:"🦀", th:"ปู", rom:"Bpuu", en:"crab"},
+  {emoji:"🏠", th:"บ้าน", rom:"Bâan", en:"house"},
+  {emoji:"🐔", th:"ไก่", rom:"Gài", en:"chicken"},
+  {emoji:"💳", th:"บัตรเดบิต", rom:"Bàt dee-bìt", en:"debit card"},
+  {emoji:"🐦", th:"นก", rom:"Nók", en:"bird"},
+  {emoji:"🐶", th:"หมา", rom:"Mǎa", en:"dog"},
+  {emoji:"🚗", th:"รถ", rom:"Rót", en:"car"},
+  {emoji:"🍚", th:"ข้าว", rom:"Khâao", en:"rice"},
+  {emoji:"🍙", th:"ข้าวเหนียว", rom:"Khâao-nǐiao", en:"sticky rice"},
+  {emoji:"🍜", th:"ก๋วยเตี๋ยว", rom:"Gǔuai-dtǐiao", en:"noodles"},
+  {emoji:"🥭", th:"มะม่วง", rom:"Má-mûuang", en:"mango"},
+  {emoji:"🍌", th:"กล้วย", rom:"Glûay", en:"banana"},
+  {emoji:"🍊", th:"ส้ม", rom:"Sôm", en:"orange"},
+  {emoji:"🍎", th:"แอปเปิล", rom:"Àep-bpern", en:"apple"},
+  {emoji:"🍿", th:"ขนม", rom:"Khà-nǒm", en:"snack"},
+  {emoji:"🟣", th:"มังคุด", rom:"Mang-khút", en:"mangosteen"},
+  {emoji:"🍍", th:"สับปะรด", rom:"Sàp-bpà-rót", en:"pineapple"},
+  {emoji:"🍉", th:"แตงโม", rom:"Dtaeng-mo", en:"watermelon"},
+  {emoji:"🥥", th:"มะพร้าว", rom:"Má-phráao", en:"coconut"},
+  {emoji:"🧋", th:"ชาเย็น", rom:"Chaa-yen", en:"Thai iced tea"},
+  {emoji:"🍗", th:"ไก่ย่าง", rom:"Gài-yâang", en:"grilled chicken"},
+  {emoji:"🍗", th:"ไก่ทอด", rom:"Gài-thâwt", en:"fried chicken"},
+];
+const KHONG_PRONOUNS = [
+  {emoji:"🙋‍♂️", th:"ผม", rom:"phǒm", en:"My", label:"ผม · phǒm — I / my (male speaker)"},
+  {emoji:"🙋‍♀️", th:"ฉัน", rom:"chǎn", en:"My", label:"ฉัน · chǎn — I / my (female speaker)"},
+  {emoji:"🫵", th:"คุณ", rom:"khun", en:"Your", label:"คุณ · khun — you / your"},
+  {emoji:"🧍", th:"เขา", rom:"kháo", en:"His/Her", label:"เขา · kháo — he/she / his/her"},
+  {emoji:"👥", th:"พวกเขา", rom:"phûak kháo", en:"Their", label:"พวกเขา · phûak kháo — they / their"},
+  {emoji:"🙌", th:"พวกเรา", rom:"phûak rao", en:"Our", label:"พวกเรา · phûak rao — we / our"},
+];
+const KHONG_DECK_SIZE = 15;
+
+function khongShuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function khongBuildRound(nounIdx, pronounIdx){
+  const noun = KHONG_NOUNS[nounIdx], pronoun = KHONG_PRONOUNS[pronounIdx];
+  return {
+    nounIdx, pronounIdx, emoji: noun.emoji, pronounEmoji: pronoun.emoji, pronounLabel: pronoun.label,
+    object: noun.rom, pronounWord: pronoun.rom,
+    thai: noun.th + "ของ" + pronoun.th,
+    kh: noun.rom + " khǒng " + pronoun.rom,
+    en: pronoun.en + " " + noun.en,
+  };
+}
+function khongRandomDeck(n){
+  const seen = new Set(); const rounds = []; let guard = 0;
+  while(rounds.length < n && guard < n*40){
+    guard++;
+    const nIdx = Math.floor(Math.random()*KHONG_NOUNS.length);
+    const pIdx = Math.floor(Math.random()*KHONG_PRONOUNS.length);
+    const key = nIdx+"-"+pIdx;
+    if(seen.has(key)) continue;
+    seen.add(key);
+    rounds.push(khongBuildRound(nIdx, pIdx));
+  }
+  return rounds;
+}
+function khongPickDistractor(nounIdx, pronounIdx){
+  if(Math.random() < 0.5){
+    let idx; do{ idx = Math.floor(Math.random()*KHONG_NOUNS.length); }while(idx===nounIdx);
+    return KHONG_NOUNS[idx].rom;
+  } else {
+    let idx; do{ idx = Math.floor(Math.random()*KHONG_PRONOUNS.length); }while(idx===pronounIdx);
+    return KHONG_PRONOUNS[idx].rom;
+  }
+}
+
+/* ---------------- game state & engine ---------------- */
+let khongMode = "pic"; // "pic" or "eng"
+let khongDeck = [], khongIdx = 0, khongResults = {}, khongPlaced = [null,null,null], khongBankTiles = [], khongChecked = false;
+
+document.getElementById("khongTabPic").onclick = ()=>{
+  khongMode = "pic";
+  document.getElementById("khongTabPic").classList.add("active");
+  document.getElementById("khongTabEng").classList.remove("active");
+};
+document.getElementById("khongTabEng").onclick = ()=>{
+  khongMode = "eng";
+  document.getElementById("khongTabEng").classList.add("active");
+  document.getElementById("khongTabPic").classList.remove("active");
+};
+document.getElementById("khongIntroBack").onclick = ()=> show("pghome");
+document.getElementById("khongGameBack").onclick = ()=> show("pghome");
+document.getElementById("khongStartBtn").onclick = ()=>{
+  khongDeck = khongRandomDeck(KHONG_DECK_SIZE);
+  khongIdx = 0; khongResults = {};
+  show("khonggame");
+  khongSetupItem();
+};
+
+function khongCurrentItem(){ return khongDeck[khongIdx]; }
+
+function khongSetupItem(){
+  const item = khongCurrentItem();
+  if(khongMode==="pic"){
+    document.getElementById("khongPromptPic").textContent = item.emoji;
+    document.getElementById("khongPromptBig").textContent = "";
+  } else {
+    document.getElementById("khongPromptPic").textContent = item.pronounEmoji;
+    document.getElementById("khongPromptBig").textContent = item.en + "?";
+  }
+
+  const distractor = khongPickDistractor(item.nounIdx, item.pronounIdx);
+  const words = khongShuffle([item.object, "khǒng", item.pronounWord, distractor]);
+  khongBankTiles = words.map(w=>({word:w, used:false}));
+  khongPlaced = [null,null,null];
+  khongChecked = false;
+
+  document.getElementById("khongReveal").classList.remove("show");
+  document.getElementById("khongCheckBtn").style.display = "inline-block";
+  document.getElementById("khongCheckBtn").disabled = true;
+  document.getElementById("khongNextBtn").style.display = "none";
+  document.getElementById("khongClearBtn").disabled = false;
+  document.getElementById("khongClearBtn").textContent = "↺ Clear";
+  document.getElementById("khongClearBtn").classList.remove("as-next");
+  document.getElementById("khongBankRow").style.display = "flex";
+  document.getElementById("khongNavRow").style.display = "flex";
+
+  khongRenderSlots(); khongRenderBank();
+
+  document.getElementById("khongProgress").textContent = "Card "+(khongIdx+1)+" of "+khongDeck.length;
+  document.getElementById("khongProgressFill").style.width = ((khongIdx+1)/khongDeck.length*100)+"%";
+  document.getElementById("khongScorePill").textContent = "✅ "+Object.keys(khongResults).length;
+  document.getElementById("khongPrevBtn").disabled = khongIdx===0;
+
+  if(khongResults[khongIdx]){
+    khongChecked = true;
+    khongPlaced = [item.object, "khǒng", item.pronounWord];
+    khongBankTiles.forEach(t=>{ if(khongPlaced.includes(t.word)) t.used=true; });
+    khongRenderSlots(true); khongRenderBank();
+    khongShowReveal(item);
+    document.getElementById("khongCheckBtn").style.display = "none";
+    document.getElementById("khongClearBtn").textContent = khongIdx===khongDeck.length-1 ? "Finish ✔" : "Next →";
+    document.getElementById("khongClearBtn").classList.add("as-next");
+    document.getElementById("khongNavRow").style.display = "none";
+    document.getElementById("khongBankRow").style.display = "none";
+  }
+}
+
+function khongRenderSlots(forceCorrect){
+  const row = document.getElementById("khongSlotsRow"); row.innerHTML = "";
+  for(let i=0;i<3;i++){
+    const word = khongPlaced[i];
+    const slot = document.createElement("div");
+    slot.className = "khong-slot"+(word?" filled":"")+(forceCorrect?" correct":"");
+    if(word){ slot.textContent = word; slot.onclick = ()=>{ if(!khongChecked) khongRemoveFromSlot(i); }; }
+    row.appendChild(slot);
+  }
+}
+function khongRenderBank(){
+  const row = document.getElementById("khongBankRow"); row.innerHTML = "";
+  khongBankTiles.forEach((t,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "khong-tile"+(t.used?" used":"");
+    btn.textContent = t.word;
+    btn.disabled = t.used || khongChecked;
+    btn.onclick = ()=> khongPlaceWord(i);
+    row.appendChild(btn);
+  });
+}
+function khongPlaceWord(bankIdx){
+  if(khongChecked) return;
+  const emptySlot = khongPlaced.findIndex(p=>p===null);
+  if(emptySlot===-1) return;
+  khongPlaced[emptySlot] = khongBankTiles[bankIdx].word;
+  khongBankTiles[bankIdx].used = true;
+  khongRenderSlots(); khongRenderBank();
+  document.getElementById("khongCheckBtn").disabled = khongPlaced.some(p=>p===null);
+}
+function khongRemoveFromSlot(slotIdx){
+  const word = khongPlaced[slotIdx]; if(!word) return;
+  const bankItem = khongBankTiles.find(t=>t.word===word && t.used);
+  if(bankItem) bankItem.used = false;
+  khongPlaced[slotIdx] = null;
+  khongRenderSlots(); khongRenderBank();
+  document.getElementById("khongCheckBtn").disabled = khongPlaced.some(p=>p===null);
+}
+document.getElementById("khongClearBtn").onclick = ()=>{
+  if(khongChecked){ khongGoNext(); return; }
+  khongPlaced = [null,null,null];
+  khongBankTiles.forEach(t=>t.used=false);
+  khongRenderSlots(); khongRenderBank();
+  document.getElementById("khongCheckBtn").disabled = true;
+};
+function khongShowReveal(item){
+  document.getElementById("khongPronounTag").textContent = item.pronounLabel;
+  document.getElementById("khongThaiText").textContent = item.thai;
+  document.getElementById("khongKaraokeText").textContent = item.kh;
+  document.getElementById("khongEnglishText").textContent = item.en;
+  document.getElementById("khongReveal").classList.add("show");
+  speak(item.thai);
+}
+document.getElementById("khongSayBtn").onclick = ()=> speak(khongCurrentItem().thai, undefined, true);
+document.getElementById("khongSlowBtn").onclick = ()=> speakSlow(khongCurrentItem().thai);
+
+document.getElementById("khongCheckBtn").onclick = ()=>{
+  const item = khongCurrentItem();
+  const correct = [item.object, "khǒng", item.pronounWord];
+  const isCorrect = khongPlaced.every((w,i)=> w===correct[i]);
+  if(isCorrect){
+    khongChecked = true; khongResults[khongIdx] = true;
+    khongRenderSlots(true);
+    khongShowReveal(item);
+    document.getElementById("khongCheckBtn").style.display = "none";
+    document.getElementById("khongClearBtn").textContent = khongIdx===khongDeck.length-1 ? "Finish ✔" : "Next →";
+    document.getElementById("khongClearBtn").classList.add("as-next");
+    document.getElementById("khongNavRow").style.display = "none";
+    document.getElementById("khongBankRow").style.display = "none";
+    document.getElementById("khongScorePill").textContent = "✅ "+Object.keys(khongResults).length;
+  } else {
+    const row = document.getElementById("khongSlotsRow");
+    [...row.children].forEach(s=>s.classList.add("wrong"));
+    setTimeout(()=>{ [...row.children].forEach(s=>s.classList.remove("wrong")); }, 500);
+  }
+};
+function khongGoNext(){
+  if(khongIdx < khongDeck.length-1){ khongIdx++; khongSetupItem(); }
+  else khongShowEnd();
+}
+function khongGoPrev(){ if(khongIdx>0){ khongIdx--; khongSetupItem(); } }
+document.getElementById("khongPrevBtn").onclick = khongGoPrev;
+document.getElementById("khongNextBtn").onclick = khongGoNext;
+
+function khongShowEnd(){
+  show("khongresult");
+  const total = khongDeck.length, got = Object.keys(khongResults).length;
+  document.getElementById("khongEndScore").textContent = got+"/"+total;
+  const pct = got/total;
+  let stars="⭐", emoji="🌱";
+  if(pct>=.9){ stars="⭐⭐⭐"; emoji="🏆"; } else if(pct>=.6){ stars="⭐⭐"; emoji="🎉"; } else { stars="⭐"; emoji="💪"; }
+  document.getElementById("khongEndEmoji").textContent = emoji;
+  document.getElementById("khongEndStars").textContent = stars;
+  if(pct>=.6) confetti(30, true);
+}
+document.getElementById("khongAgainBtn").onclick = ()=>{
+  khongDeck = khongRandomDeck(KHONG_DECK_SIZE); khongIdx = 0; khongResults = {};
+  show("khonggame"); khongSetupItem();
+};
+document.getElementById("khongBackBtn").onclick = ()=> show("pghome");
 
 const SEVEN11_GAME_DATA = [
   // ---------------- TYPE A — Listen/Read & React ⚡ ----------------
