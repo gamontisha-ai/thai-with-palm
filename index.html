@@ -372,40 +372,113 @@
     font-family:var(--sans); margin-top:8px; }
   .sv-startbtn:active{ transform:scale(.98); }
 
-  /* ================= WHOSE IS IT? (ของ) BUILDER ================= */
-  .khong-score{ border:none; background:var(--mint); color:var(--teal-d); font-weight:800; font-size:13px;
-    padding:8px 14px; border-radius:12px; }
-  .khong-promptcard{ text-align:center; padding:26px 20px; margin-bottom:16px; }
-  .khong-promptpic{ font-size:56px; line-height:1; margin-bottom:6px; }
-  .khong-promptbig{ font-size:22px; font-weight:800; color:var(--ink); }
-  .khong-slotsrow{ display:flex; gap:10px; justify-content:center; margin-bottom:16px; flex-wrap:wrap; }
-  .khong-slot{ min-width:96px; min-height:52px; background:var(--white); border:2.5px dashed #d8cfc2; border-radius:14px;
-    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px; color:var(--kara);
-    padding:8px 14px; cursor:pointer; }
-  .khong-slot.filled{ border-style:solid; border-color:var(--teal); background:var(--mint); }
-  .khong-slot.correct{ border-color:#37b26b; background:#eafaf0; cursor:default; }
-  .khong-slot.wrong{ border-color:#e8556b; background:#fdecef; animation:shake .4s; }
-  .khong-bankrow{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
-  .khong-tile{ border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff;
-    font-weight:800; font-size:15px; padding:12px 18px; border-radius:14px; box-shadow:var(--shadow-sm);
-    font-family:var(--sans); transition:opacity .15s; }
-  .khong-tile:active{ transform:scale(.95); }
-  .khong-tile.used{ opacity:0; pointer-events:none; }
-  .khong-reveal{ display:none; text-align:center; background:var(--white); border-radius:20px; box-shadow:var(--shadow);
-    padding:20px; margin-bottom:16px; animation:pop .35s cubic-bezier(.2,1.3,.4,1); }
-  .khong-reveal.show{ display:block; }
-  .khong-pronountag{ display:inline-block; background:var(--peach); color:var(--coral-d); font-weight:800;
-    font-size:12.5px; padding:6px 14px; border-radius:999px; margin-bottom:10px; }
-  .khong-navrow{ display:flex; gap:10px; margin-bottom:14px; }
-  .khong-navrow button{ flex:1; border:none; cursor:pointer; border-radius:16px; padding:14px; font-weight:800;
-    font-size:16px; box-shadow:var(--shadow-sm); font-family:var(--sans); }
-  .khong-navrow .pprev{ background:var(--white); color:var(--ink); }
-  .khong-navrow .pprev:disabled{ opacity:.4; }
-  .khong-navrow .pnext{ background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff; }
-  .khong-navrow .pnext:disabled{ opacity:.4; }
-  .khong-clearbtn{ width:100%; border:none; cursor:pointer; background:var(--white); box-shadow:var(--shadow-sm);
-    border-radius:14px; padding:12px; font-weight:800; font-size:14.5px; color:var(--soft); font-family:var(--sans); }
-  .khong-clearbtn.as-next{ background:linear-gradient(135deg,var(--coral),var(--coral-d)); color:#fff; }
+  /* ================= WHOSE IS IT? (ของ) — faithful port of the uploaded design ================= */
+  .khong-page{ margin:0 -16px; padding:0; max-width:none; }
+  .khong-backbtn{ position:absolute; top:14px; left:14px; z-index:5; background:rgba(255,255,255,.25);
+    color:#fff; box-shadow:none; }
+  .khong-hero{ width:100%; background:linear-gradient(135deg,#9B5DE5,#7A3FC4); padding:36px 20px 46px;
+    text-align:center; position:relative; overflow:hidden; }
+  .khong-hero::before, .khong-hero::after{ content:""; position:absolute; border-radius:50%; opacity:.18; background:#fff; }
+  .khong-hero::before{ width:180px; height:180px; top:-90px; left:-60px; }
+  .khong-hero::after{ width:130px; height:130px; bottom:-70px; right:-30px; }
+  .khong-hero h1{ color:#fff; font-size:28px; font-weight:900; margin:0 0 6px; position:relative; z-index:1; }
+  .khong-hero p{ color:#F3E9FF; font-size:15px; font-weight:600; margin:0; position:relative; z-index:1; }
+
+  .khong-stage{ width:100%; max-width:520px; margin:-26px auto 0; padding:22px 16px 40px; position:relative; z-index:2; }
+
+  .khong-modetabs{ display:flex; background:#fff; border-radius:16px; padding:6px; gap:6px;
+    box-shadow:0 6px 18px rgba(45,49,66,.08); margin-bottom:16px; }
+  .khong-modetab{ flex:1; border:none; background:transparent; font-family:var(--sans); font-weight:900;
+    font-size:13px; padding:11px 8px; border-radius:11px; cursor:pointer; color:#6B7280; transition:all .15s; }
+  .khong-modetab.active{ background:#9B5DE5; color:#fff; }
+
+  .khong-modepanel{ display:none; }
+  .khong-modepanel.active{ display:block; }
+
+  .khong-legend{ background:#fff; border-radius:16px; padding:14px 8px 16px; margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(45,49,66,.08); }
+  .khong-legend h4{ margin:0 0 12px; font-size:12px; color:#6B7280; text-transform:uppercase; letter-spacing:.05em; padding:0 6px; }
+  .khong-legendgrid{ display:grid; grid-template-columns:repeat(6,1fr); gap:2px; text-align:center; }
+  .khong-legendgrid div{ font-size:12px; font-weight:800; color:#2D3142; line-height:1.15; word-break:break-word; }
+  .khong-legendgrid span{ display:block; font-size:26px; line-height:1; margin-bottom:4px; }
+  .khong-legendgrid span.big-icon{ font-size:38px; margin-bottom:-2px; }
+
+  .khong-topbar{ display:flex; align-items:center; justify-content:space-between; background:#fff; border-radius:16px;
+    padding:12px 16px; box-shadow:0 6px 18px rgba(45,49,66,.08); margin-bottom:18px; gap:10px; }
+  .khong-progresswrap{ flex:1; }
+  .khong-progresslabel{ font-size:12px; font-weight:800; color:#6B7280; margin-bottom:5px; }
+  .khong-progressbar{ background:#EEE9F8; border-radius:999px; height:8px; overflow:hidden; }
+  .khong-progressfill{ background:#9B5DE5; height:100%; border-radius:999px; transition:width .3s ease; }
+  .khong-scorepill{ background:#F3FBF8; color:#04946E; font-weight:900; font-size:13px; padding:8px 12px;
+    border-radius:999px; white-space:nowrap; }
+
+  .khong-buildercard{ background:#fff; border-radius:22px; padding:28px 22px; box-shadow:0 10px 30px rgba(45,49,66,.12);
+    margin-bottom:20px; text-align:center; }
+  .khong-builderinstr{ font-weight:800; font-size:14px; color:#6B7280; margin-bottom:16px; }
+
+  .khong-piccircle{ width:230px; height:230px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    gap:8px; margin:0 auto 20px; box-shadow:inset 0 0 0 6px rgba(255,255,255,.6); }
+  .khong-pronounemoji{ font-size:82px; }
+  .khong-plus{ font-size:26px; color:#fff; opacity:.85; font-weight:900; }
+  .khong-objectemoji{ font-size:92px; display:flex; align-items:center; justify-content:center; }
+
+  .khong-engprompt{ background:linear-gradient(135deg,#F7F2FF,#EFE4FF); border-radius:18px; padding:26px 18px; margin-bottom:20px; }
+  .khong-engpromptlabel{ font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase;
+    color:#7A3FC4; margin-bottom:10px; text-align:center; }
+  .khong-engprompttext{ font-size:26px; font-weight:900; color:#2D3142; }
+
+  .khong-slotsrow{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; min-height:56px;
+    margin-bottom:20px; padding:8px; border-radius:14px; }
+  .khong-slotsrow.shake{ animation:shake .4s; }
+  .khong-slot{ min-width:64px; height:48px; border:2.5px dashed #DDD3F5; border-radius:12px; background:#FBF9FF; }
+  .khong-slot.filled{ border-style:solid; border-color:#9B5DE5; background:#F7F2FF; display:flex; align-items:center;
+    justify-content:center; padding:0 14px; font-weight:800; font-size:15px; color:#7A3FC4; cursor:pointer; }
+  .khong-slot.correct{ border-color:#06D6A0; background:#E7FBF4; color:#04946E; }
+  .khong-slot.wrong{ border-color:#FF6B6B; background:#FFEEEE; color:#C23B3B; }
+
+  .khong-bankrow{ display:flex; align-items:stretch; gap:8px; flex-wrap:nowrap; margin:0 0 20px; }
+  .khong-tile{ border:none; background:#FFD166; color:#6b4c00; font-family:var(--sans); font-weight:900; font-size:15px;
+    padding:12px 6px; border-radius:11px; cursor:pointer; box-shadow:0 3px 0 #E0AC2F; transition:all .1s;
+    flex:1 1 0; min-width:0; white-space:normal; word-break:break-word; line-height:1.2;
+    display:flex; align-items:center; justify-content:center; text-align:center; }
+  .khong-tile:active{ transform:translateY(2px); box-shadow:0 1px 0 #E0AC2F; }
+  .khong-tile.used{ visibility:hidden; }
+  .khong-tile:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .khong-builderactions{ display:flex; gap:10px; margin-bottom:6px; }
+  .khong-builderactions button{ flex:1; border:none; font-family:var(--sans); font-weight:900; font-size:14px;
+    padding:13px 8px; border-radius:14px; cursor:pointer; }
+  .khong-clearbtn{ background:#fff; border:2px solid #EEE9F8 !important; color:#2D3142; }
+  .khong-clearbtn.as-next{ background:#06D6A0 !important; border:none !important; color:#fff; box-shadow:0 4px 0 #04A87F; }
+  .khong-clearbtn.as-next:active{ transform:translateY(2px); box-shadow:none; }
+  .khong-checkbtn{ background:#9B5DE5; color:#fff; box-shadow:0 4px 0 #7A3FC4; }
+  .khong-checkbtn:disabled{ opacity:.4; cursor:not-allowed; box-shadow:none; }
+  .khong-checkbtn:active:not(:disabled){ transform:translateY(2px); box-shadow:none; }
+
+  .khong-revealbox{ display:none; margin-top:18px; padding-top:18px; border-top:2px dashed #EEE9F8; }
+  .khong-revealbox.show{ display:block; }
+  .khong-pronountag{ background:#F7F2FF; color:#7A3FC4; font-weight:800; font-size:16px; line-height:1.5;
+    padding:10px 22px; border-radius:999px; margin-bottom:12px; display:inline-block; }
+  .khong-thaitext{ font-family:var(--thai); font-weight:600; font-size:15px; color:#2D3142; margin:6px 0 8px; }
+  .khong-karaoketext{ font-family:var(--sans); font-weight:900; font-size:21px; color:#0000C5; margin:0 0 8px; }
+  .khong-englishtext{ font-weight:700; font-size:26px; color:#6B7280; margin:0 0 10px; }
+
+  .khong-navrow{ display:flex; gap:10px; }
+  .khong-navbtn{ flex:1; background:#fff; border:2px solid #EEE9F8; color:#2D3142; font-family:var(--sans);
+    font-weight:800; font-size:14px; padding:12px; border-radius:14px; cursor:pointer; }
+  .khong-navbtn:disabled{ opacity:.4; cursor:not-allowed; }
+
+  .khong-endcard{ background:#fff; border-radius:22px; padding:38px 26px; text-align:center;
+    box-shadow:0 10px 30px rgba(45,49,66,.12); display:none; }
+  .khong-endcard.show{ display:block; }
+  .khong-endemoji{ font-size:56px; margin-bottom:10px; }
+  .khong-endtitle{ font-weight:900; font-size:22px; margin:0 0 6px; color:#2D3142; }
+  .khong-endscore{ font-weight:900; font-size:34px; color:#7A3FC4; margin:6px 0 4px; }
+  .khong-endsub{ color:#6B7280; font-weight:700; font-size:14px; margin-bottom:22px; }
+  .khong-stars{ font-size:28px; margin-bottom:18px; letter-spacing:4px; }
+  .khong-againbtn{ background:#9B5DE5; color:#fff; border:none; font-family:var(--sans); font-weight:900;
+    font-size:15px; padding:13px 30px; border-radius:999px; cursor:pointer; box-shadow:0 4px 0 #7A3FC4; }
+  .khong-againbtn:active{ transform:translateY(2px); box-shadow:none; }
 
   .sv-progress{ text-align:center; color:var(--soft); font-weight:800; font-size:13px; letter-spacing:.5px;
     text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -633,73 +706,135 @@
   </section>
 
   <!-- ================= WHOSE IS IT? · INTRO ================= -->
-  <section id="khongintro" class="hidden">
-    <div class="topbar">
-      <button class="back" id="khongIntroBack">←</button>
-      <div class="hubtitle">🔑 Whose Is It?</div>
-    </div>
-    <div class="sv-intro-card">
-      <h2>🧩 Build: [Thing] + ของ + [Person]</h2>
-      <p>Every round mixes a random thing with a random person — 30 × 6 combinations, so no two playthroughs are the same. Tap the tiles in order; one extra tile is a decoy.</p>
-    </div>
-    <div class="modes" style="margin-top:14px;">
-      <button class="khongmodebtn active" id="khongTabPic">🖼️ Picture mode</button>
-      <button class="khongmodebtn" id="khongTabEng">🔤 English mode</button>
-    </div>
-    <button class="sv-startbtn" id="khongStartBtn">Start the Round →</button>
-  </section>
-
-  <!-- ================= WHOSE IS IT? · GAME ================= -->
-  <section id="khonggame" class="hidden">
-    <div class="topbar">
-      <button class="back" id="khongGameBack">←</button>
-      <div class="hubtitle">🔑 Whose Is It?</div>
-      <div class="khong-score" id="khongScorePill">✅ 0</div>
-    </div>
-    <div class="sv-progress" id="khongProgress">Card 1 of 15</div>
-    <div class="progwrap" style="margin-bottom:14px;"><div class="progbar" id="khongProgressFill"></div></div>
-
-    <div class="wordcard card khong-promptcard">
-      <div class="khong-promptpic" id="khongPromptPic"></div>
-      <div class="khong-promptbig" id="khongPromptBig"></div>
+  <section id="khonggame" class="hidden khong-page">
+    <button class="back khong-backbtn" id="khongBackBtn">←</button>
+    <div class="khong-hero">
+      <h1>Whose Is It? 🤔</h1>
+      <p>Any noun can belong to anyone — build the Khǒng sentence!</p>
     </div>
 
-    <div class="khong-slotsrow" id="khongSlotsRow"></div>
-    <div class="khong-bankrow" id="khongBankRow"></div>
+    <div class="khong-stage">
+      <div class="khong-modetabs">
+        <button class="khong-modetab active" id="khongTabPic">🧩 From Picture</button>
+        <button class="khong-modetab" id="khongTabEng">🔤 From English</button>
+      </div>
 
-    <div class="khong-reveal" id="khongReveal">
-      <div class="khong-pronountag" id="khongPronounTag"></div>
-      <div class="ppthai" id="khongThaiText" style="font-size:34px;"></div>
-      <div class="pprom" id="khongKaraokeText" style="font-size:24px;"></div>
-      <div class="ppen" id="khongEnglishText"></div>
-      <div class="soundrow">
-        <button class="soundbtn voice" id="khongSayBtn">🗣️ Hear it again</button>
-        <button class="soundbtn" id="khongSlowBtn">🐢 Slow</button>
+      <!-- ============ FROM PICTURE MODE ============ -->
+      <div class="khong-modepanel active" id="khongPicPanel">
+        <div class="khong-legend">
+          <h4>Picture key — who does it belong to?</h4>
+          <div class="khong-legendgrid">
+            <div><span>🙋‍♂️</span>my (male)</div>
+            <div><span>🙋‍♀️</span>my (female)</div>
+            <div><span>🫵</span>your</div>
+            <div><span class="big-icon">🧍</span>his/her</div>
+            <div><span>🙌</span>our</div>
+            <div><span>👥</span>their</div>
+          </div>
+        </div>
+
+        <div id="khongPicQuizArea">
+          <div class="khong-topbar">
+            <div class="khong-progresswrap">
+              <div class="khong-progresslabel" id="khongPicProgressLabel">Card 1 of 15</div>
+              <div class="khong-progressbar"><div class="khong-progressfill" id="khongPicProgressFill"></div></div>
+            </div>
+            <div class="khong-scorepill" id="khongPicScorePill">✅ 0</div>
+          </div>
+
+          <div class="khong-buildercard">
+            <div class="khong-piccircle" id="khongPicCircle">
+              <span class="khong-pronounemoji" id="khongPicPronounEmoji"></span>
+              <span class="khong-plus">+</span>
+              <span class="khong-objectemoji" id="khongPicObjectEmoji"></span>
+            </div>
+            <div class="khong-builderinstr">4 words are given — tap the 3 correct ones in order 👇</div>
+            <div class="khong-slotsrow" id="khongPicSlotsRow"></div>
+            <div class="khong-bankrow" id="khongPicBankRow"></div>
+            <div class="khong-builderactions">
+              <button class="khong-clearbtn" id="khongPicClearBtn">↺ Clear</button>
+              <button class="khong-checkbtn" id="khongPicCheckBtn" disabled>✔ Check</button>
+            </div>
+            <div class="khong-revealbox" id="khongPicRevealBox">
+              <div class="khong-pronountag" id="khongPicPronounTag"></div>
+              <p class="khong-thaitext" id="khongPicThaiText"></p>
+              <p class="khong-karaoketext" id="khongPicKaraokeText"></p>
+              <p class="khong-englishtext" id="khongPicEnglishText"></p>
+              <div class="soundrow">
+                <button class="soundbtn voice" id="khongPicSayBtn">🗣️ Hear it again</button>
+                <button class="soundbtn" id="khongPicSlowBtn">🐢 Slow</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="khong-navrow" id="khongPicNavRow">
+            <button class="khong-navbtn" id="khongPicPrevBtn">← Previous</button>
+            <button class="khong-navbtn" id="khongPicNextBtn" disabled>Next →</button>
+          </div>
+        </div>
+
+        <div class="khong-endcard" id="khongPicEndCard">
+          <div class="khong-endemoji" id="khongPicEndEmoji">🎉</div>
+          <div class="khong-endtitle">Round complete!</div>
+          <div class="khong-endscore" id="khongPicEndScore">0/15</div>
+          <div class="khong-stars" id="khongPicEndStars">⭐⭐⭐</div>
+          <div class="khong-endsub">You built ของ sentences from pictures.</div>
+          <button class="khong-againbtn" id="khongPicAgainBtn">🎲 New Random Round</button>
+        </div>
+      </div>
+
+      <!-- ============ FROM ENGLISH MODE ============ -->
+      <div class="khong-modepanel" id="khongEngPanel">
+        <div id="khongEngQuizArea">
+          <div class="khong-topbar">
+            <div class="khong-progresswrap">
+              <div class="khong-progresslabel" id="khongEngProgressLabel">Card 1 of 15</div>
+              <div class="khong-progressbar"><div class="khong-progressfill" id="khongEngProgressFill"></div></div>
+            </div>
+            <div class="khong-scorepill" id="khongEngScorePill">✅ 0</div>
+          </div>
+
+          <div class="khong-buildercard">
+            <div class="khong-engprompt">
+              <div class="khong-engpromptlabel">Translate to Thai</div>
+              <div class="khong-engprompttext" id="khongEngPromptText"></div>
+            </div>
+            <div class="khong-builderinstr">4 words are given — tap the 3 correct ones in order 👇</div>
+            <div class="khong-slotsrow" id="khongEngSlotsRow"></div>
+            <div class="khong-bankrow" id="khongEngBankRow"></div>
+            <div class="khong-builderactions">
+              <button class="khong-clearbtn" id="khongEngClearBtn">↺ Clear</button>
+              <button class="khong-checkbtn" id="khongEngCheckBtn" disabled>✔ Check</button>
+            </div>
+            <div class="khong-revealbox" id="khongEngRevealBox">
+              <div class="khong-pronountag" id="khongEngPronounTag"></div>
+              <p class="khong-thaitext" id="khongEngThaiText"></p>
+              <p class="khong-karaoketext" id="khongEngKaraokeText"></p>
+              <p class="khong-englishtext" id="khongEngEnglishText"></p>
+              <div class="soundrow">
+                <button class="soundbtn voice" id="khongEngSayBtn">🗣️ Hear it again</button>
+                <button class="soundbtn" id="khongEngSlowBtn">🐢 Slow</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="khong-navrow" id="khongEngNavRow">
+            <button class="khong-navbtn" id="khongEngPrevBtn">← Previous</button>
+            <button class="khong-navbtn" id="khongEngNextBtn" disabled>Next →</button>
+          </div>
+        </div>
+
+        <div class="khong-endcard" id="khongEngEndCard">
+          <div class="khong-endemoji" id="khongEngEndEmoji">🎉</div>
+          <div class="khong-endtitle">Round complete!</div>
+          <div class="khong-endscore" id="khongEngEndScore">0/15</div>
+          <div class="khong-stars" id="khongEngEndStars">⭐⭐⭐</div>
+          <div class="khong-endsub">You translated English into ของ sentences.</div>
+          <button class="khong-againbtn" id="khongEngAgainBtn">🎲 New Random Round</button>
+        </div>
       </div>
     </div>
-
-    <div class="khong-navrow" id="khongNavRow">
-      <button class="pprev" id="khongPrevBtn">← Prev</button>
-      <button class="pnext" id="khongCheckBtn" disabled>Check</button>
-      <button class="pnext" id="khongNextBtn" style="display:none;">Next →</button>
-    </div>
-    <button class="khong-clearbtn" id="khongClearBtn">↺ Clear</button>
   </section>
-
-  <!-- ================= WHOSE IS IT? · RESULT ================= -->
-  <section id="khongresult" class="hidden">
-    <div class="result card">
-      <div class="em" id="khongEndEmoji">🌱</div>
-      <h2>Round Complete!</h2>
-      <div class="scorebig"><span id="khongEndScore">0/15</span></div>
-      <div class="stars" id="khongEndStars">⭐</div>
-      <div class="ractions">
-        <button class="again" id="khongAgainBtn">Play again</button>
-        <button class="change" id="khongBackBtn">Back to topics</button>
-      </div>
-    </div>
-  </section>
-
 
   <!-- ================= PICTURE GAME · HOME ================= -->
   <section id="pghome" class="hidden">
@@ -1201,7 +1336,7 @@ function show(id){
   if(id!=="sevengame" && typeof svClearTimers==="function") svClearTimers();
   ["hub","home","quiz","practice","result","pghome","pgpractice","pgame","pgresult",
    "sevenintro","sevengame","sevenroundresult","sevencomplete",
-   "khongintro","khonggame","khongresult",
+   "khonggame",
    "sentbuilder","sentbuilderresult",
    "teacherlogin","teachersection"].forEach(s=>document.getElementById(s).classList.toggle("hidden", s!==id));
   window.scrollTo(0,0);
@@ -1765,7 +1900,7 @@ let pgQueue=[], pgIdx=0, pgScore=0, pgAnswered=false;
 
 /* ---------- set menu ---------- */
 function pgCardClickHandler(m){
-  if(m.key==="khong" && pgMode!=="practice"){ show("khongintro"); return; }
+  if(m.key==="khong" && pgMode!=="practice"){ show("khonggame"); return; }
   if(pgMode==="build"){ startSentenceBuilder(m.key); return; }
   if(m.special && m.key==="seven11" && pgMode!=="practice"){ show("sevenintro"); return; }
   if(pgMode==="practice") startPgPractice(m.key); else startPgGame(m.key);
@@ -2257,177 +2392,197 @@ function khongPickDistractor(nounIdx, pronounIdx){
 }
 
 /* ---------------- game state & engine ---------------- */
-let khongMode = "pic"; // "pic" or "eng"
-let khongDeck = [], khongIdx = 0, khongResults = {}, khongPlaced = [null,null,null], khongBankTiles = [], khongChecked = false;
-
 document.getElementById("khongTabPic").onclick = ()=>{
-  khongMode = "pic";
   document.getElementById("khongTabPic").classList.add("active");
   document.getElementById("khongTabEng").classList.remove("active");
+  document.getElementById("khongPicPanel").classList.add("active");
+  document.getElementById("khongEngPanel").classList.remove("active");
 };
 document.getElementById("khongTabEng").onclick = ()=>{
-  khongMode = "eng";
   document.getElementById("khongTabEng").classList.add("active");
   document.getElementById("khongTabPic").classList.remove("active");
-};
-document.getElementById("khongIntroBack").onclick = ()=> show("pghome");
-document.getElementById("khongGameBack").onclick = ()=> show("pghome");
-document.getElementById("khongStartBtn").onclick = ()=>{
-  khongDeck = khongRandomDeck(KHONG_DECK_SIZE);
-  khongIdx = 0; khongResults = {};
-  show("khonggame");
-  khongSetupItem();
-};
-
-function khongCurrentItem(){ return khongDeck[khongIdx]; }
-
-function khongSetupItem(){
-  const item = khongCurrentItem();
-  if(khongMode==="pic"){
-    document.getElementById("khongPromptPic").textContent = item.emoji;
-    document.getElementById("khongPromptBig").textContent = "";
-  } else {
-    document.getElementById("khongPromptPic").textContent = item.pronounEmoji;
-    document.getElementById("khongPromptBig").textContent = item.en + "?";
-  }
-
-  const distractor = khongPickDistractor(item.nounIdx, item.pronounIdx);
-  const words = khongShuffle([item.object, "khǒng", item.pronounWord, distractor]);
-  khongBankTiles = words.map(w=>({word:w, used:false}));
-  khongPlaced = [null,null,null];
-  khongChecked = false;
-
-  document.getElementById("khongReveal").classList.remove("show");
-  document.getElementById("khongCheckBtn").style.display = "inline-block";
-  document.getElementById("khongCheckBtn").disabled = true;
-  document.getElementById("khongNextBtn").style.display = "none";
-  document.getElementById("khongClearBtn").disabled = false;
-  document.getElementById("khongClearBtn").textContent = "↺ Clear";
-  document.getElementById("khongClearBtn").classList.remove("as-next");
-  document.getElementById("khongBankRow").style.display = "flex";
-  document.getElementById("khongNavRow").style.display = "flex";
-
-  khongRenderSlots(); khongRenderBank();
-
-  document.getElementById("khongProgress").textContent = "Card "+(khongIdx+1)+" of "+khongDeck.length;
-  document.getElementById("khongProgressFill").style.width = ((khongIdx+1)/khongDeck.length*100)+"%";
-  document.getElementById("khongScorePill").textContent = "✅ "+Object.keys(khongResults).length;
-  document.getElementById("khongPrevBtn").disabled = khongIdx===0;
-
-  if(khongResults[khongIdx]){
-    khongChecked = true;
-    khongPlaced = [item.object, "khǒng", item.pronounWord];
-    khongBankTiles.forEach(t=>{ if(khongPlaced.includes(t.word)) t.used=true; });
-    khongRenderSlots(true); khongRenderBank();
-    khongShowReveal(item);
-    document.getElementById("khongCheckBtn").style.display = "none";
-    document.getElementById("khongClearBtn").textContent = khongIdx===khongDeck.length-1 ? "Finish ✔" : "Next →";
-    document.getElementById("khongClearBtn").classList.add("as-next");
-    document.getElementById("khongNavRow").style.display = "none";
-    document.getElementById("khongBankRow").style.display = "none";
-  }
-}
-
-function khongRenderSlots(forceCorrect){
-  const row = document.getElementById("khongSlotsRow"); row.innerHTML = "";
-  for(let i=0;i<3;i++){
-    const word = khongPlaced[i];
-    const slot = document.createElement("div");
-    slot.className = "khong-slot"+(word?" filled":"")+(forceCorrect?" correct":"");
-    if(word){ slot.textContent = word; slot.onclick = ()=>{ if(!khongChecked) khongRemoveFromSlot(i); }; }
-    row.appendChild(slot);
-  }
-}
-function khongRenderBank(){
-  const row = document.getElementById("khongBankRow"); row.innerHTML = "";
-  khongBankTiles.forEach((t,i)=>{
-    const btn = document.createElement("button");
-    btn.className = "khong-tile"+(t.used?" used":"");
-    btn.textContent = t.word;
-    btn.disabled = t.used || khongChecked;
-    btn.onclick = ()=> khongPlaceWord(i);
-    row.appendChild(btn);
-  });
-}
-function khongPlaceWord(bankIdx){
-  if(khongChecked) return;
-  const emptySlot = khongPlaced.findIndex(p=>p===null);
-  if(emptySlot===-1) return;
-  khongPlaced[emptySlot] = khongBankTiles[bankIdx].word;
-  khongBankTiles[bankIdx].used = true;
-  khongRenderSlots(); khongRenderBank();
-  document.getElementById("khongCheckBtn").disabled = khongPlaced.some(p=>p===null);
-}
-function khongRemoveFromSlot(slotIdx){
-  const word = khongPlaced[slotIdx]; if(!word) return;
-  const bankItem = khongBankTiles.find(t=>t.word===word && t.used);
-  if(bankItem) bankItem.used = false;
-  khongPlaced[slotIdx] = null;
-  khongRenderSlots(); khongRenderBank();
-  document.getElementById("khongCheckBtn").disabled = khongPlaced.some(p=>p===null);
-}
-document.getElementById("khongClearBtn").onclick = ()=>{
-  if(khongChecked){ khongGoNext(); return; }
-  khongPlaced = [null,null,null];
-  khongBankTiles.forEach(t=>t.used=false);
-  khongRenderSlots(); khongRenderBank();
-  document.getElementById("khongCheckBtn").disabled = true;
-};
-function khongShowReveal(item){
-  document.getElementById("khongPronounTag").textContent = item.pronounLabel;
-  document.getElementById("khongThaiText").textContent = item.thai;
-  document.getElementById("khongKaraokeText").textContent = item.kh;
-  document.getElementById("khongEnglishText").textContent = item.en;
-  document.getElementById("khongReveal").classList.add("show");
-  speak(item.thai);
-}
-document.getElementById("khongSayBtn").onclick = ()=> speak(khongCurrentItem().thai, undefined, true);
-document.getElementById("khongSlowBtn").onclick = ()=> speakSlow(khongCurrentItem().thai);
-
-document.getElementById("khongCheckBtn").onclick = ()=>{
-  const item = khongCurrentItem();
-  const correct = [item.object, "khǒng", item.pronounWord];
-  const isCorrect = khongPlaced.every((w,i)=> w===correct[i]);
-  if(isCorrect){
-    khongChecked = true; khongResults[khongIdx] = true;
-    khongRenderSlots(true);
-    khongShowReveal(item);
-    document.getElementById("khongCheckBtn").style.display = "none";
-    document.getElementById("khongClearBtn").textContent = khongIdx===khongDeck.length-1 ? "Finish ✔" : "Next →";
-    document.getElementById("khongClearBtn").classList.add("as-next");
-    document.getElementById("khongNavRow").style.display = "none";
-    document.getElementById("khongBankRow").style.display = "none";
-    document.getElementById("khongScorePill").textContent = "✅ "+Object.keys(khongResults).length;
-  } else {
-    const row = document.getElementById("khongSlotsRow");
-    [...row.children].forEach(s=>s.classList.add("wrong"));
-    setTimeout(()=>{ [...row.children].forEach(s=>s.classList.remove("wrong")); }, 500);
-  }
-};
-function khongGoNext(){
-  if(khongIdx < khongDeck.length-1){ khongIdx++; khongSetupItem(); }
-  else khongShowEnd();
-}
-function khongGoPrev(){ if(khongIdx>0){ khongIdx--; khongSetupItem(); } }
-document.getElementById("khongPrevBtn").onclick = khongGoPrev;
-document.getElementById("khongNextBtn").onclick = khongGoNext;
-
-function khongShowEnd(){
-  show("khongresult");
-  const total = khongDeck.length, got = Object.keys(khongResults).length;
-  document.getElementById("khongEndScore").textContent = got+"/"+total;
-  const pct = got/total;
-  let stars="⭐", emoji="🌱";
-  if(pct>=.9){ stars="⭐⭐⭐"; emoji="🏆"; } else if(pct>=.6){ stars="⭐⭐"; emoji="🎉"; } else { stars="⭐"; emoji="💪"; }
-  document.getElementById("khongEndEmoji").textContent = emoji;
-  document.getElementById("khongEndStars").textContent = stars;
-  if(pct>=.6) confetti(30, true);
-}
-document.getElementById("khongAgainBtn").onclick = ()=>{
-  khongDeck = khongRandomDeck(KHONG_DECK_SIZE); khongIdx = 0; khongResults = {};
-  show("khonggame"); khongSetupItem();
+  document.getElementById("khongEngPanel").classList.add("active");
+  document.getElementById("khongPicPanel").classList.remove("active");
 };
 document.getElementById("khongBackBtn").onclick = ()=> show("pghome");
+
+const KHONG_COLOR_CYCLE = ["#FFE9CC","#CFEAF7","#E0C3FC","#FFF3B0","#FFB4B4","#B8F2E6","#FFD6BA","#D6E4FF","#FFD1DC","#FFE5A0"];
+
+/* generic builder engine — one instance for "pic" mode, one for "eng" mode,
+   each with its own independent deck/progress, mirroring the original */
+function khongInitBuilder(opts){
+  const { prefix, renderPrompt, buildBank } = opts;
+  const el = id => document.getElementById(prefix+id);
+
+  let deck = khongRandomDeck(KHONG_DECK_SIZE);
+  let idx = 0, results = {}, placed = [null,null,null], bankTiles = [], checked = false;
+
+  function currentItem(){ return deck[idx]; }
+
+  function setupItem(){
+    const item = currentItem();
+    renderPrompt(item, idx);
+
+    const words = khongShuffle(buildBank(item));
+    bankTiles = words.map(w=>({word:w, used:false}));
+    placed = [null,null,null];
+    checked = false;
+
+    el("RevealBox").classList.remove("show");
+    el("CheckBtn").style.display = "inline-block";
+    el("CheckBtn").disabled = true;
+    el("ClearBtn").disabled = false;
+    el("ClearBtn").textContent = "↺ Clear";
+    el("ClearBtn").classList.remove("as-next");
+    el("BankRow").style.display = "flex";
+    el("NavRow").style.display = "flex";
+
+    renderSlots(); renderBank();
+
+    el("ProgressLabel").textContent = "Card "+(idx+1)+" of "+deck.length;
+    el("ProgressFill").style.width = ((idx+1)/deck.length*100)+"%";
+    el("ScorePill").textContent = "✅ "+Object.keys(results).length;
+    el("PrevBtn").disabled = idx===0;
+    el("NextBtn").disabled = true;
+    el("NextBtn").textContent = idx===deck.length-1 ? "Finish ✔" : "Next →";
+
+    if(results[idx]){
+      checked = true;
+      placed = [item.object, "khǒng", item.pronounWord];
+      bankTiles.forEach(t=>{ if(placed.includes(t.word)) t.used=true; });
+      renderSlots(true); renderBank();
+      showReveal(item);
+      el("CheckBtn").style.display = "none";
+      el("ClearBtn").textContent = idx===deck.length-1 ? "Finish ✔" : "Next →";
+      el("ClearBtn").classList.add("as-next");
+      el("NextBtn").disabled = false;
+      el("NavRow").style.display = "none";
+      el("BankRow").style.display = "none";
+    }
+  }
+
+  function renderSlots(forceCorrect){
+    const row = el("SlotsRow"); row.innerHTML = "";
+    for(let i=0;i<3;i++){
+      const word = placed[i];
+      const slot = document.createElement("div");
+      slot.className = "khong-slot"+(word?" filled":"")+(forceCorrect?" correct":"");
+      if(word){ slot.textContent = word; slot.onclick = ()=>{ if(!checked) removeFromSlot(i); }; }
+      row.appendChild(slot);
+    }
+  }
+  function renderBank(){
+    const row = el("BankRow"); row.innerHTML = "";
+    bankTiles.forEach((t,i)=>{
+      const btn = document.createElement("button");
+      btn.className = "khong-tile"+(t.used?" used":"");
+      btn.textContent = t.word;
+      btn.disabled = t.used || checked;
+      btn.onclick = ()=> placeWord(i);
+      row.appendChild(btn);
+    });
+  }
+  function placeWord(bankIdx){
+    if(checked) return;
+    const emptySlot = placed.findIndex(p=>p===null);
+    if(emptySlot===-1) return;
+    placed[emptySlot] = bankTiles[bankIdx].word;
+    bankTiles[bankIdx].used = true;
+    renderSlots(); renderBank();
+    el("CheckBtn").disabled = placed.some(p=>p===null);
+  }
+  function removeFromSlot(slotIdx){
+    const word = placed[slotIdx]; if(!word) return;
+    const bankItem = bankTiles.find(t=>t.word===word && t.used);
+    if(bankItem) bankItem.used = false;
+    placed[slotIdx] = null;
+    renderSlots(); renderBank();
+    el("CheckBtn").disabled = placed.some(p=>p===null);
+  }
+  el("ClearBtn").onclick = ()=>{
+    if(checked){ goNext(); return; }
+    placed = [null,null,null];
+    bankTiles.forEach(t=>t.used=false);
+    renderSlots(); renderBank();
+    el("CheckBtn").disabled = true;
+  };
+  function showReveal(item){
+    el("PronounTag").textContent = item.pronounLabel;
+    el("ThaiText").textContent = item.thai;
+    el("KaraokeText").textContent = item.kh;
+    el("EnglishText").textContent = item.en;
+    el("RevealBox").classList.add("show");
+    speak(item.thai);
+  }
+  el("SayBtn").onclick = ()=> speak(currentItem().thai, undefined, true);
+  el("SlowBtn").onclick = ()=> speakSlow(currentItem().thai);
+
+  el("CheckBtn").onclick = ()=>{
+    const item = currentItem();
+    const correct = [item.object, "khǒng", item.pronounWord];
+    const isCorrect = placed.every((w,i)=> w===correct[i]);
+    if(isCorrect){
+      checked = true; results[idx] = true;
+      renderSlots(true);
+      showReveal(item);
+      el("CheckBtn").style.display = "none";
+      el("ClearBtn").textContent = idx===deck.length-1 ? "Finish ✔" : "Next →";
+      el("ClearBtn").classList.add("as-next");
+      el("NextBtn").disabled = false;
+      el("NavRow").style.display = "none";
+      el("BankRow").style.display = "none";
+      el("ScorePill").textContent = "✅ "+Object.keys(results).length;
+    } else {
+      const row = el("SlotsRow");
+      row.classList.remove("shake"); void row.offsetWidth; row.classList.add("shake");
+      [...row.children].forEach(s=>s.classList.add("wrong"));
+      setTimeout(()=>{ [...row.children].forEach(s=>s.classList.remove("wrong")); }, 500);
+    }
+  };
+  function goNext(){ if(idx<deck.length-1){ idx++; setupItem(); } else showEnd(); }
+  function goPrev(){ if(idx>0){ idx--; setupItem(); } }
+  el("PrevBtn").onclick = goPrev;
+  el("NextBtn").onclick = goNext;
+
+  function showEnd(){
+    el("QuizArea").style.display = "none";
+    el("EndCard").classList.add("show");
+    const total = deck.length, got = Object.keys(results).length;
+    el("EndScore").textContent = got+"/"+total;
+    const pct = got/total;
+    let stars="⭐", emoji="🌱";
+    if(pct>=.9){ stars="⭐⭐⭐"; emoji="🏆"; } else if(pct>=.6){ stars="⭐⭐"; emoji="🎉"; } else { stars="⭐"; emoji="💪"; }
+    el("EndEmoji").textContent = emoji;
+    el("EndStars").textContent = stars;
+    if(pct>=.6) confetti(30, true);
+  }
+  el("AgainBtn").onclick = ()=>{
+    deck = khongRandomDeck(KHONG_DECK_SIZE); idx = 0; results = {};
+    el("QuizArea").style.display = "block";
+    el("EndCard").classList.remove("show");
+    setupItem();
+  };
+
+  setupItem();
+  return { currentItem };
+}
+
+khongInitBuilder({
+  prefix: "khongPic",
+  renderPrompt: (item, idx)=>{
+    document.getElementById("khongPicCircle").style.background = KHONG_COLOR_CYCLE[idx % KHONG_COLOR_CYCLE.length];
+    document.getElementById("khongPicPronounEmoji").textContent = item.pronounEmoji;
+    document.getElementById("khongPicObjectEmoji").textContent = item.emoji;
+  },
+  buildBank: item => [item.object, "khǒng", item.pronounWord, khongPickDistractor(item.nounIdx, item.pronounIdx)],
+});
+khongInitBuilder({
+  prefix: "khongEng",
+  renderPrompt: (item)=>{
+    document.getElementById("khongEngPromptText").textContent = item.en;
+  },
+  buildBank: item => [item.object, "khǒng", item.pronounWord, khongPickDistractor(item.nounIdx, item.pronounIdx)],
+});
 
 const SEVEN11_GAME_DATA = [
   // ---------------- TYPE A — Listen/Read & React ⚡ ----------------
