@@ -3047,6 +3047,20 @@ let _speakCallId = 0;
 let _lastSpeakText = null;
 let _lastSpeakTime = 0;
 
+// Safari/WebKit detection — reliable regardless of what the browser calls
+// itself, since Apple requires EVERY iOS browser (including "Chrome" and
+// "Firefox" on iPhone/iPad) to run on Safari's WebKit engine underneath.
+// This matters because Safari has a documented bug playing audio from
+// Google Translate's TTS endpoint specifically (confirmed independently by
+// many Mac/iOS Safari users), and separately, WebKit only allows audio
+// to start in the exact same synchronous instant as the tap — any delay
+// (even a short setTimeout) silently kills it. So on Safari/WebKit we skip
+// the Google audio route entirely and go straight to the device's own
+// voice, fired with zero delay.
+const IS_WEBKIT = (function(){
+  try{ return navigator.vendor === "Apple Computer, Inc."; }catch(e){ return false; }
+})();
+
 function speak(text, rate, force){
   if(!text) return;
   const isSlow = typeof rate === "number";
@@ -3063,6 +3077,13 @@ function speak(text, rate, force){
   const now = Date.now();
   if(!force && !isSlow && text===_lastSpeakText && (now-_lastSpeakTime)<6000) return;
   _lastSpeakText = text; _lastSpeakTime = now;
+
+  if(IS_WEBKIT){
+    // must fire with zero delay, in the exact same tick as the tap —
+    // this is the synchronous path speakLocalSync() below provides
+    speakLocalSync(text, SPEED);
+    return;
+  }
 
   const a = initTTSAudio();
   const urlPrimary   = "https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=" + encodeURIComponent(text);
@@ -3133,6 +3154,22 @@ function pickThaiVoice(){
          th.find(v=>!isMale(v) && /natural|neural|premium|enhanced/i.test(v.name)) ||
          th.find(v=>!isMale(v) && /google/i.test(v.name)) ||
          th.find(v=>!isMale(v));
+}
+// Safari/WebKit path: fires speechSynthesis.speak() with ZERO delay, in the
+// exact same synchronous tick as the call to speak() — any setTimeout or
+// Promise gap here causes WebKit to silently drop the utterance, since it
+// no longer looks like it's "directly in response to" the user's tap.
+function speakLocalSync(text, rate){
+  try{
+    if(!("speechSynthesis" in window) || !text) return;
+    const synth = window.speechSynthesis;
+    const v = pickThaiVoice();
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if(v){ u.voice = v; u.lang = v.lang || "th-TH"; } else { u.lang = "th-TH"; }
+    u.pitch = 1; u.volume = 1; u.rate = (typeof rate==="number" ? rate : 0.85);
+    synth.speak(u);
+  }catch(e){/* voice unavailable, fail silently */}
 }
 function speakLocal(text, rate){
   try{
