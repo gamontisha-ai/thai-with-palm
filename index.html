@@ -236,6 +236,11 @@
     transition:border-color .2s; }
   .fb-text:focus{ border-color:var(--teal); }
   .fb-text::placeholder{ color:#bbb; }
+  .fb-name{ width:100%; border:2px solid #efe6de; border-radius:14px; padding:10px 12px; font-family:var(--sans);
+    font-size:14px; color:var(--ink); background:var(--bg); outline:none; transition:border-color .2s;
+    margin-bottom:8px; }
+  .fb-name:focus{ border-color:var(--teal); }
+  .fb-name::placeholder{ color:#bbb; }
   .fb-send{ border:none; cursor:pointer; background:linear-gradient(135deg,var(--teal),var(--teal-d)); color:#fff;
     font-weight:800; font-size:15px; padding:11px 22px; border-radius:14px; margin-top:10px;
     box-shadow:var(--shadow-sm); font-family:var(--sans); transition:transform .1s, filter .15s; width:100%; }
@@ -952,6 +957,7 @@
         <button data-v="😊" title="Great">😊</button>
         <button data-v="🤩" title="Amazing">🤩</button>
       </div>
+      <input type="text" class="fb-name" id="pgFbName" placeholder="Your name (optional)">
       <textarea class="fb-text" id="pgFbText" placeholder="Any suggestion? Too easy? Too hard? Tell Teacher Palm…" rows="2"></textarea>
       <button class="fb-send" id="pgFbSend">Send feedback ✉️</button>
       <div id="pgFbStatus"></div>
@@ -1041,6 +1047,7 @@
         <button data-v="😊" title="Great">😊</button>
         <button data-v="🤩" title="Amazing">🤩</button>
       </div>
+      <input type="text" class="fb-name" id="toneFbName" placeholder="Your name (optional)">
       <textarea class="fb-text" id="toneFbText" placeholder="Which tones are hardest? Any ideas for Teacher Palm…" rows="2"></textarea>
       <button class="fb-send" id="toneFbSend">Send feedback ✉️</button>
       <div id="toneFbStatus"></div>
@@ -1071,6 +1078,7 @@
       <button data-v="😊">😊</button>
       <button data-v="🤩">🤩</button>
     </div>
+    <input type="text" class="fb-name" id="genFbName" placeholder="Your name (optional)">
     <textarea class="fb-text" id="genFbText" placeholder="What's on your mind?" rows="3"></textarea>
     <button class="fb-send" id="genFbSend">Send ✉️</button>
     <div id="genFbStatus"></div>
@@ -2218,9 +2226,10 @@ document.getElementById("fbOverlay").onclick = (e) => {
 };
 
 // send feedback directly from the app → your Gmail
-async function sendFeedback(type, ratingKey, textId, statusId, btnId){
+async function sendFeedback(type, ratingKey, textId, statusId, btnId, nameId){
   const rating = FB_RATINGS[ratingKey] || "";
   const comment = document.getElementById(textId).value.trim();
+  const name = nameId ? document.getElementById(nameId).value.trim() : "";
   const statusEl = document.getElementById(statusId);
   const btn = document.getElementById(btnId);
 
@@ -2249,6 +2258,7 @@ async function sendFeedback(type, ratingKey, textId, statusId, btnId){
       mode: "no-cors",
       headers: { "Content-Type":"application/json" },
       body: JSON.stringify({
+        name: name || "(not given)",
         rating: rating,
         comment: comment,
         game: context,
@@ -2259,6 +2269,7 @@ async function sendFeedback(type, ratingKey, textId, statusId, btnId){
     statusEl.innerHTML='<div class="fb-done">✅ Sent! Thank you 🙏</div>';
     btn.style.display="none";
     document.getElementById(textId).style.display="none";
+    if(nameId) document.getElementById(nameId).style.display="none";
   } catch(err){
     statusEl.innerHTML='<div class="fb-err">Couldn\'t send — check your internet and try again</div>';
     btn.disabled = false; btn.textContent = "Try again ✉️";
@@ -2266,9 +2277,9 @@ async function sendFeedback(type, ratingKey, textId, statusId, btnId){
 }
 
 // wire up the three send buttons
-document.getElementById("pgFbSend").onclick  = () => sendFeedback("Word Game",  "pgrating",      "pgFbText",  "pgFbStatus",  "pgFbSend");
-document.getElementById("toneFbSend").onclick = () => sendFeedback("Tone Test",  "tonerating",    "toneFbText","toneFbStatus", "toneFbSend");
-document.getElementById("genFbSend").onclick  = () => sendFeedback("General",    "generalrating", "genFbText", "genFbStatus",  "genFbSend");
+document.getElementById("pgFbSend").onclick  = () => sendFeedback("Word Game",  "pgrating",      "pgFbText",  "pgFbStatus",  "pgFbSend",  "pgFbName");
+document.getElementById("toneFbSend").onclick = () => sendFeedback("Tone Test",  "tonerating",    "toneFbText","toneFbStatus", "toneFbSend", "toneFbName");
+document.getElementById("genFbSend").onclick  = () => sendFeedback("General",    "generalrating", "genFbText", "genFbStatus",  "genFbSend", "genFbName");
 
 // reset feedback cards when replaying
 const _origShow = show;
