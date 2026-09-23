@@ -3202,7 +3202,7 @@ const IS_WEBKIT = (function(){
 function speak(text, rate, force){
   if(!text) return;
   const isSlow = typeof rate === "number";
-  const SPEED = isSlow ? rate : 0.88; // default: slightly slower than natural; explicit rate used for the "Slow" button
+  const SPEED = isSlow ? rate : 0.78; // default: noticeably slower for learners; explicit rate used for the "Slow" button
   // de-duplication guard: if this exact word was spoken recently (from any
   // code path — a stray double-fire, a stale error handler, a browser
   // trying to auto-restart the clip, etc.) skip it rather than let it
@@ -3220,6 +3220,17 @@ function speak(text, rate, force){
     // must fire with zero delay, in the exact same tick as the tap —
     // this is the synchronous path speakLocalSync() below provides
     speakLocalSync(text, SPEED);
+    return;
+  }
+
+  // On every other browser (Chrome included): if this device has a voice we
+  // can POSITIVELY confirm is female by name, use it directly — this is more
+  // reliable than assuming Google's remote voice is female, since that
+  // assumption is exactly what's been going wrong. Only fall back to
+  // Google's audio when no such confirmed voice exists on this device.
+  const confirmedFemale = pickConfirmedFemaleVoice();
+  if(confirmedFemale){
+    speakWithVoice(confirmedFemale, text, SPEED);
     return;
   }
 
@@ -3292,6 +3303,27 @@ function pickThaiVoice(){
          th.find(v=>!isMale(v) && /natural|neural|premium|enhanced/i.test(v.name)) ||
          th.find(v=>!isMale(v) && /google/i.test(v.name)) ||
          th.find(v=>!isMale(v));
+}
+// Stricter than pickThaiVoice(): only returns a voice whose name POSITIVELY
+// confirms it's female — never a gender-unknown fallback. Used to decide
+// whether to skip Google's audio entirely in favor of a voice we're sure
+// about, on every browser (not just Safari).
+function pickConfirmedFemaleVoice(){
+  if(!VOICES.length) loadVoices();
+  const isTh=v=>/^th\b|th-|th_/i.test(v.lang) || /thai/i.test(v.name);
+  const isFemale=v=>/female|women|kanya|premwadee|narisa|achara|somsi/i.test(v.name);
+  const th=VOICES.filter(isTh).filter(isFemale);
+  if(!th.length) return null;
+  return th.find(v=>/natural|neural|premium|enhanced/i.test(v.name)) || th[0];
+}
+function speakWithVoice(voice, text, rate){
+  try{
+    const synth=window.speechSynthesis;
+    synth.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.voice=voice; u.lang=voice.lang || "th-TH"; u.pitch=1; u.volume=1; u.rate=(typeof rate==="number"?rate:0.85);
+    synth.speak(u);
+  }catch(e){/* voice unavailable, fail silently */}
 }
 // Safari/WebKit path: fires speechSynthesis.speak() with ZERO delay, in the
 // exact same synchronous tick as the call to speak() — any setTimeout or
